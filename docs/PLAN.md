@@ -8,8 +8,8 @@ One complete deterministic museum mystery. Isolated repository on `develop/casez
 | 2 Core interface | Home, case selection, briefing, navigation and responsive shell; navigation tests | Complete |
 | 3 Evidence | Four locations, sixteen clues, locks, inventory, details and board; discovery tests | Complete |
 | 4 Interviews | Four profiles, evidence/deduction branches and conversation history; condition tests | Complete |
-| 5 Verdict | Four deductions, accusation prerequisites, two outcomes and replay; journey tests | In progress |
-| 6 Persistence/polish | Versioned validated save, Continue/New Game/Reset, notebook, hints, accessibility; storage tests | Pending |
+| 5 Verdict | Four deductions, accusation prerequisites, two outcomes and replay; journey tests | Complete |
+| 6 Persistence/polish | Versioned validated save, Continue/New Game/Reset, notebook, hints, accessibility; storage tests | In progress |
 | 7 Final QA | Typecheck, lint, build, unit/component and supported browser tests; correct/incorrect journeys, refresh/reset/mobile; verification report | Pending |
 
 ## Architecture and risks
@@ -33,6 +33,8 @@ M3: Typecheck and lint passed; all 10 unit/component tests and all 4 desktop/mob
 
 M4: All 21 unit/component tests and all 6 desktop/mobile Playwright tests passed; typecheck and lint passed. Every conditional branch tested with its complete requirements and each missing dependency. Both interview-driven evidence paths reach the dispatch record. Corrected an ambiguous test query that matched both the live answer and transcript.
 
+M5: All 32 unit/component and all 10 browser tests passed, plus typecheck/lint. Full desktop/mobile journeys collect all 16 clues, interview all suspects, test an invalid combination, establish four conclusions, recover the seal and reach the correct ending. Incorrect accusation retries and replay pass. Unit tests also reject correct-suspect/wrong-method and wrong-motive accounts.
+
 ## Handoff
 
-Next: wire deductions, complete accusation, outcomes and replay. No Git remote configured; prepare local review material when finished.
+Next: persistence, notebook, reset and accessibility polish. No Git remote configured; prepare local review material when finished.

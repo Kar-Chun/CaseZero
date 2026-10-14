@@ -292,3 +292,36 @@ select{background:#17212a;border:1px solid #44505a;border-radius:2px;color:#c1c9
 .transcript article{margin:20px 0;border-left:1px solid #554b37;padding-left:17px;}
 .transcript-question{color:var(--ink);margin-bottom:10px;font-weight:600;}
 @media(max-width:700px){.interview-layout{grid-template-columns:1fr;gap:22px;}.interview-layout .profile{padding:24px;}.portrait{margin:-24px -24px 25px;height:115px;}.portrait>span:first-child{font-size:55px;}.conversation{padding:23px;}.conversation-header>span{font-size:8px;}.conversation-header .eyebrow{font-size:8px;}.question-button{font-size:12px;padding:15px;}.response blockquote{font-size:20px;}.response-placeholder p{font-size:11px;}.interview-lead .text-link{font-size:11px;}.transcript{font-size:12px;}}
+
+/* The verdict */
+.verdict-grid{display:grid;grid-template-columns:1fr 1.6fr;gap:30px;align-items:start;}
+.proof-checklist{padding:27px;border:1px solid var(--line);background:var(--surface);}
+.proof-checklist>.eyebrow{margin-bottom:20px;}
+.proof-item{display:flex;gap:12px;align-items:center;padding:18px 0;border-bottom:1px solid var(--line);font-family:var(--serif);font-size:19px;color:var(--muted);}
+.proof-item.done{color:var(--ink);}.proof-item.done svg{color:var(--gold);}
+.proof-checklist>.text-link{margin-top:20px;color:var(--gold);font-size:11px;}
+.verdict-form{border:1px solid #6b593c;background:#141e27;padding:35px;}
+.verdict-intro{text-align:center;padding:25px 0;}.verdict-intro svg{margin:0 auto 25px;color:var(--gold-dim);}
+.verdict-intro h3{font-size:30px;}.verdict-intro p{font-size:13px;color:var(--muted);margin:15px auto;max-width:380px;}
+.verdict-form:has(.verdict-intro)>.button{display:flex;width:max-content;max-width:100%;margin:5px auto 10px;}
+.verdict-form h3{font-size:30px;margin:12px 0 30px;}
+.verdict-form form{display:flex;flex-direction:column;align-items:flex-start;}
+.verdict-form label{display:flex;flex-direction:column;gap:12px;width:100%;margin-bottom:25px;font-size:11px;color:#b1bcc3;}
+.verdict-form select{width:100%;padding:13px;font-size:12px;white-space:normal;height:46px;background:#1b2834;}
+.accusation-summary p{padding:20px 0;border-bottom:1px solid var(--line);font-family:var(--serif);font-size:22px;line-height:1.5;}
+.accusation-summary span{display:block;font-family:Arial,Helvetica,sans-serif;font-size:8px;color:var(--gold);letter-spacing:1.7px;margin-bottom:10px;}
+.verdict-form>.small-note{margin-top:25px;}
+.ending-actions{display:flex;flex-wrap:wrap;gap:15px;align-items:center;margin-top:30px;}
+.outcome{max-width:820px;margin:10px auto 25px;text-align:center;animation:fade-up .7s ease-out;}
+.outcome-emblem{width:85px;height:85px;border:1px solid #8e7650;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--gold);margin:0 auto 30px;box-shadow:0 0 0 10px #d1b17704,0 0 60px #d1b17709;}
+.outcome h2{font-size:64px;margin:17px 0 10px;letter-spacing:-2px;}
+.outcome-subtitle{font-family:var(--serif);font-style:italic;font-size:23px;color:var(--gold);}
+.ending-story{margin:35px 0;padding:32px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);text-align:left;background:linear-gradient(110deg,#18232b,#121b23);}
+.ending-story p{font-size:14px;color:#b9c2c9;line-height:1.9;}.ending-story p+p{margin-top:20px;}
+.submitted-account{text-align:left;padding:20px 24px;border:1px solid var(--line);}
+.submitted-account p:not(.eyebrow){font-size:11px;color:var(--muted);margin-top:10px;}
+.submitted-account strong{font-weight:400;color:var(--ink);}
+.outcome>blockquote{font-size:22px;max-width:680px;margin:35px auto;}
+.outcome .ending-actions{justify-content:center;}.outcome>.small-note{margin-top:20px;font-size:10px;}
+.tray-actions{flex-wrap:wrap;justify-content:flex-end;}.connection-tray{position:sticky;bottom:12px;z-index:5;box-shadow:0 10px 25px #0008;}
+@media(max-width:700px){.verdict-grid{grid-template-columns:1fr;gap:20px;}.proof-checklist,.verdict-form{padding:25px;}.proof-item{font-size:19px;}.verdict-form select{font-size:11px;padding:10px;}.verdict-intro h3{font-size:28px;}.outcome h2{font-size:51px;}.outcome-subtitle{font-size:20px;}.ending-story{padding:24px;}.ending-story p{font-size:13px;}.outcome>blockquote{font-size:20px;}.ending-actions .button{width:100%;}.tray-actions{justify-content:flex-start;gap:12px;}.tray-actions .button{min-width:0;font-size:9px;padding:10px 12px;}.tray-actions .text-link{margin-right:auto;}.connection-tray{bottom:8px;}.pinned-titles{gap:5px;}.pinned-titles span{font-size:10px;}}
