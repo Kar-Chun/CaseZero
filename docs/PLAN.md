@@ -6,8 +6,8 @@ One complete deterministic museum mystery. Isolated repository on `develop/casez
 | --- | --- | --- |
 | 1 Foundation | Next.js App Router, typed content/rules, reference and reachability validation; install, typecheck, tests, build | Complete |
 | 2 Core interface | Home, case selection, briefing, navigation and responsive shell; navigation tests | Complete |
-| 3 Evidence | Four locations, sixteen clues, locks, inventory, details and board; discovery tests | In progress |
-| 4 Interviews | Four profiles, evidence/deduction branches and conversation history; condition tests | Pending |
+| 3 Evidence | Four locations, sixteen clues, locks, inventory, details and board; discovery tests | Complete |
+| 4 Interviews | Four profiles, evidence/deduction branches and conversation history; condition tests | In progress |
 | 5 Verdict | Four deductions, accusation prerequisites, two outcomes and replay; journey tests | Pending |
 | 6 Persistence/polish | Versioned validated save, Continue/New Game/Reset, notebook, hints, accessibility; storage tests | Pending |
 | 7 Final QA | Typecheck, lint, build, unit/component and supported browser tests; correct/incorrect journeys, refresh/reset/mobile; verification report | Pending |
@@ -29,6 +29,8 @@ M1: npm install succeeded (Node 24.19, Next 16.4, React 19.3). Typecheck and ESL
 
 M2: Typecheck, lint and all 6 unit/component tests passed. Chromium installed. Both desktop and mobile Playwright navigation tests passed, including keyboard modal focus, Escape, and document overflow. Browser QA exposed blocked Next dev HMR on loopback; explicitly allowing 127.0.0.1 fixed hydration/navigation.
 
+M3: Typecheck and lint passed; all 10 unit/component tests and all 4 desktop/mobile browser tests passed. Verified locked evidence, single discovery, inventory filtering, detail dialogs and keyboard/touch pin-and-compare board.
+
 ## Handoff
 
-Next: implement searchable locations, inventory and board. No Git remote configured; prepare local review material when finished.
+Next: implement branching suspect interviews and verify gates. No Git remote configured; prepare local review material when finished.
