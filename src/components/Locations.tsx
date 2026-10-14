@@ -1,0 +1,9 @@
+'use client';
+import {locations} from '@/game/content';
+import {Icon} from './Icon';
+import {RoomArt} from './RoomArt';
+export function Locations({active,onSelect}:{active:string|null;onSelect:(id:string|null)=>void}){
+ const location=locations.find(l=>l.id===active);
+ if(location)return <section className="location-detail"><button className="text-link back-link" onClick={()=>onSelect(null)}><Icon name="back" size={16}/>Museum map</button><div className="location-banner"><RoomArt type={location.icon}/><div><p className="eyebrow">HALCYON MUSEUM / {location.id.replace('L','0')}</p><h2>{location.name}</h2><p>{location.atmosphere}</p></div></div><p className="location-description">{location.description}</p><div className="notice"><Icon name="search"/><p>Observe the room carefully. Search points will be recorded in your case file.</p></div></section>;
+ return <section><div className="section-heading"><div><p className="eyebrow">FOLLOW THE TRAIL</p><h2>The museum is yours to examine.</h2><p>Four rooms. Sixteen traces. Start wherever your instinct takes you.</p></div><span className="tag">4 LOCATIONS</span></div><div className="location-grid">{locations.map((l,i)=><button className="location-card" key={l.id} onClick={()=>onSelect(l.id)}><div className="location-image"><RoomArt type={l.icon}/><span className="location-number">0{i+1}</span></div><div className="location-card-copy"><p className="eyebrow">{l.subtitle}</p><h3>{l.name}</h3><div className="location-card-bottom"><span>Explore location</span><Icon name="arrow" size={18}/></div></div></button>)}</div><div className="field-note"><Icon name="notebook"/><p><strong>A detective’s first rule</strong> Separate what you know from what you think you know. Records, objects and accounts can tell different stories.</p></div></section>;
+}
