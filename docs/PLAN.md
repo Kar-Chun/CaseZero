@@ -7,8 +7,8 @@ One complete deterministic museum mystery. Isolated repository on `develop/casez
 | 1 Foundation | Next.js App Router, typed content/rules, reference and reachability validation; install, typecheck, tests, build | Complete |
 | 2 Core interface | Home, case selection, briefing, navigation and responsive shell; navigation tests | Complete |
 | 3 Evidence | Four locations, sixteen clues, locks, inventory, details and board; discovery tests | Complete |
-| 4 Interviews | Four profiles, evidence/deduction branches and conversation history; condition tests | In progress |
-| 5 Verdict | Four deductions, accusation prerequisites, two outcomes and replay; journey tests | Pending |
+| 4 Interviews | Four profiles, evidence/deduction branches and conversation history; condition tests | Complete |
+| 5 Verdict | Four deductions, accusation prerequisites, two outcomes and replay; journey tests | In progress |
 | 6 Persistence/polish | Versioned validated save, Continue/New Game/Reset, notebook, hints, accessibility; storage tests | Pending |
 | 7 Final QA | Typecheck, lint, build, unit/component and supported browser tests; correct/incorrect journeys, refresh/reset/mobile; verification report | Pending |
 
@@ -31,6 +31,8 @@ M2: Typecheck, lint and all 6 unit/component tests passed. Chromium installed. B
 
 M3: Typecheck and lint passed; all 10 unit/component tests and all 4 desktop/mobile browser tests passed. Verified locked evidence, single discovery, inventory filtering, detail dialogs and keyboard/touch pin-and-compare board.
 
+M4: All 21 unit/component tests and all 6 desktop/mobile Playwright tests passed; typecheck and lint passed. Every conditional branch tested with its complete requirements and each missing dependency. Both interview-driven evidence paths reach the dispatch record. Corrected an ambiguous test query that matched both the live answer and transcript.
+
 ## Handoff
 
-Next: implement branching suspect interviews and verify gates. No Git remote configured; prepare local review material when finished.
+Next: wire deductions, complete accusation, outcomes and replay. No Git remote configured; prepare local review material when finished.
