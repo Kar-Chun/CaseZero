@@ -2,15 +2,15 @@
 
 One complete deterministic museum mystery. Isolated repository on `develop/casezero`. No external services or deployment.
 
-| Milestone | Acceptance criteria | Status |
-| --- | --- | --- |
-| 1 Foundation | Next.js App Router, typed content/rules, reference and reachability validation; install, typecheck, tests, build | Complete |
-| 2 Core interface | Home, case selection, briefing, navigation and responsive shell; navigation tests | Complete |
-| 3 Evidence | Four locations, sixteen clues, locks, inventory, details and board; discovery tests | Complete |
-| 4 Interviews | Four profiles, evidence/deduction branches and conversation history; condition tests | Complete |
-| 5 Verdict | Four deductions, accusation prerequisites, two outcomes and replay; journey tests | Complete |
-| 6 Persistence/polish | Versioned validated save, Continue/New Game/Reset, notebook, hints, accessibility; storage tests | Complete |
-| 7 Final QA | Typecheck, lint, build, unit/component and supported browser tests; correct/incorrect journeys, refresh/reset/mobile; verification report | In progress |
+| Milestone            | Acceptance criteria                                                                                                                       | Status   |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| 1 Foundation         | Next.js App Router, typed content/rules, reference and reachability validation; install, typecheck, tests, build                          | Complete |
+| 2 Core interface     | Home, case selection, briefing, navigation and responsive shell; navigation tests                                                         | Complete |
+| 3 Evidence           | Four locations, sixteen clues, locks, inventory, details and board; discovery tests                                                       | Complete |
+| 4 Interviews         | Four profiles, evidence/deduction branches and conversation history; condition tests                                                      | Complete |
+| 5 Verdict            | Four deductions, accusation prerequisites, two outcomes and replay; journey tests                                                         | Complete |
+| 6 Persistence/polish | Versioned validated save, Continue/New Game/Reset, notebook, hints, accessibility; storage tests                                          | Complete |
+| 7 Final QA           | Typecheck, lint, build, unit/component and supported browser tests; correct/incorrect journeys, refresh/reset/mobile; verification report | Complete |
 
 ## Architecture and risks
 
@@ -37,6 +37,8 @@ M5: All 32 unit/component and all 10 browser tests passed, plus typecheck/lint. 
 
 M6: Typecheck/lint and all 41 unit/component tests passed. All 16 desktop/mobile browser tests passed on a stable rerun, including ending refresh, partial restoration, notebook, New Game, Reset, unsupported saves, storage denial and two-tab synchronization. A prior browser run was interrupted by development hot reload during a replay; the unchanged stable rerun passed. Added focus handling, usable mobile evidence cards and an empty gallery display illustration.
 
+M7: Clean final npm ci succeeded in an isolated directory. Final typecheck, lint and production build passed; 41 unit/component tests passed and all 20 Playwright tests passed against the production server (44.1s). Audited entry/guide/case/briefing/investigation screens report zero axe WCAG A/AA violations with stable reduced-motion rendering; keyboard and 320px checks pass. Source formatted and entry screens split into focused components. Fixed mobile tray obstruction and ESLint preset peer mismatch. README, verification report and PR review material completed.
+
 ## Handoff
 
-Next: final accessibility/production QA, clean install, documentation and review preparation. Dependency audit found ESLint 10 incompatible peer ranges in the Next preset; replace that preset with compatible underlying plugins before verifying clean installation. No Git remote configured; prepare local review material when finished.
+MVP complete. No pending implementation work. See README.md to run/play and docs/VERIFICATION.md for QA scope and limits. Review the committed develop/casezero branch and docs/REVIEW.md. No remote repository is configured; a hosted PR requires a remote. No public deployment performed.

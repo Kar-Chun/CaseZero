@@ -1,9 +1,58 @@
-'use client';
-import {Icon} from './Icon';
-export type Screen='home'|'cases'|'briefing'|'investigation';
-export function Brand({onClick}:{onClick:()=>void}){return <button className="brand" onClick={onClick} aria-label="CaseZero home"><span className="brand-mark">C<span>0</span></span><span>CASE<span className="brand-zero">ZERO</span><small>AN INVESTIGATION AWAITS</small></span></button>;}
-export function Intro({screen,setScreen,onBegin,onGuide,hasProgress,onNew}:{screen:Screen;setScreen:(s:Screen)=>void;onBegin:()=>void;onGuide:()=>void;hasProgress:boolean;onNew?:()=>void}){
- return <div className="intro-page"><header className="site-header"><Brand onClick={()=>setScreen('home')}/><nav aria-label="Main navigation"><button className={screen==='cases'?'text-link active':'text-link'} onClick={()=>setScreen('cases')}>Case files</button><button className="text-link" onClick={onGuide}>How to play</button></nav><span className="header-status"><span className="status-dot"/>INDEPENDENT DETECTIVE BUREAU</span></header>
- {screen==='home'?<><section className="hero"><div className="hero-art"/><div className="hero-shade"/><div className="hero-copy"><p className="eyebrow"><span className="gold-line"/> OBSERVE. CONNECT. UNCOVER.</p><h1>The truth hides<br/>in <em>plain sight.</em></h1><p className="hero-description">Nothing disappears without a trace.<br/>Step into the story. Follow the evidence.<br/>Find what everyone else missed.</p><button className="button primary" onClick={()=>setScreen(hasProgress?'investigation':'cases')}>{hasProgress?'Continue investigation':'Explore the case'}<Icon name="arrow"/></button>{hasProgress&&<button className="text-link new-game-link" onClick={onNew}>New game<Icon name="reset" size={14}/></button>}<p className="hero-caption">A BROWSER-BASED DETECTIVE EXPERIENCE</p></div><div className="hero-stamp"><span>H</span><p>HALCYON MUSEUM<br/><small>EST. 1894</small></p></div><div className="hero-bottom"><p>ONE MISSING ARTIFACT.<br/><strong>Four stories. One truth.</strong></p><span className="scroll-cue">YOUR FIRST CASE <Icon name="arrow" size={16}/></span></div></section><section className="featured-case"><div className="case-number">001<small>CASE FILE</small></div><div><p className="eyebrow">THE HALCYON COLLECTION</p><h2>The Quiet Hour</h2><p>An exclusive evening. An empty display. A room full of secrets.</p></div><div className="case-meta"><span><Icon name="interviews" size={16}/>4 suspects</span><span><Icon name="search" size={16}/>16 evidence items</span></div><button className="button outline" onClick={()=>setScreen('cases')}>Open case file<Icon name="arrow" size={18}/></button></section><footer className="site-footer"><span>CASEZERO — LOOK A LITTLE CLOSER.</span><span>Original fiction · No account required</span></footer></>:screen==='cases'?<main className="page-content case-selection"><p className="eyebrow">THE CASE ARCHIVE / 001</p><h1>Every case begins<br/>with a <em>question.</em></h1><p className="lede">Choose a file. Leave your assumptions at the door.</p><article className="selection-card"><div className="selection-art"><span className="tag">AVAILABLE TO INVESTIGATE</span><span className="selection-number">01</span></div><div className="selection-copy"><p className="eyebrow">MUSEUM MYSTERY · CASE 001</p><h2>The Quiet Hour</h2><p>The Asterion Seal has vanished from a locked display during Halcyon’s most exclusive evening. The doors are sealed. The answers are inside.</p><div className="selection-facts"><span>4 suspects</span><span>4 locations</span><span>30–45 min</span></div><button className="button primary" onClick={()=>setScreen('briefing')}>{hasProgress?'Read briefing':'Begin investigation'}<Icon name="arrow"/></button>{hasProgress&&<button className="text-link continue-link" onClick={()=>setScreen('investigation')}>Continue saved investigation</button>}{hasProgress&&<button className="text-link new-game-link" onClick={onNew}>New game<Icon name="reset" size={14}/></button>}</div></article><p className="small-note">One complete, authored mystery. Explore at your own pace.</p></main>:<main className="page-content briefing"><button className="text-link back-link" onClick={()=>setScreen('cases')}><Icon name="back" size={16}/>Case files</button><div className="briefing-header"><div><p className="eyebrow">CONFIDENTIAL / CASE 001</p><h1>The Quiet Hour</h1><p className="lede">The Halcyon Museum · 14 November 2025 · 21:25</p></div><span className="file-stamp">OPEN<br/>INVESTIGATION</span></div><div className="briefing-grid"><article className="briefing-paper"><p className="eyebrow">YOUR BRIEFING</p><h2>History has a way<br/>of going missing.</h2><p>At 21:18, the host of Halcyon’s private patron evening found the Asterion Seal’s display empty. No broken glass. No alarm. No one admitting they saw a thing.</p><p>The ninth-century seal is the centerpiece of the museum’s new collection. Its disappearance could destroy the institution’s reputation—and the careers of those gathered here tonight.</p><p>The exits were sealed immediately. Four people had reason to want the seal gone. You have unrestricted access to the gallery, security office, conservation workshop and archive.</p><blockquote>“Find the object. Establish the facts.<br/>Let the evidence tell you the rest.”<cite>— Museum liaison</cite></blockquote></article><aside className="objectives"><p className="eyebrow">YOUR OBJECTIVES</p>{['Examine the museum and collect evidence','Interview all four persons of interest','Connect clues into four conclusions','Recover the seal and submit your case'].map((v,i)=><div className="objective" key={v}><span>0{i+1}</span><p>{v}</p></div>)}<div className="briefing-note"><Icon name="notebook"/><p>No timer. No penalties for exploring. Your notebook is yours; conclusions must be supported by evidence.</p></div><button className="button primary full-width" onClick={onBegin}>{hasProgress?'Return to investigation':'Enter the museum'}<Icon name="arrow"/></button></aside></div></main>}
- </div>;
+"use client";
+import { Home } from "./Home";
+import { CaseSelection } from "./CaseSelection";
+import { Briefing } from "./Briefing";
+export type Screen = "home" | "cases" | "briefing" | "investigation";
+export type IntroProps = {
+  screen: Screen;
+  setScreen: (s: Screen) => void;
+  onBegin: () => void;
+  onGuide: () => void;
+  hasProgress: boolean;
+  onNew?: () => void;
+};
+export function Brand({ onClick }: { onClick: () => void }) {
+  return (
+    <button className="brand" onClick={onClick} aria-label="CaseZero home">
+      <span className="brand-mark">
+        C<span>0</span>
+      </span>
+      <span>
+        CASE<span className="brand-zero">ZERO</span>
+        <small>AN INVESTIGATION AWAITS</small>
+      </span>
+    </button>
+  );
+}
+export function Intro(props: IntroProps) {
+  const { screen, setScreen, onGuide } = props;
+  return (
+    <div className="intro-page">
+      <header className="site-header">
+        <Brand onClick={() => setScreen("home")} />
+        <nav aria-label="Main navigation">
+          <button
+            className={screen === "cases" ? "text-link active" : "text-link"}
+            onClick={() => setScreen("cases")}
+          >
+            Case files
+          </button>
+          <button className="text-link" onClick={onGuide}>
+            How to play
+          </button>
+        </nav>
+        <span className="header-status">
+          <span className="status-dot" />
+          INDEPENDENT DETECTIVE BUREAU
+        </span>
+      </header>
+      {screen === "home" ? (
+        <Home {...props} />
+      ) : screen === "cases" ? (
+        <CaseSelection {...props} />
+      ) : (
+        <Briefing {...props} />
+      )}
+    </div>
+  );
 }

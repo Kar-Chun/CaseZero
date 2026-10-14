@@ -1,2 +1,4 @@
-import {GameApp} from '@/components/GameApp';
-export default function Page(){return <GameApp/>;}
+import { GameApp } from "@/components/GameApp";
+export default function Page() {
+  return <GameApp />;
+}

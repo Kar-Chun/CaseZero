@@ -1,5 +1,106 @@
-type Props={name:string;size?:number;className?:string};
-const paths:Record<string,React.ReactNode>={
-arrow:<><path d="M5 12h14M13 6l6 6-6 6"/></>,back:<path d="m14 6-6 6 6 6M8 12h12"/>,gallery:<><path d="m3 8 9-5 9 5M3 21h18M5 9v9M10 9v9M14 9v9M19 9v9M3 8h18"/></>,board:<><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="15" y="15" width="6" height="6" rx="1"/><rect x="15" y="3" width="6" height="6" rx="1"/><path d="M9 6h6M6 9v9h9"/></>,interviews:<><circle cx="9" cy="8" r="4"/><path d="M2 21v-2a7 7 0 0 1 14 0v2M16 4a4 4 0 0 1 0 8M18 15a5 5 0 0 1 4 5"/></>,notebook:<><path d="M6 3h14v18H6a3 3 0 0 1 0-6h14M6 3a3 3 0 0 0-3 3v12M8 7h8M8 11h6"/></>,verdict:<><path d="M12 3v18M4 7h16M6 7l-4 8h8L6 7ZM18 7l-4 8h8l-4-8ZM8 21h8"/></>,search:<><circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/></>,lock:<><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V6a4 4 0 0 1 8 0v4M12 14v3"/></>,check:<path d="m5 12 4 4L19 6"/>,close:<path d="m6 6 12 12M18 6 6 18"/>,security:<><path d="m12 3 9 4v5c0 5-9 9-9 9s-9-4-9-9V7l9-4Z"/><path d="m8 12 3 3 5-6"/></>,workshop:<><path d="M14 4a5 5 0 0 0-6 6L3 15a3 3 0 0 0 6 6l5-5a5 5 0 0 0 6-6l-4 4-4-4 4-4Z"/></>,archive:<><path d="M3 4h18v4H3zM5 8v13h14V8M9 12h6M9 16h6"/></>,spark:<><path d="m12 2 3 7 7 3-7 3-3 7-3-7-7-3 7-3 3-7Z"/></>,save:<><path d="M4 3h13l3 3v15H4V3ZM8 3v6h8V3M8 21v-7h8v7"/></>,file:<><path d="M5 3h9l5 5v13H5V3ZM14 3v6h5M8 13h8M8 17h5"/></>,reset:<><path d="M4 10a8 8 0 1 1 0 7M4 4v6h6"/></>
+type Props = { name: string; size?: number; className?: string };
+const paths: Record<string, React.ReactNode> = {
+  arrow: (
+    <>
+      <path d="M5 12h14M13 6l6 6-6 6" />
+    </>
+  ),
+  back: <path d="m14 6-6 6 6 6M8 12h12" />,
+  gallery: (
+    <>
+      <path d="m3 8 9-5 9 5M3 21h18M5 9v9M10 9v9M14 9v9M19 9v9M3 8h18" />
+    </>
+  ),
+  board: (
+    <>
+      <rect x="3" y="3" width="6" height="6" rx="1" />
+      <rect x="15" y="15" width="6" height="6" rx="1" />
+      <rect x="15" y="3" width="6" height="6" rx="1" />
+      <path d="M9 6h6M6 9v9h9" />
+    </>
+  ),
+  interviews: (
+    <>
+      <circle cx="9" cy="8" r="4" />
+      <path d="M2 21v-2a7 7 0 0 1 14 0v2M16 4a4 4 0 0 1 0 8M18 15a5 5 0 0 1 4 5" />
+    </>
+  ),
+  notebook: (
+    <>
+      <path d="M6 3h14v18H6a3 3 0 0 1 0-6h14M6 3a3 3 0 0 0-3 3v12M8 7h8M8 11h6" />
+    </>
+  ),
+  verdict: (
+    <>
+      <path d="M12 3v18M4 7h16M6 7l-4 8h8L6 7ZM18 7l-4 8h8l-4-8ZM8 21h8" />
+    </>
+  ),
+  search: (
+    <>
+      <circle cx="10" cy="10" r="6" />
+      <path d="m15 15 6 6" />
+    </>
+  ),
+  lock: (
+    <>
+      <rect x="5" y="10" width="14" height="11" rx="2" />
+      <path d="M8 10V6a4 4 0 0 1 8 0v4M12 14v3" />
+    </>
+  ),
+  check: <path d="m5 12 4 4L19 6" />,
+  close: <path d="m6 6 12 12M18 6 6 18" />,
+  security: (
+    <>
+      <path d="m12 3 9 4v5c0 5-9 9-9 9s-9-4-9-9V7l9-4Z" />
+      <path d="m8 12 3 3 5-6" />
+    </>
+  ),
+  workshop: (
+    <>
+      <path d="M14 4a5 5 0 0 0-6 6L3 15a3 3 0 0 0 6 6l5-5a5 5 0 0 0 6-6l-4 4-4-4 4-4Z" />
+    </>
+  ),
+  archive: (
+    <>
+      <path d="M3 4h18v4H3zM5 8v13h14V8M9 12h6M9 16h6" />
+    </>
+  ),
+  spark: (
+    <>
+      <path d="m12 2 3 7 7 3-7 3-3 7-3-7-7-3 7-3 3-7Z" />
+    </>
+  ),
+  save: (
+    <>
+      <path d="M4 3h13l3 3v15H4V3ZM8 3v6h8V3M8 21v-7h8v7" />
+    </>
+  ),
+  file: (
+    <>
+      <path d="M5 3h9l5 5v13H5V3ZM14 3v6h5M8 13h8M8 17h5" />
+    </>
+  ),
+  reset: (
+    <>
+      <path d="M4 10a8 8 0 1 1 0 7M4 4v6h6" />
+    </>
+  ),
 };
-export function Icon({name,size=20,className}:Props){return <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[name]??paths.file}</svg>;}
+export function Icon({ name, size = 20, className }: Props) {
+  return (
+    <svg
+      className={className}
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      {paths[name] ?? paths.file}
+    </svg>
+  );
+}

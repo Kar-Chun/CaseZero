@@ -19,24 +19,24 @@ S04 Theo Shaw: security lead, prior reprimand, initially assumes power fault; fo
 
 ## Evidence
 
-| ID | Location / point | Fact | Gate |
-| --- | --- | --- | --- |
-| E01 | Gallery / pedestal | 21:12–21:13:30 maintenance; intact lock | None |
-| E02 | Gallery / sensor | Sensor suppressed by C3, no force | E01 |
-| E03 | Gallery / offer | Anton demands purchase, threatens funds | None |
-| E04 | Gallery / usher | Mara absent from atrium 21:10–21:16 | None |
-| E05 | Security / terminal | C3 display 21:12, store 21:14 | None |
-| E06 | Security / meter | No outage; low battery separate | None |
-| E07 | Security / video | Synchronized continuous alibis for other three | None |
-| E08 | Security / envelope | Mara signed C3, no transfer | T04 |
-| E09 | Workshop / floor | Cracked-wheel track gallery to store | None |
-| E10 | Workshop / photograph | Trolley has that cracked wheel | None |
-| E11 | Workshop / bill | Elise's unrelated debt | None |
-| E12 | Workshop / inventory | K17 received 21:14, M.V., exhibit tissue | T03 |
-| E13 | Archive / minutes | Board suppressed Neris origin, Mara challenged | None |
-| E14 | Archive / oral history | Mara's grandmother identifies lost seal | None |
-| E15 | Archive / dispatch | K17 destination restitution escrow, curator authority | D02 |
-| E16 | Workshop / crate | Seal under false base, exhibit number matches | D01–D04 |
+| ID  | Location / point       | Fact                                                  | Gate    |
+| --- | ---------------------- | ----------------------------------------------------- | ------- |
+| E01 | Gallery / pedestal     | 21:12–21:13:30 maintenance; intact lock               | None    |
+| E02 | Gallery / sensor       | Sensor suppressed by C3, no force                     | E01     |
+| E03 | Gallery / offer        | Anton demands purchase, threatens funds               | None    |
+| E04 | Gallery / usher        | Mara absent from atrium 21:10–21:16                   | None    |
+| E05 | Security / terminal    | C3 display 21:12, store 21:14                         | None    |
+| E06 | Security / meter       | No outage; low battery separate                       | None    |
+| E07 | Security / video       | Synchronized continuous alibis for other three        | None    |
+| E08 | Security / envelope    | Mara signed C3, no transfer                           | T04     |
+| E09 | Workshop / floor       | Cracked-wheel track gallery to store                  | None    |
+| E10 | Workshop / photograph  | Trolley has that cracked wheel                        | None    |
+| E11 | Workshop / bill        | Elise's unrelated debt                                | None    |
+| E12 | Workshop / inventory   | K17 received 21:14, M.V., exhibit tissue              | T03     |
+| E13 | Archive / minutes      | Board suppressed Neris origin, Mara challenged        | None    |
+| E14 | Archive / oral history | Mara's grandmother identifies lost seal               | None    |
+| E15 | Archive / dispatch     | K17 destination restitution escrow, curator authority | D02     |
+| E16 | Workshop / crate       | Seal under false base, exhibit number matches         | D01–D04 |
 
 ## Progression
 

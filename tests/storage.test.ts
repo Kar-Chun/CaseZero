@@ -1,14 +1,124 @@
-import {describe,it,expect} from 'vitest';
-import {parseSave,loadGame,saveGame,clearGame,SAVE_KEY,type StoragePort} from '../src/game/storage';
-import {freshState,startCase,discover,accuse,notebook} from '../src/game/engine';
-import {solveCase} from './helpers';
-function memory():StoragePort & {data:Map<string,string>}{const data=new Map<string,string>();return {data,getItem:k=>data.get(k)??null,setItem:(k,v)=>{data.set(k,v);},removeItem:k=>{data.delete(k);}};}
-describe('versioned progress storage',()=>{
- it('round trips a partial investigation including notebook text',()=>{const port=memory();const state=notebook(discover(startCase(freshState()),'E01'),'Sensor and power: separate systems.');expect(saveGame(state,port)).toBe(true);expect(loadGame(port).state).toEqual(state);expect(parseSave(JSON.stringify(state))).toEqual(state);});
- it('restores complete correct and incorrect submitted accounts',()=>{for(const suspect of ['S01','S02']){const final=accuse(solveCase(),{suspect,method:'M02',motive:'R03'});expect(parseSave(JSON.stringify(final))).toEqual(final);}});
- it('rejects malformed, outdated, foreign and invalidly shaped saves',()=>{const initial=freshState();const bad:unknown[]=[null,[],{...initial,version:0},{...initial,caseId:'other'},{...initial,started:'yes'},{...initial,evidence:['E01','E01']},{...initial,evidence:['missing']},{...initial,answers:[1]},{...initial,notes:0},{...initial,notes:'x'.repeat(6001)},{...initial,accusation:{}},{...initial,accusation:{suspect:'missing',method:'M02',motive:'R03'}}];for(const value of bad)expect(parseSave(JSON.stringify(value))).toBeNull();expect(parseSave('{')).toBeNull();expect(parseSave(' '.repeat(20001))).toBeNull();});
- it('rejects impossible progression dependencies, even when IDs exist',()=>{const s=startCase(freshState());for(const state of [{...s,evidence:['E02']},{...s,evidence:['E08']},{...s,answers:['T03']},{...s,deductions:['D01']},{...s,evidence:['E16']},{...s,accusation:{suspect:'S01',method:'M02',motive:'R03'}},{...freshState(),evidence:['E01']}])expect(parseSave(JSON.stringify(state))).toBeNull();});
- it('recovers invalid data without overwriting it before a new game starts',()=>{const port=memory();port.data.set(SAVE_KEY,'{"version":0}');const loaded=loadGame(port);expect(loaded.state).toEqual(freshState());expect(loaded.notice).toMatch(/unsupported version/);expect(loaded.available).toBe(true);expect(port.data.get(SAVE_KEY)).toBe('{"version":0}');});
- it('permits in-memory play when storage throws',()=>{const denied:StoragePort={getItem:()=>{throw Error('denied');},setItem:()=>{throw Error('quota');},removeItem:()=>{throw Error('denied');}};expect(loadGame(denied).available).toBe(false);expect(saveGame(solveCase(),denied)).toBe(false);expect(clearGame(denied)).toBe(false);});
- it('clears only CaseZero progress and caps notes',()=>{const port=memory();port.data.set('unrelated','keep');saveGame(solveCase(),port);expect(clearGame(port)).toBe(true);expect(port.data.has(SAVE_KEY)).toBe(false);expect(port.data.get('unrelated')).toBe('keep');expect(loadGame(port).state).toEqual(freshState());expect(notebook(freshState(),'x'.repeat(7000)).notes).toHaveLength(6000);});
+import { describe, it, expect } from "vitest";
+import {
+  parseSave,
+  loadGame,
+  saveGame,
+  clearGame,
+  SAVE_KEY,
+  type StoragePort,
+} from "../src/game/storage";
+import {
+  freshState,
+  startCase,
+  discover,
+  accuse,
+  notebook,
+} from "../src/game/engine";
+import { solveCase } from "./helpers";
+function memory(): StoragePort & { data: Map<string, string> } {
+  const data = new Map<string, string>();
+  return {
+    data,
+    getItem: (k) => data.get(k) ?? null,
+    setItem: (k, v) => {
+      data.set(k, v);
+    },
+    removeItem: (k) => {
+      data.delete(k);
+    },
+  };
+}
+describe("versioned progress storage", () => {
+  it("round trips a partial investigation including notebook text", () => {
+    const port = memory();
+    const state = notebook(
+      discover(startCase(freshState()), "E01"),
+      "Sensor and power: separate systems.",
+    );
+    expect(saveGame(state, port)).toBe(true);
+    expect(loadGame(port).state).toEqual(state);
+    expect(parseSave(JSON.stringify(state))).toEqual(state);
+  });
+  it("restores complete correct and incorrect submitted accounts", () => {
+    for (const suspect of ["S01", "S02"]) {
+      const final = accuse(solveCase(), {
+        suspect,
+        method: "M02",
+        motive: "R03",
+      });
+      expect(parseSave(JSON.stringify(final))).toEqual(final);
+    }
+  });
+  it("rejects malformed, outdated, foreign and invalidly shaped saves", () => {
+    const initial = freshState();
+    const bad: unknown[] = [
+      null,
+      [],
+      { ...initial, version: 0 },
+      { ...initial, caseId: "other" },
+      { ...initial, started: "yes" },
+      { ...initial, evidence: ["E01", "E01"] },
+      { ...initial, evidence: ["missing"] },
+      { ...initial, answers: [1] },
+      { ...initial, notes: 0 },
+      { ...initial, notes: "x".repeat(6001) },
+      { ...initial, accusation: {} },
+      {
+        ...initial,
+        accusation: { suspect: "missing", method: "M02", motive: "R03" },
+      },
+    ];
+    for (const value of bad)
+      expect(parseSave(JSON.stringify(value))).toBeNull();
+    expect(parseSave("{")).toBeNull();
+    expect(parseSave(" ".repeat(20001))).toBeNull();
+  });
+  it("rejects impossible progression dependencies, even when IDs exist", () => {
+    const s = startCase(freshState());
+    for (const state of [
+      { ...s, evidence: ["E02"] },
+      { ...s, evidence: ["E08"] },
+      { ...s, answers: ["T03"] },
+      { ...s, deductions: ["D01"] },
+      { ...s, evidence: ["E16"] },
+      { ...s, accusation: { suspect: "S01", method: "M02", motive: "R03" } },
+      { ...freshState(), evidence: ["E01"] },
+    ])
+      expect(parseSave(JSON.stringify(state))).toBeNull();
+  });
+  it("recovers invalid data without overwriting it before a new game starts", () => {
+    const port = memory();
+    port.data.set(SAVE_KEY, '{"version":0}');
+    const loaded = loadGame(port);
+    expect(loaded.state).toEqual(freshState());
+    expect(loaded.notice).toMatch(/unsupported version/);
+    expect(loaded.available).toBe(true);
+    expect(port.data.get(SAVE_KEY)).toBe('{"version":0}');
+  });
+  it("permits in-memory play when storage throws", () => {
+    const denied: StoragePort = {
+      getItem: () => {
+        throw Error("denied");
+      },
+      setItem: () => {
+        throw Error("quota");
+      },
+      removeItem: () => {
+        throw Error("denied");
+      },
+    };
+    expect(loadGame(denied).available).toBe(false);
+    expect(saveGame(solveCase(), denied)).toBe(false);
+    expect(clearGame(denied)).toBe(false);
+  });
+  it("clears only CaseZero progress and caps notes", () => {
+    const port = memory();
+    port.data.set("unrelated", "keep");
+    saveGame(solveCase(), port);
+    expect(clearGame(port)).toBe(true);
+    expect(port.data.has(SAVE_KEY)).toBe(false);
+    expect(port.data.get("unrelated")).toBe("keep");
+    expect(loadGame(port).state).toEqual(freshState());
+    expect(notebook(freshState(), "x".repeat(7000)).notes).toHaveLength(6000);
+  });
 });
