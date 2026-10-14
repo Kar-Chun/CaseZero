@@ -9,8 +9,8 @@ One complete deterministic museum mystery. Isolated repository on `develop/casez
 | 3 Evidence | Four locations, sixteen clues, locks, inventory, details and board; discovery tests | Complete |
 | 4 Interviews | Four profiles, evidence/deduction branches and conversation history; condition tests | Complete |
 | 5 Verdict | Four deductions, accusation prerequisites, two outcomes and replay; journey tests | Complete |
-| 6 Persistence/polish | Versioned validated save, Continue/New Game/Reset, notebook, hints, accessibility; storage tests | In progress |
-| 7 Final QA | Typecheck, lint, build, unit/component and supported browser tests; correct/incorrect journeys, refresh/reset/mobile; verification report | Pending |
+| 6 Persistence/polish | Versioned validated save, Continue/New Game/Reset, notebook, hints, accessibility; storage tests | Complete |
+| 7 Final QA | Typecheck, lint, build, unit/component and supported browser tests; correct/incorrect journeys, refresh/reset/mobile; verification report | In progress |
 
 ## Architecture and risks
 
@@ -35,6 +35,8 @@ M4: All 21 unit/component tests and all 6 desktop/mobile Playwright tests passed
 
 M5: All 32 unit/component and all 10 browser tests passed, plus typecheck/lint. Full desktop/mobile journeys collect all 16 clues, interview all suspects, test an invalid combination, establish four conclusions, recover the seal and reach the correct ending. Incorrect accusation retries and replay pass. Unit tests also reject correct-suspect/wrong-method and wrong-motive accounts.
 
+M6: Typecheck/lint and all 41 unit/component tests passed. All 16 desktop/mobile browser tests passed on a stable rerun, including ending refresh, partial restoration, notebook, New Game, Reset, unsupported saves, storage denial and two-tab synchronization. A prior browser run was interrupted by development hot reload during a replay; the unchanged stable rerun passed. Added focus handling, usable mobile evidence cards and an empty gallery display illustration.
+
 ## Handoff
 
-Next: persistence, notebook, reset and accessibility polish. No Git remote configured; prepare local review material when finished.
+Next: final accessibility/production QA, clean install, documentation and review preparation. Dependency audit found ESLint 10 incompatible peer ranges in the Next preset; replace that preset with compatible underlying plugins before verifying clean installation. No Git remote configured; prepare local review material when finished.

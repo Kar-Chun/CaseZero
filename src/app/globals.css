@@ -325,3 +325,31 @@ select{background:#17212a;border:1px solid #44505a;border-radius:2px;color:#c1c9
 .outcome .ending-actions{justify-content:center;}.outcome>.small-note{margin-top:20px;font-size:10px;}
 .tray-actions{flex-wrap:wrap;justify-content:flex-end;}.connection-tray{position:sticky;bottom:12px;z-index:5;box-shadow:0 10px 25px #0008;}
 @media(max-width:700px){.verdict-grid{grid-template-columns:1fr;gap:20px;}.proof-checklist,.verdict-form{padding:25px;}.proof-item{font-size:19px;}.verdict-form select{font-size:11px;padding:10px;}.verdict-intro h3{font-size:28px;}.outcome h2{font-size:51px;}.outcome-subtitle{font-size:20px;}.ending-story{padding:24px;}.ending-story p{font-size:13px;}.outcome>blockquote{font-size:20px;}.ending-actions .button{width:100%;}.tray-actions{justify-content:flex-start;gap:12px;}.tray-actions .button{min-width:0;font-size:9px;padding:10px 12px;}.tray-actions .text-link{margin-right:auto;}.connection-tray{bottom:8px;}.pinned-titles{gap:5px;}.pinned-titles span{font-size:10px;}}
+
+/* Notebook and device storage */
+.boot-screen{border:0;margin:0;padding:0;min-width:0;}
+.new-game-link{margin-left:18px;font-size:10px;color:var(--muted);}
+.save-notice{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 5%;background:#332c20;border-bottom:1px solid #7c6540;color:#dac6a4;}
+.save-notice p{font-size:12px;}.save-notice .icon-button{flex-shrink:0;}
+.save-indicator{display:flex;align-items:center;gap:7px;}.save-indicator svg{color:var(--gold);}.save-indicator.unavailable{color:#dfb482;}
+.notebook-grid{display:grid;grid-template-columns:1.55fr 1fr;gap:27px;align-items:start;}
+.notes-page{padding:27px;background:#1b242b;border:1px solid #6b5e46;}
+.notes-header{display:flex;align-items:center;justify-content:space-between;color:var(--gold);margin-bottom:25px;}
+.notes-label{display:block;font-family:var(--serif);font-size:24px;margin-bottom:15px;}
+.notes-page textarea{width:100%;min-height:275px;resize:vertical;background:repeating-linear-gradient(transparent,transparent 30px,#b7ad8b14 30px,#b7ad8b14 31px);font-family:var(--serif);font-size:16px;line-height:31px;color:#dbd5c8;border:0;padding:0 5px;}
+.notes-page textarea::placeholder{color:#899197;font-style:italic;}
+.notes-footer{display:flex;align-items:center;justify-content:space-between;gap:15px;font-size:8px;color:var(--muted);margin-top:20px;}
+.case-progress{padding:27px;border:1px solid var(--line);background:var(--surface);}
+.progress-stats{display:flex;justify-content:space-between;gap:13px;margin:25px 0;font-size:8px;color:var(--muted);}
+.progress-stats>span{display:flex;flex-direction:column;gap:7px;}.progress-stats strong{font-family:var(--serif);font-size:31px;font-weight:400;color:var(--ink);}.progress-stats small{font-family:Arial,Helvetica,sans-serif;font-size:10px;color:var(--gold);margin-left:5px;}
+.progress-track{height:3px;background:#2c3943;}.progress-track>span{display:block;height:100%;background:var(--gold);transition:width .3s;}
+.lead-hint{margin-top:25px;padding:20px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);}.lead-hint summary{font-family:var(--serif);font-size:21px;color:var(--gold);cursor:pointer;}.lead-hint p{margin-top:20px;font-size:12px;color:#b9c1c7;}.lead-hint .text-link{color:var(--gold);font-size:11px;margin-top:8px;}
+.case-progress>.small-note{margin-top:20px;font-size:10px;}
+.notebook-records{display:grid;grid-template-columns:1fr 1fr;gap:27px;margin-top:30px;align-items:start;}
+.record-list{padding:27px;border:1px solid var(--line);background:var(--surface);}.record-list>.eyebrow{margin-bottom:20px;}
+.record-button{display:flex;align-items:center;text-align:left;gap:15px;width:100%;padding:18px 0;border-bottom:1px solid var(--line);}.record-button:hover strong{color:var(--gold);}.record-button>span{font-size:8px;color:var(--gold);}.record-button div{flex:1;}.record-button strong{display:block;font-family:var(--serif);font-weight:400;font-size:20px;}.record-button small{display:block;font-size:8px;color:var(--muted);margin-top:5px;}.record-button svg{color:var(--muted);}
+.notebook-deduction{padding:19px 0;border-bottom:1px solid var(--line);}.notebook-deduction h3{display:flex;gap:12px;align-items:center;font-size:23px;}.notebook-deduction h3 svg{color:var(--gold);}.notebook-deduction p{font-size:11px;color:var(--muted);margin-top:12px;}
+.notebook-interviews{margin-top:25px;}.notebook-interviews summary{font-size:11px;color:var(--gold);cursor:pointer;}.notebook-interviews article{margin-top:22px;padding-left:15px;border-left:1px solid #6b593c;}.notebook-interviews h3{font-size:20px;margin:12px 0;}.notebook-interviews article>p:not(.eyebrow){font-size:12px;color:var(--muted);}
+.reset-area{display:flex;align-items:center;justify-content:space-between;gap:25px;border-top:1px solid var(--line);margin-top:35px;padding-top:27px;}.reset-area p{font-family:var(--serif);font-size:20px;color:var(--ink);}.reset-area span{display:block;font-size:10px;color:var(--muted);margin-top:6px;}
+@media(max-width:700px){.notebook-grid,.notebook-records{grid-template-columns:1fr;gap:22px;}.notes-page,.case-progress,.record-list{padding:23px;}.notes-page textarea{min-height:250px;}.notes-footer{font-size:8px;}.progress-stats{font-size:10px;}.progress-stats strong{font-size:36px;}.case-progress>.small-note{font-size:11px;}.notebook-deduction p{font-size:12px;}.record-button strong{font-size:22px;}.record-button small{font-size:10px;}.reset-area{flex-direction:column;align-items:flex-start;gap:20px;}.reset-area .button{width:100%;}.reset-area span{font-size:11px;line-height:1.8;}.new-game-link{display:block;margin:12px 0 0;}.save-notice p{font-size:11px;}.notebook-records{margin-top:22px;}}
+@media(max-width:480px){.evidence-grid{grid-template-columns:1fr;}.evidence-card{display:grid;grid-template-columns:95px minmax(0,1fr);}.evidence-card>.evidence-mark{height:100%;min-height:175px;}.evidence-card-copy{padding:18px;}.evidence-card h3{font-size:23px;min-height:0;}.evidence-card p{font-size:12px;min-height:0;margin-bottom:16px;}.evidence-card-label{font-size:6px;}.evidence-card-actions .text-link{font-size:10px;}.pin-button{font-size:10px;padding:8px;}.mark-code{right:8px;font-size:5px;}}
