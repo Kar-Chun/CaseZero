@@ -15,6 +15,8 @@ import {
   resumeInvestigation,
   notebook,
   analyze,
+  revealHint,
+  pinEvidence,
 } from "@/game/engine";
 import { useGame } from "@/game/useGame";
 import type { Lead } from "@/game/guidance";
@@ -101,6 +103,7 @@ function GameExperience({
     useGame(caseId);
   const [tab, setTab] = useState<Tab>("locations");
   const [location, setLocation] = useState<string | null>(null);
+  const [interviewPerson, setInterviewPerson] = useState(c.suspects[0].id);
   const [guide, setGuide] = useState(false);
   const [activityId, setActivityId] = useState<string | null>(null);
   const closeActivity = useCallback(() => setActivityId(null), [setActivityId]);
@@ -122,7 +125,7 @@ function GameExperience({
   const connect = (ids: string[]) => {
     const result = combine(state, ids);
     setState(result.state);
-    return result.message;
+    return result;
   };
   const replay = () => {
     reset();
@@ -146,7 +149,9 @@ function GameExperience({
     if (lead.kind === "location") {
       setLocation(lead.target ?? null);
       setTab("locations");
-    } else
+    } else {
+      if (lead.kind === "interview" && lead.target)
+        setInterviewPerson(lead.target);
       setTab(
         lead.kind === "interview"
           ? "interviews"
@@ -154,6 +159,7 @@ function GameExperience({
             ? "board"
             : "verdict",
       );
+    }
   };
   const effectiveScreen =
     screen === "investigation" && !state.started ? "home" : screen;
@@ -272,10 +278,15 @@ function GameExperience({
                 onInspect={setFile}
                 onExplore={() => setTab("locations")}
                 onConnect={connect}
+                onPinChange={(ids) => setState((s) => pinEvidence(s, ids))}
+                onRevealHint={(key) => setState((s) => revealHint(s, key))}
+                onFollow={follow}
               />
             ) : tab === "interviews" ? (
               <Interviews
                 state={state}
+                initialPerson={interviewPerson}
+                onPersonChange={setInterviewPerson}
                 onAnswer={(id) => setState((s) => answer(s, id))}
                 onFollow={(id) => {
                   setLocation(id);
@@ -291,6 +302,7 @@ function GameExperience({
                 onLead={follow}
                 onReset={() => setResetMode("reset")}
                 available={available}
+                onRevealHint={(key) => setState((s) => revealHint(s, key))}
               />
             ) : (
               <Verdict

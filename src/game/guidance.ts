@@ -8,7 +8,7 @@ export type Lead = {
   id?: string;
 };
 /** Follow unmet prerequisites instead of pointing players at a still-locked record. */
-export function nextLead(state: GameState): Lead {
+export function nextLead(state: GameState, goalId?: string): Lead {
   const c = getCase(state.caseId),
     visited = new Set<string>();
   const final: Lead = {
@@ -83,9 +83,67 @@ export function nextLead(state: GameState): Lead {
       }
     );
   }
+  if (goalId) {
+    const goal = c.deductions.find((d) => d.id === goalId);
+    if (goal)
+      return state.deductions.includes(goal.id)
+        ? {
+            kind: "board",
+            task: "verdict",
+            text: "This conclusion is already established. Review its facts on the board.",
+          }
+        : deduction(goal.id);
+  }
   for (const d of c.deductions)
     if (!state.deductions.includes(d.id)) return deduction(d.id);
   if (!state.evidence.includes(c.resolution.evidenceId))
     return clue(c.resolution.evidenceId);
   return final;
+}
+
+export function progressiveHint(
+  state: GameState,
+  goalId?: string,
+): { lead: Lead; key: string | null; stages: string[]; level: number } {
+  const c = getCase(state.caseId),
+    lead = nextLead(state, goalId);
+  if (!lead.id || !lead.task || lead.task === "verdict")
+    return { lead, key: null, stages: [], level: 0 };
+  const key = `${lead.task}:${lead.id}`;
+  let stages: string[];
+  switch (lead.task) {
+    case "evidence": {
+      const clue = c.evidence.find((e) => e.id === lead.id)!;
+      const room = c.locations.find((l) => l.id === clue.location)!;
+      stages = [
+        `Start with the physical records in ${room.name}. Establish a fact before judging a person.`,
+        `The ${clue.point.toLowerCase()} is worth examining for the next piece of the chain.`,
+        lead.text,
+      ];
+      break;
+    }
+    case "interview": {
+      const line = c.dialogue.find((t) => t.id === lead.id)!;
+      const person = c.suspects.find((s) => s.id === line.suspect)!;
+      stages = [
+        "Someone can explain one of the records you have already found. Return to the interview room.",
+        `Speak to ${person.name}. Your evidence makes a more precise question possible.`,
+        lead.text,
+      ];
+      break;
+    }
+    case "deduction": {
+      const deduction = c.deductions.find((d) => d.id === lead.id)!;
+      stages = [
+        `You have the recorded facts needed for “${deduction.title}”. Think about what they establish together.`,
+        deduction.prompt,
+        `Pin ${deduction.evidence.map((id) => `“${c.evidence.find((e) => e.id === id)!.title}”`).join(", ")} and test the connection.`,
+      ];
+      break;
+    }
+    case "inspection":
+      stages = c.inspections.find((i) => i.id === lead.id)!.hints;
+      break;
+  }
+  return { lead, key, stages, level: state.hints[key] ?? 0 };
 }

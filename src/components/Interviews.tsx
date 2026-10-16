@@ -8,15 +8,19 @@ export function Interviews({
   state,
   onAnswer,
   onFollow,
+  initialPerson,
+  onPersonChange,
 }: {
   state: GameState;
   onAnswer: (id: string) => void;
   onFollow: (id: string) => void;
+  initialPerson?: string;
+  onPersonChange?: (id: string) => void;
 }) {
   const { suspects, dialogue, evidence, locations, inspections } = getCase(
     state.caseId,
   );
-  const [person, setPerson] = useState(suspects[0].id);
+  const [person, setPerson] = useState(initialPerson ?? suspects[0].id);
   const [topic, setTopic] = useState<string | null>(null);
   const suspect = suspects.find((s) => s.id === person)!;
   const lines = dialogue.filter((t) => t.suspect === person);
@@ -66,6 +70,7 @@ export function Interviews({
               aria-pressed={person === s.id}
               onClick={() => {
                 setPerson(s.id);
+                onPersonChange?.(s.id);
                 setTopic(null);
               }}
             >

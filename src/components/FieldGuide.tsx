@@ -18,7 +18,7 @@ export function FieldGuide({ onClose }: { onClose: () => void }) {
           [
             "board",
             "Connect",
-            "Select three related evidence cards on the board and test a connection. Four questions guide the conclusions.",
+            "Focus a question and select its related evidence cards. Different connections can use two or three clues; four questions guide the case.",
           ],
           [
             "verdict",

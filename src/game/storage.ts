@@ -1,4 +1,4 @@
-import { getCase, isCaseId } from "./cases";
+import { getCase, isCaseId, isHintKey } from "./cases";
 import { freshState, meets, canAccuse, validAccusation } from "./engine";
 import type { GameState, Accusation, CaseId } from "./types";
 export const SAVE_KEY = "casezero:progress:v1";
@@ -74,16 +74,10 @@ export function parseSave(raw: string): GameState | null {
       !object(hints)
     )
       return null;
-    const hintKeys = [
-      ...evidence.map((e) => `evidence:${e.id}`),
-      ...dialogue.map((t) => `interview:${t.id}`),
-      ...deductions.map((d) => `deduction:${d.id}`),
-      ...inspections.map((i) => `inspection:${i.id}`),
-    ];
     if (
       Object.entries(hints).some(
         ([key, value]) =>
-          !hintKeys.includes(key) ||
+          !isHintKey(definition, key) ||
           typeof value !== "number" ||
           !Number.isInteger(value) ||
           value < 1 ||

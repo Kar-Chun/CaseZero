@@ -3042,3 +3042,137 @@ select {
     font-size: 13px;
   }
 }
+
+/* Optional assistance and persistent investigation threads */
+.hint-panel {
+  background: #111b24;
+  border: 1px solid #48544e;
+  padding: 22px;
+  margin: 22px 0;
+}
+.hint-panel summary {
+  font-size: 23px;
+}
+.hint-panel .hint-intro {
+  font-size: 12px;
+  color: var(--muted);
+}
+.hint-ladder {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.hint-ladder li {
+  display: flex;
+  gap: 15px;
+  align-items: flex-start;
+  border-left: 1px solid var(--gold-dim);
+  padding-left: 14px;
+}
+.hint-ladder li > span {
+  color: var(--gold);
+  font-family: Georgia, serif;
+  font-size: 19px;
+}
+.hint-ladder li p {
+  margin: 0;
+  color: #c0c9ce;
+  font-size: 13px;
+}
+.hint-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+.hint-actions .button {
+  font-size: 11px;
+}
+.hint-count {
+  font-size: 10px;
+  color: var(--muted);
+}
+.hint-panel > .text-link {
+  color: var(--gold);
+  margin-top: 17px;
+  font-size: 12px;
+}
+.focus-question {
+  margin-top: 15px;
+  font-size: 10px;
+  color: var(--gold);
+}
+.focused-question {
+  outline: 1px solid var(--gold);
+  outline-offset: 4px;
+}
+.question-focus {
+  padding: 22px;
+  background: #1a262e;
+  border-left: 2px solid var(--gold);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+.question-focus h3 {
+  font-size: 26px;
+  margin: 12px 0;
+}
+.question-focus p:not(.eyebrow) {
+  font-size: 12px;
+  color: var(--muted);
+}
+.question-focus > .text-link {
+  flex-shrink: 0;
+  color: var(--gold);
+}
+.inventory-search {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 10px;
+  color: var(--muted);
+  margin: 0 0 23px;
+}
+.inventory-search input {
+  padding: 14px 16px;
+  background: #16232d;
+  border: 1px solid #4d6270;
+  border-radius: 2px;
+  color: #f0eee7;
+  font-size: 13px;
+  width: 100%;
+}
+.inventory-search input::placeholder {
+  color: #9eacb7;
+}
+@media (max-width: 700px) {
+  .hint-panel {
+    padding: 20px;
+  }
+  .hint-actions .button {
+    width: 100%;
+  }
+  .hint-ladder li {
+    gap: 12px;
+    padding-left: 12px;
+  }
+  .question-focus {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .question-focus h3 {
+    font-size: 24px;
+  }
+  .focus-question {
+    font-size: 11px;
+    min-height: 34px;
+  }
+  .inventory-search {
+    font-size: 11px;
+  }
+}

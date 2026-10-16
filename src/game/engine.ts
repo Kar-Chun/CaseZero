@@ -1,5 +1,5 @@
 import { inspectionAnswers } from "./inspection-rules";
-import { getCase } from "./cases";
+import { getCase, isHintKey } from "./cases";
 import type { GameState, Requirement, Accusation, CaseId } from "./types";
 export const freshState = (caseId: CaseId = "quiet-hour"): GameState => ({
   version: 2,
@@ -175,4 +175,34 @@ export function analyze(
     activity.evidenceId,
   );
   return { state: next, message: activity.success, solved: true };
+}
+
+export function revealHint(state: GameState, key: string): GameState {
+  if (
+    !state.started ||
+    state.accusation ||
+    !isHintKey(getCase(state.caseId), key) ||
+    (state.hints[key] ?? 0) >= 3
+  )
+    return state;
+  return {
+    ...state,
+    hints: { ...state.hints, [key]: (state.hints[key] ?? 0) + 1 },
+  };
+}
+export function pinEvidence(state: GameState, ids: string[]): GameState {
+  const limit = Math.max(
+    0,
+    ...getCase(state.caseId).deductions.map((d) => d.evidence.length),
+  );
+  if (
+    !state.started ||
+    ids.length > limit ||
+    new Set(ids).size !== ids.length ||
+    !ids.every((id) => state.evidence.includes(id)) ||
+    (ids.length === state.pinned.length &&
+      ids.every((id, i) => id === state.pinned[i]))
+  )
+    return state;
+  return { ...state, pinned: [...ids] };
 }

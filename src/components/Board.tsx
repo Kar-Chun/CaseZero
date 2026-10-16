@@ -1,8 +1,10 @@
 "use client";
 import { useCallback, useState } from "react";
 import { getCase } from "@/game/cases";
-import { meets } from "@/game/engine";
+import { type CombinationResult, meets } from "@/game/engine";
 import type { GameState } from "@/game/types";
+import type { Lead } from "@/game/guidance";
+import { HintPanel } from "./HintPanel";
 import { Icon } from "./Icon";
 import { EvidenceMark, EvidenceFile } from "./EvidenceFile";
 import { Modal } from "./Modal";
@@ -11,32 +13,45 @@ export function Board({
   onInspect,
   onExplore,
   onConnect,
+  onPinChange,
+  onRevealHint,
+  onFollow,
 }: {
   state: GameState;
   onInspect: (id: string) => void;
   onExplore: () => void;
-  onConnect?: (ids: string[]) => string;
+  onConnect?: (ids: string[]) => CombinationResult;
+  onPinChange: (ids: string[]) => void;
+  onRevealHint: (key: string) => void;
+  onFollow: (lead: Lead) => void;
 }) {
   const { evidence, deductions, locations } = getCase(state.caseId);
   const maxPins = Math.max(...deductions.map((d) => d.evidence.length));
   const sizes = [...new Set(deductions.map((d) => d.evidence.length))].sort();
-  const [selected, setSelected] = useState<string[]>([]);
+  const selected = state.pinned;
+  const [focused, setFocused] = useState<string>("");
+  const focusedQuestion = deductions.find((d) => d.id === focused);
+  const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("all");
   const [compare, setCompare] = useState(false);
   const [message, setMessage] = useState("");
   const closeCompare = useCallback(() => setCompare(false), []);
   const collected = evidence.filter((e) => state.evidence.includes(e.id));
   const visible = collected.filter(
-    (e) => filter === "all" || e.location === filter,
+    (e) =>
+      (filter === "all" || e.location === filter) &&
+      `${e.title} ${e.summary} ${e.kind}`
+        .toLowerCase()
+        .includes(query.trim().toLowerCase()),
   );
   const toggle = (id: string) => {
     setMessage("");
-    setSelected((ids) =>
-      ids.includes(id)
-        ? ids.filter((v) => v !== id)
-        : ids.length < maxPins
-          ? [...ids, id]
-          : ids,
+    onPinChange(
+      selected.includes(id)
+        ? selected.filter((v) => v !== id)
+        : selected.length < maxPins
+          ? [...selected, id]
+          : selected,
     );
   };
   return (
@@ -70,9 +85,7 @@ export function Board({
             return (
               <article
                 key={d.id}
-                className={
-                  solved ? "deduction-node established" : "deduction-node"
-                }
+                className={`${solved ? "deduction-node established" : "deduction-node"} ${focused === d.id ? "focused-question" : ""}`}
               >
                 <span className="pin" />
                 <div className="deduction-label">
@@ -92,16 +105,48 @@ export function Board({
                       ? "Waiting for an earlier conclusion"
                       : `${d.evidence.filter((id) => state.evidence.includes(id)).length} / ${d.evidence.length} related clues found`}
                 </div>
+                {!solved && (
+                  <button
+                    className="text-link focus-question"
+                    aria-label={`Focus ${d.title}`}
+                    aria-pressed={focused === d.id}
+                    onClick={() => setFocused(d.id)}
+                  >
+                    Work on this question
+                    <Icon name="arrow" size={14} />
+                  </button>
+                )}
               </article>
             );
           })}
         </div>
       </div>
+      {focusedQuestion && (
+        <div className="question-focus">
+          <div>
+            <p className="eyebrow">WORKING QUESTION</p>
+            <h3>{focusedQuestion.title}</h3>
+            <p>
+              {focusedQuestion.prompt} This question uses{" "}
+              {focusedQuestion.evidence.length} clues.
+            </p>
+          </div>
+          <button className="text-link" onClick={() => setFocused("")}>
+            Show all questions
+          </button>
+        </div>
+      )}
+      <HintPanel
+        state={state}
+        goalId={focused || undefined}
+        onReveal={onRevealHint}
+        onFollow={onFollow}
+      />
       {collected.length === 0 ? (
         <div className="empty-state">
           <Icon name="search" size={38} />
           <h3>The first thread begins with a clue.</h3>
-          <p>Examine the museum to begin filling your evidence inventory.</p>
+          <p>Examine the locations to begin filling your evidence inventory.</p>
           <button className="button primary" onClick={onExplore}>
             Explore locations
             <Icon name="arrow" />
@@ -130,6 +175,15 @@ export function Board({
               </select>
             </label>
           </div>
+          <label className="inventory-search">
+            Search collected evidence
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search titles, facts or evidence types…"
+            />
+          </label>
           <div className="evidence-grid">
             {visible.map((e) => (
               <article
@@ -182,8 +236,9 @@ export function Board({
           </div>
           {visible.length === 0 && (
             <p className="filter-empty">
-              No evidence from this location yet. Explore it, or choose another
-              filter.
+              {query.trim()
+                ? "No evidence matches this search. Try a different term or location."
+                : "No evidence from this location yet. Explore it, or choose another filter."}
             </p>
           )}
           <div
@@ -210,7 +265,7 @@ export function Board({
                 className="text-link"
                 disabled={!selected.length}
                 onClick={() => {
-                  setSelected([]);
+                  onPinChange([]);
                   setMessage("");
                 }}
               >
@@ -231,8 +286,9 @@ export function Board({
                     !sizes.includes(selected.length) || !!state.accusation
                   }
                   onClick={() => {
-                    setMessage(onConnect(selected));
-                    setSelected([]);
+                    const result = onConnect(selected);
+                    setMessage(result.message);
+                    if (result.deductionId) onPinChange([]);
                   }}
                 >
                   Test connection

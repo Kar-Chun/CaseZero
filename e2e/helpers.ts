@@ -22,6 +22,8 @@ export async function search(page: Page, point: string, title: string) {
 }
 export async function connect(page: Page, titles: string[]) {
   await navigate(page, "Evidence board");
+  const clear = page.getByRole("button", { name: "Clear", exact: true });
+  if (await clear.isEnabled()) await clear.click();
   for (const title of titles)
     await page
       .getByRole("button", { name: `Pin ${title}`, exact: true })

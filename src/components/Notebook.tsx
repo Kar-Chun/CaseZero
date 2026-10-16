@@ -1,7 +1,8 @@
 "use client";
 import { getCase } from "@/game/cases";
-import { nextLead, type Lead } from "@/game/guidance";
+import { type Lead } from "@/game/guidance";
 import type { GameState } from "@/game/types";
+import { HintPanel } from "./HintPanel";
 import { Icon } from "./Icon";
 export function Notebook({
   state,
@@ -11,6 +12,7 @@ export function Notebook({
   onLead,
   onReset,
   available,
+  onRevealHint,
 }: {
   state: GameState;
   onNotes: (text: string) => void;
@@ -19,11 +21,11 @@ export function Notebook({
   onLead: (lead: Lead) => void;
   onReset: () => void;
   available: boolean;
+  onRevealHint: (key: string) => void;
 }) {
   const { evidence, deductions, dialogue, suspects, locations } = getCase(
     state.caseId,
   );
-  const lead = nextLead(state);
   const interviewed = suspects.filter((s) =>
     dialogue.some((t) => t.suspect === s.id && state.answers.includes(t.id)),
   ).length;
@@ -108,14 +110,7 @@ export function Notebook({
               }}
             />
           </div>
-          <details className="lead-hint">
-            <summary>Need a lead?</summary>
-            <p>{lead.text}</p>
-            <button className="text-link" onClick={() => onLead(lead)}>
-              Follow this lead
-              <Icon name="arrow" size={15} />
-            </button>
-          </details>
+          <HintPanel state={state} onReveal={onRevealHint} onFollow={onLead} />
           <p className="small-note">
             Motive is a starting point. Opportunity, method and the object’s
             route are what make a case.
