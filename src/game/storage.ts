@@ -41,7 +41,7 @@ function ids(value: unknown, known: { id: string }[]): value is string[] {
 }
 export function parseSave(raw: string): GameState | null {
   try {
-    if (raw.length > 20000) return null;
+    if (raw.length > 64 * 1024) return null;
     const s: unknown = JSON.parse(raw);
     if (
       !object(s) ||

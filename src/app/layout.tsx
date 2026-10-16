@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 export const metadata: Metadata = {
-  title: "CaseZero — The Quiet Hour",
+  title: "CaseZero — Follow the evidence",
   description:
-    "An artifact vanishes. Four stories remain. A cinematic detective mystery inside the Halcyon Museum.",
+    "Two original detective mysteries. Explore atmospheric locations, question suspects and follow the evidence to a supported conclusion.",
 };
 export default function RootLayout({
   children,

@@ -173,7 +173,7 @@ function GameExperience({
       ?.querySelector<HTMLElement>("h1,h2");
     heading?.setAttribute("tabindex", "-1");
     heading?.focus({ preventScroll: true });
-  }, [screen, tab, location]);
+  }, [effectiveScreen, tab, location]);
   const begin = () => {
     setState((s) => startCase(s));
     navigateScreen("investigation");
@@ -302,6 +302,9 @@ function GameExperience({
                 onLead={follow}
                 onReset={() => setResetMode("reset")}
                 available={available}
+                onImport={(incoming) => {
+                  if (incoming.caseId === caseId) setState(incoming);
+                }}
                 onRevealHint={(key) => setState((s) => revealHint(s, key))}
               />
             ) : (

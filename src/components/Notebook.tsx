@@ -2,6 +2,7 @@
 import { getCase } from "@/game/cases";
 import { type Lead } from "@/game/guidance";
 import type { GameState } from "@/game/types";
+import { SaveTools } from "./SaveTools";
 import { HintPanel } from "./HintPanel";
 import { Icon } from "./Icon";
 export function Notebook({
@@ -13,6 +14,7 @@ export function Notebook({
   onReset,
   available,
   onRevealHint,
+  onImport,
 }: {
   state: GameState;
   onNotes: (text: string) => void;
@@ -22,6 +24,7 @@ export function Notebook({
   onReset: () => void;
   available: boolean;
   onRevealHint: (key: string) => void;
+  onImport: (state: GameState) => void;
 }) {
   const { evidence, deductions, dialogue, suspects, locations } = getCase(
     state.caseId,
@@ -184,6 +187,7 @@ export function Notebook({
           </details>
         </article>
       </div>
+      <SaveTools state={state} onImport={onImport} />
       <div className="reset-area">
         <div>
           <p>Start with a clean case file.</p>

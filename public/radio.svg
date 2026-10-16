@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="950" viewBox="0 0 1400 950">
+<defs><linearGradient id="room" x2="1" y2="1"><stop stop-color="#1b3946"/><stop offset="1" stop-color="#07111c"/></linearGradient><linearGradient id="sea" x2="0" y2="1"><stop stop-color="#1d3a4d"/><stop offset="1" stop-color="#101b2b"/></linearGradient><linearGradient id="desk" x2="0" y2="1"><stop stop-color="#42515a"/><stop offset="1" stop-color="#15232f"/></linearGradient><radialGradient id="lamp"><stop stop-color="#e4c587" stop-opacity=".18"/><stop offset="1" stop-color="#e4c587" stop-opacity="0"/></radialGradient><filter id="grain"><feTurbulence baseFrequency=".6" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope=".045"/></feComponentTransfer><feBlend in="SourceGraphic" mode="soft-light"/></filter></defs>
+<g filter="url(#grain)"><rect width="1400" height="950" fill="url(#room)"/><path d="M0 0 230 140H1180L1400 0M230 140V650M1180 140V650" fill="none" stroke="#53616b" stroke-opacity=".4" stroke-width="3"/>
+<path d="M350 220h700v385H350Z" fill="url(#sea)" stroke="#547283" stroke-width="8"/><path d="M356 493h688M590 225v375M819 225v375" stroke="#344f61" stroke-width="7"/>
+<path d="m360 460 79-26 92 35 87-13 88 17 94-19 131 19 105-13v140H356Z" fill="#102632"/>
+<path d="M360 523q100-20 190 0t190 0 190 0 113 0M360 559q170-15 330 0t353 0" fill="none" stroke="#8e9ca0" stroke-opacity=".2" stroke-width="2"/>
+<path d="M945 461V343h-18v118M912 345h48l-13-16h-22Z" fill="#7c8585" opacity=".5"/><path d="M936 348 670 423l252-50Z" fill="#d1bc83" opacity=".07"/>
+<g stroke="#a8c1cc" stroke-opacity=".13"> <path d="m400 265-24 86m112-92-38 142m100-166-42 155m140-155-32 117m175-107-50 183m123-183-20 81m104-74-46 170"/></g>
+<path d="m120 754 590-139 580 139-551 182Z" fill="#0a141f" stroke="#65717a" stroke-opacity=".5"/><path d="m175 727 529-105 513 99-491 153Z" fill="url(#desk)" stroke="#697279"/>
+<path d="m245 730 245-48 203 38-239 62Z" fill="#11222c" stroke="#7e8a8b"/><path d="m292 720 152-30 112 22-151 37Z" fill="#233d48"/>
+<path d="m317 722 24-7 9 8 9-21 13 23 13-32 12 26 12-17 12 9 42-8" fill="none" stroke="#cab077" stroke-width="2"/>
+<path d="m733 656 166-32 168 31-167 38Z" fill="#121f2b" stroke="#62727c"/><path d="m750 659 146-28 149 28" fill="none" stroke="#7d8d91"/>
+<path d="M920 629V503l-103-57-95 30" fill="none" stroke="#697680" stroke-width="9"/><path d="m735 453 12 39-88 22-12-39Z" fill="#aba48d" stroke="#d0bd91"/><path d="m657 479 78-21m-75 29 78-21m-76 29 79-21" stroke="#485a66" stroke-width="2"/>
+<path d="m585 779 134-32 104 27-132 38Z" fill="#c5c0a4" opacity=".6"/><path d="m612 779 82-19m-67 25 82-19m-67 25 44-10" stroke="#425663" stroke-width="3"/>
+<g fill="#b9b19a" opacity=".7"><path d="m813 729 11-3 3 29-11 4ZM849 719l11-3 3 29-11 4ZM885 709l11-3 3 29-11 4ZM921 699l11-3 3 29-11 4Z"/></g>
+<path d="M120 202h132v66H120Z" fill="#0d1c29" stroke="#9b8a67"/><text x="186" y="244" font-family="monospace" font-size="27" fill="#c7a06c" text-anchor="middle" letter-spacing="3">ON AIR</text>
+<path d="M1110 950V625l-68-85h-30" stroke="#9e9172" fill="none" stroke-width="7"/><path d="m999 530 67 11-18 32-63-12Z" fill="#7d806e"/><ellipse cx="939" cy="670" rx="300" ry="200" fill="url(#lamp)"/>
+<path d="M0 950V810l230-160M1400 950V810l-220-160" fill="#08121c" stroke="#4b5f6b" stroke-opacity=".4"/>
+</g></svg>

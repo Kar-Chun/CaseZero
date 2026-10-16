@@ -57,8 +57,8 @@ Preserve the original case's IDs, story, outcomes, selectors where practical and
 | P2 Case library and independent progress | Data-driven briefing/UI, per-case save/reset/replay, case progress cards and navigation; original experience works; isolation and switching tests pass                                                                                                  | Complete |
 | P3 Dead Air and interactive analysis     | Complete new radio-station case with 4 suspects, 4 locations, 14 clues, two evidence-analysis activities, variable-size deductions and coherent outcomes; reference/reachability, dialogue and full-path tests pass                                     | Complete |
 | P4 Hints and investigation flow          | Optional three-stage hints for the current obstacle, saved independently; persistent pins, targeted deduction work, useful failed-thread feedback and mobile refinement; focused regression tests pass                                                  | Complete |
-| P5 Portable saves and finish             | Validated export/import with review, case mismatch protection and no effect on other cases; case-specific artwork and updated concise instructions; backup and UI tests pass                                                                            | In progress |
-| P6 Complete QA and handoff               | Both cases complete via UI, incorrect verdicts/retry, independent refresh/reset/replay, v1 migration, hint/analysis/backup flows, desktop/mobile/keyboard/axe; clean install, typecheck/lint/unit/build/E2E; commit and update verification/review docs | Pending     |
+| P5 Portable saves and finish             | Validated export/import with review, case mismatch protection and no effect on other cases; case-specific artwork and updated concise instructions; backup and UI tests pass                                                                            | Complete |
+| P6 Complete QA and handoff               | Both cases complete via UI, incorrect verdicts/retry, independent refresh/reset/replay, v1 migration, hint/analysis/backup flows, desktop/mobile/keyboard/axe; clean install, typecheck/lint/unit/build/E2E; commit and update verification/review docs | In progress |
 
 ## Design and risks
 
@@ -79,6 +79,8 @@ P3 complete: TypeScript, lint, production build and all 64 unit/component tests 
 
 P4 complete: Typecheck, lint, production build, all 71 unit/component tests and all 32 production desktop/mobile browser tests passed. Added three-stage optional hints with independent saved progress and full guided-path reachability tests. Board pins survive navigation/refresh, failed threads remain selected, and question focus/search work. Hint follow actions select the relevant interview subject.
 
+P5 complete: Typecheck, lint, production build, all 79 unit/component tests and all 36 production desktop/mobile browser tests passed. Actual JSON downloads and file uploads restore notes, hints and pins after review; invalid, oversized, unsupported and foreign-case imports leave progress unchanged. Fixed valid long-note serialization, stale file reads and hidden/dynamic modal focus. Added radio artwork and accurate closed/review-required case badges.
+
 ## Phase 2 handoff
 
-Next: P5 validated save export/import and final presentation refinements. Continue on develop/casezero; no deployment or external writes.
+Next: P6 final accessibility, migration and cross-case browser checks, clean install and comprehensive verification. Continue on develop/casezero; no deployment or external writes.

@@ -15,7 +15,7 @@ export async function investigateRadio(page: Page) {
   ).toBeVisible();
   await visit(page, "Control Room");
   await search(page, "Queue printer", "The queue print");
-  await search(page, "Calibration card", "Two clocks at midnight");
+  await search(page, "Calibration card", "Two clocks, one pulse");
   await page
     .getByRole("button", { name: "Search Clock comparison desk" })
     .click();

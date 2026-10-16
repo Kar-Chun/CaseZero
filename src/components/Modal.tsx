@@ -21,15 +21,41 @@ export function Modal({
         onClose();
       }
       if (e.key === "Tab") {
-        const list = ref.current?.querySelectorAll<HTMLElement>(
-          'button:not(:disabled),a[href],input,select,textarea,[tabindex="0"]',
-        );
+        const root = ref.current;
+        const list = Array.from(
+          root?.querySelectorAll<HTMLElement>(
+            'button:not(:disabled),a[href],input:not(:disabled),select:not(:disabled),textarea:not(:disabled),summary,[tabindex="0"]',
+          ) ?? [],
+        ).filter((el) => {
+          if (el.closest("[hidden],[inert]")) return false;
+          for (
+            let node: HTMLElement | null = el;
+            node && node !== root;
+            node = node.parentElement
+          ) {
+            const style = getComputedStyle(node);
+            if (style.display === "none" || style.visibility === "hidden")
+              return false;
+            if (
+              node.tagName === "DETAILS" &&
+              !node.hasAttribute("open") &&
+              !node.querySelector(":scope > summary")?.contains(el)
+            )
+              return false;
+          }
+          return true;
+        });
         if (!list?.length) {
           e.preventDefault();
           return;
         }
         const first = list[0],
           last = list[list.length - 1];
+        if (!root?.contains(document.activeElement)) {
+          e.preventDefault();
+          (e.shiftKey ? last : first).focus();
+          return;
+        }
         if (
           e.shiftKey &&
           (document.activeElement === first ||

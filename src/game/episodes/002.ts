@@ -56,7 +56,7 @@ export const deadAir: CaseDefinition = {
       name: "Equipment Room",
       subtitle: "The route behind the voice",
       description:
-        "Patch cables cross the rack like a second nervous system. Original cartridges have been isolated where they were found; nothing leaves the room.",
+        "Patch cables cross the rack like a second nervous system. Original cartridges have been isolated where they were found; nothing moves without witnessed authority.",
       atmosphere: "Warm circuitry. A reel slowing to a stop.",
       icon: "rack",
     },
@@ -97,7 +97,7 @@ export const deadAir: CaseDefinition = {
       id: "E22",
       location: "L11",
       point: "Calibration card",
-      title: "Two clocks at midnight",
+      title: "Two clocks, one pulse",
       kind: "Calibration record",
       summary: "A network time pulse reveals a seven-minute discrepancy.",
       detail:
@@ -253,7 +253,7 @@ export const deadAir: CaseDefinition = {
       kind: "Secured recording",
       summary: "The original cartridge and its splice are secured as evidence.",
       detail:
-        "With method, timing, identity and benefit established, the harbor investigator authorizes a witnessed forensic capture of U4. The cartridge’s internal serial matches the tray photographs and custody receipt; its spliced warning matches the transmitted recording. You seal the original medium, retain an unaltered capture and record every handler. The case no longer rests on a transcript alone.",
+        "With method, timing, identity and benefit established, the harbor investigator authorizes a witnessed transfer of the photographed tray from the equipment room to the newsroom custody station, followed by a forensic capture of U4. The cartridge’s internal serial matches the tray photographs and custody receipt; its spliced warning matches the transmitted recording. You seal the original medium, retain an unaltered capture and record every handler. The case no longer rests on a transcript alone.",
       requires: { deductions: ["D11", "D12", "D13", "D14"] },
       lockHint:
         "Establish all four conclusions before securing the original recording for the final case.",

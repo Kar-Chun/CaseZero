@@ -1,3 +1,4 @@
+import { useRef, useEffect } from "react";
 import { evaluate } from "@/game/outcome";
 import { getCase } from "@/game/cases";
 import type { Accusation, CaseId } from "@/game/types";
@@ -15,6 +16,10 @@ export default function Outcome({
   onReplay: () => void;
   onReview: () => void;
 }) {
+  const heading = useRef<HTMLHeadingElement>(null);
+  useEffect(() => {
+    heading.current?.focus();
+  }, []);
   const { suspects, methods, motives, number } = getCase(caseId);
   const result = evaluate(accusation, caseId);
   return (
@@ -27,7 +32,9 @@ export default function Outcome({
       <p className="eyebrow">
         CASE {number} / {result.correct ? "RESOLVED" : "REVIEW REQUIRED"}
       </p>
-      <h2>{result.title}</h2>
+      <h2 ref={heading} tabIndex={-1}>
+        {result.title}
+      </h2>
       <p className="outcome-subtitle">{result.subtitle}</p>
       <div className="ending-story">
         {result.paragraphs.map((p) => (

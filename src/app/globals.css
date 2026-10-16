@@ -3176,3 +3176,144 @@ select {
     font-size: 11px;
   }
 }
+
+/* Case backup and review */
+.save-tools {
+  margin-top: 32px;
+  border: 1px solid #4b5c65;
+  background: #14222d;
+  padding: 26px;
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  justify-content: space-between;
+}
+.save-tools h3 {
+  font-size: 27px;
+  margin: 10px 0;
+}
+.save-tools p:not(.eyebrow) {
+  font-size: 12px;
+  color: var(--muted);
+  max-width: 520px;
+}
+.save-tools-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.save-tools-actions a {
+  text-decoration: none;
+}
+.save-tools-actions .button {
+  font-size: 11px;
+}
+.backup-file-label {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  font-size: 13px;
+  color: var(--gold);
+  margin: 25px 0 20px;
+}
+.backup-file-label input {
+  background: #182b38;
+  border: 1px solid #5d7583;
+  padding: 14px;
+  color: #c6cdd3;
+  max-width: 100%;
+  font-size: 12px;
+}
+.backup-file-label input::file-selector-button {
+  background: #d1b177;
+  color: #121920;
+  border: 0;
+  padding: 8px 12px;
+  margin-right: 12px;
+  font: inherit;
+  cursor: pointer;
+}
+.paste-backup {
+  margin: 23px 0;
+}
+.paste-backup summary {
+  font-size: 12px;
+  color: var(--gold);
+  cursor: pointer;
+}
+.paste-backup label {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.paste-backup textarea {
+  min-height: 180px;
+  resize: vertical;
+  background: #0b1924;
+  border: 1px solid #536c7e;
+  color: #c4d0d7;
+  font-family: monospace;
+  font-size: 11px;
+  width: 100%;
+  padding: 14px;
+  word-break: break-all;
+}
+.backup-error {
+  font-size: 12px;
+  color: #e4be88;
+  margin: 20px 0;
+}
+.backup-review {
+  margin: 20px 0;
+  border-top: 1px solid var(--line);
+}
+.backup-review p {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 12px;
+  color: var(--muted);
+}
+.backup-review strong {
+  font-weight: 400;
+  color: var(--gold);
+  text-align: right;
+}
+.selection-radio .selection-art {
+  background:
+    linear-gradient(0deg, #0c1118aa, transparent 60%),
+    url("/radio.svg") center/cover no-repeat;
+}
+.selection-radio .selection-art::after {
+  content: none;
+}
+@media (max-width: 700px) {
+  .save-tools {
+    padding: 23px;
+    align-items: stretch;
+    flex-direction: column;
+    gap: 23px;
+  }
+  .save-tools-actions {
+    width: 100%;
+  }
+  .save-tools h3 {
+    font-size: 26px;
+  }
+  .backup-file-label input {
+    padding: 12px;
+    font-size: 11px;
+  }
+  .backup-review p {
+    font-size: 13px;
+  }
+  .paste-backup textarea {
+    font-size: 12px;
+  }
+}

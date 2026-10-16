@@ -28,6 +28,12 @@ test("Dead Air plays through both analyses, mixed-size deductions and a restored
   await expect(
     page.getByRole("heading", { name: "Case closed." }),
   ).toBeVisible();
+  await navigate(page, "Case files");
+  await expect(
+    page
+      .getByRole("article", { name: "Dead Air case file" })
+      .getByText("CASE CLOSED", { exact: true }),
+  ).toBeVisible();
   expect(errors).toEqual([]);
 });
 test("Dead Air unsupported verdict preserves all findings for a correct retry", async ({
@@ -39,6 +45,13 @@ test("Dead Air unsupported verdict preserves all findings for a correct retry", 
   await expect(
     page.getByRole("heading", { name: "Not yet proven." }),
   ).toBeVisible();
+  await navigate(page, "Case files");
+  await expect(
+    page
+      .getByRole("article", { name: "Dead Air case file" })
+      .getByText("REVIEW REQUIRED", { exact: true }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Continue Dead Air" }).click();
   await page.getByRole("button", { name: "Return to investigation" }).click();
   await navigate(page, "Accusation");
   await submitRadio(page);

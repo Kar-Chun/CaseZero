@@ -1,6 +1,8 @@
+import { lazy, Suspense } from "react";
 import { cases } from "@/game/cases";
 import { Icon } from "./Icon";
 import type { IntroProps } from "./Intro";
+const CaseStatus = lazy(() => import("./CaseStatus"));
 export function CaseSelection({
   setScreen,
   progress = [],
@@ -42,11 +44,15 @@ export function CaseSelection({
           >
             <div className="selection-art">
               <span className="tag">
-                {saved?.accusation
-                  ? "VERDICT SUBMITTED"
-                  : started
-                    ? "INVESTIGATION IN PROGRESS"
-                    : "AVAILABLE TO INVESTIGATE"}
+                {saved?.accusation ? (
+                  <Suspense fallback="VERDICT SUBMITTED">
+                    <CaseStatus caseId={c.id} accusation={saved.accusation} />
+                  </Suspense>
+                ) : started ? (
+                  "INVESTIGATION IN PROGRESS"
+                ) : (
+                  "AVAILABLE TO INVESTIGATE"
+                )}
               </span>
               <span className="selection-number">{c.number.slice(1)}</span>
             </div>

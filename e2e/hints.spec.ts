@@ -79,7 +79,7 @@ test("analysis hints explain the clock without an immediate answer", async ({
   await beginRadio(page);
   await visit(page, "Control Room");
   await search(page, "Queue printer", "The queue print");
-  await search(page, "Calibration card", "Two clocks at midnight");
+  await search(page, "Calibration card", "Two clocks, one pulse");
   await search(page, "Broadcast transcript", "The false warning");
   await visit(page, "Equipment Room");
   await search(page, "Reserve input rack", "The selected input");
