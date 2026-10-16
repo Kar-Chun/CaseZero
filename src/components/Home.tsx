@@ -1,10 +1,12 @@
+import { cases } from "@/game/cases";
 import { Icon } from "./Icon";
 import type { IntroProps } from "./Intro";
 export function Home({
   setScreen,
   hasProgress,
   onNew,
-}: Pick<IntroProps, "setScreen" | "hasProgress" | "onNew">) {
+  caseData,
+}: Pick<IntroProps, "setScreen" | "hasProgress" | "onNew" | "caseData">) {
   return (
     <>
       <main id="main-content" tabIndex={-1}>
@@ -34,6 +36,11 @@ export function Home({
               {hasProgress ? "Continue investigation" : "Explore the case"}
               <Icon name="arrow" />
             </button>
+            {hasProgress && (
+              <p className="active-case-caption">
+                Continuing: {caseData?.title ?? "The Quiet Hour"}
+              </p>
+            )}
             {hasProgress && (
               <button className="text-link new-game-link" onClick={onNew}>
                 New game
@@ -86,6 +93,25 @@ export function Home({
             <Icon name="arrow" size={18} />
           </button>
         </section>
+        {cases.length > 1 && (
+          <section className="library-teaser">
+            <div>
+              <p className="eyebrow">THE ARCHIVE IS GROWING</p>
+              <h2>A different place. A different kind of silence.</h2>
+              <p>
+                {cases.length} complete mysteries. Follow a new trail when you
+                are ready.
+              </p>
+            </div>
+            <button
+              className="button outline"
+              onClick={() => setScreen("cases")}
+            >
+              Browse all cases
+              <Icon name="arrow" />
+            </button>
+          </section>
+        )}
       </main>
       <footer className="site-footer">
         <span>CASEZERO — LOOK A LITTLE CLOSER.</span>

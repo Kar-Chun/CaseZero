@@ -1,19 +1,22 @@
 import { evaluate } from "@/game/outcome";
-import { suspects, methods, motives } from "@/game/content";
-import type { Accusation } from "@/game/types";
+import { getCase } from "@/game/cases";
+import type { Accusation, CaseId } from "@/game/types";
 import { Icon } from "./Icon";
 export default function Outcome({
   accusation,
+  caseId = "quiet-hour",
   onRetry,
   onReplay,
   onReview,
 }: {
   accusation: Accusation;
+  caseId?: CaseId;
   onRetry: () => void;
   onReplay: () => void;
   onReview: () => void;
 }) {
-  const result = evaluate(accusation);
+  const { suspects, methods, motives, number } = getCase(caseId);
+  const result = evaluate(accusation, caseId);
   return (
     <section
       className={`outcome ${result.correct ? "outcome-closed" : "outcome-open"}`}
@@ -22,7 +25,7 @@ export default function Outcome({
         <Icon name={result.correct ? "check" : "verdict"} size={38} />
       </div>
       <p className="eyebrow">
-        CASE 001 / {result.correct ? "RESOLVED" : "REVIEW REQUIRED"}
+        CASE {number} / {result.correct ? "RESOLVED" : "REVIEW REQUIRED"}
       </p>
       <h2>{result.title}</h2>
       <p className="outcome-subtitle">{result.subtitle}</p>

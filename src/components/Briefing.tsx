@@ -1,10 +1,12 @@
+import { getCase } from "@/game/cases";
 import { Icon } from "./Icon";
 import type { IntroProps } from "./Intro";
 export function Briefing({
   setScreen,
   hasProgress,
   onBegin,
-}: Pick<IntroProps, "setScreen" | "hasProgress" | "onBegin">) {
+  caseData = getCase(),
+}: Pick<IntroProps, "setScreen" | "hasProgress" | "onBegin" | "caseData">) {
   return (
     <main id="main-content" tabIndex={-1} className="page-content briefing">
       <button
@@ -16,9 +18,9 @@ export function Briefing({
       </button>
       <div className="briefing-header">
         <div>
-          <p className="eyebrow">CONFIDENTIAL / CASE 001</p>
-          <h1>The Quiet Hour</h1>
-          <p className="lede">The Halcyon Museum · 14 November 2025 · 21:25</p>
+          <p className="eyebrow">CONFIDENTIAL / CASE {caseData.number}</p>
+          <h1>{caseData.title}</h1>
+          <p className="lede">{caseData.setting}</p>
         </div>
         <span className="file-stamp">
           OPEN
@@ -29,40 +31,18 @@ export function Briefing({
       <div className="briefing-grid">
         <article className="briefing-paper">
           <p className="eyebrow">YOUR BRIEFING</p>
-          <h2>
-            History has a way
-            <br />
-            of going missing.
-          </h2>
-          <p>
-            At 21:18, the host of Halcyon’s private patron evening found the
-            Asterion Seal’s display empty. No broken glass. No alarm. No one
-            admitting they saw a thing.
-          </p>
-          <p>
-            The ninth-century seal is the centerpiece of the museum’s new
-            collection. Its disappearance could destroy the institution’s
-            reputation—and the careers of those gathered here tonight.
-          </p>
-          <p>
-            The exits were sealed immediately. Four people had reason to want
-            the seal gone. You have unrestricted access to the gallery, security
-            office, conservation workshop and archive.
-          </p>
+          <h2>{caseData.briefing.heading}</h2>
+          {caseData.briefing.paragraphs.map((p) => (
+            <p key={p}>{p}</p>
+          ))}
           <blockquote>
-            “Find the object. Establish the facts.
-            <br />
-            Let the evidence tell you the rest.”<cite>— Museum liaison</cite>
+            “{caseData.briefing.quote}”
+            <cite>— {caseData.briefing.attribution}</cite>
           </blockquote>
         </article>
         <aside className="objectives">
           <p className="eyebrow">YOUR OBJECTIVES</p>
-          {[
-            "Examine the museum and collect evidence",
-            "Interview all four persons of interest",
-            "Connect clues into four conclusions",
-            "Recover the seal and submit your case",
-          ].map((v, i) => (
+          {caseData.briefing.objectives.map((v, i) => (
             <div className="objective" key={v}>
               <span>0{i + 1}</span>
               <p>{v}</p>
@@ -76,7 +56,7 @@ export function Briefing({
             </p>
           </div>
           <button className="button primary full-width" onClick={onBegin}>
-            {hasProgress ? "Return to investigation" : "Enter the museum"}
+            {hasProgress ? "Return to investigation" : caseData.enterLabel}
             <Icon name="arrow" />
           </button>
         </aside>

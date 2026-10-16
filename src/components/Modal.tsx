@@ -72,7 +72,7 @@ export function Modal({
         ref={ref}
       >
         <div className="modal-heading">
-          <p className="eyebrow">CaseZero / Case file 001</p>
+          <p className="eyebrow">CaseZero / Confidential case file</p>
           <button
             className="icon-button"
             aria-label="Close dialog"

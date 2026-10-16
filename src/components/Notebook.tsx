@@ -1,11 +1,5 @@
 "use client";
-import {
-  evidence,
-  deductions,
-  dialogue,
-  suspects,
-  locations,
-} from "@/game/content";
+import { getCase } from "@/game/cases";
 import { nextLead, type Lead } from "@/game/guidance";
 import type { GameState } from "@/game/types";
 import { Icon } from "./Icon";
@@ -26,6 +20,9 @@ export function Notebook({
   onReset: () => void;
   available: boolean;
 }) {
+  const { evidence, deductions, dialogue, suspects, locations } = getCase(
+    state.caseId,
+  );
   const lead = nextLead(state);
   const interviewed = suspects.filter((s) =>
     dialogue.some((t) => t.suspect === s.id && state.answers.includes(t.id)),
@@ -78,21 +75,21 @@ export function Notebook({
             <span>
               <strong>
                 {state.evidence.length}
-                <small>/16</small>
+                <small>/{evidence.length}</small>
               </strong>
               Evidence
             </span>
             <span>
               <strong>
                 {interviewed}
-                <small>/4</small>
+                <small>/{suspects.length}</small>
               </strong>
               People heard
             </span>
             <span>
               <strong>
                 {state.deductions.length}
-                <small>/4</small>
+                <small>/{deductions.length}</small>
               </strong>
               Conclusions
             </span>
@@ -103,9 +100,13 @@ export function Notebook({
             aria-label="Evidence collected"
             aria-valuenow={state.evidence.length}
             aria-valuemin={0}
-            aria-valuemax={16}
+            aria-valuemax={evidence.length}
           >
-            <span style={{ width: `${(state.evidence.length / 16) * 100}%` }} />
+            <span
+              style={{
+                width: `${(state.evidence.length / evidence.length) * 100}%`,
+              }}
+            />
           </div>
           <details className="lead-hint">
             <summary>Need a lead?</summary>

@@ -1,5 +1,6 @@
 import type { Evidence } from "@/game/types";
-import { locations } from "@/game/content";
+import { getCase } from "@/game/cases";
+import type { CaseId } from "@/game/types";
 import { Icon } from "./Icon";
 export function EvidenceMark({ clue }: { clue: Evidence }) {
   const icon =
@@ -18,7 +19,14 @@ export function EvidenceMark({ clue }: { clue: Evidence }) {
     </div>
   );
 }
-export function EvidenceFile({ clue }: { clue: Evidence }) {
+export function EvidenceFile({
+  clue,
+  caseId = "quiet-hour",
+}: {
+  clue: Evidence;
+  caseId?: CaseId;
+}) {
+  const { locations } = getCase(caseId);
   return (
     <div className="evidence-file">
       <EvidenceMark clue={clue} />

@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useState } from "react";
-import { evidence, deductions, locations } from "@/game/content";
+import { getCase } from "@/game/cases";
 import type { GameState } from "@/game/types";
 import { Icon } from "./Icon";
 import { EvidenceMark, EvidenceFile } from "./EvidenceFile";
@@ -16,6 +16,9 @@ export function Board({
   onExplore: () => void;
   onConnect?: (ids: string[]) => string;
 }) {
+  const { evidence, deductions, locations } = getCase(state.caseId);
+  const maxPins = Math.max(...deductions.map((d) => d.evidence.length));
+  const sizes = [...new Set(deductions.map((d) => d.evidence.length))].sort();
   const [selected, setSelected] = useState<string[]>([]);
   const [filter, setFilter] = useState("all");
   const [compare, setCompare] = useState(false);
@@ -30,7 +33,7 @@ export function Board({
     setSelected((ids) =>
       ids.includes(id)
         ? ids.filter((v) => v !== id)
-        : ids.length < 3
+        : ids.length < maxPins
           ? [...ids, id]
           : ids,
     );
@@ -42,17 +45,23 @@ export function Board({
           <p className="eyebrow">MAKE THE CONNECTION</p>
           <h2>Your investigation board</h2>
           <p>
-            Select three related clues. Establish a chain of facts, one
-            conclusion at a time.
+            Select {sizes.join(" or ")} related clues. Establish a chain of
+            facts, one conclusion at a time.
           </p>
         </div>
-        <span className="tag">{state.evidence.length} / 16 COLLECTED</span>
+        <span className="tag">
+          {state.evidence.length} / {evidence.length} COLLECTED
+        </span>
       </div>
       <div className="deduction-board">
         <div className="board-caption">
           <Icon name="board" size={16} />
-          <span>THE FOUR QUESTIONS</span>
-          <span>{state.deductions.length} / 4 established</span>
+          <span>
+            THE {deductions.length === 4 ? "FOUR" : deductions.length} QUESTIONS
+          </span>
+          <span>
+            {state.deductions.length} / {deductions.length} established
+          </span>
         </div>
         <div className="deduction-grid">
           {deductions.map((d, i) => {
@@ -67,7 +76,9 @@ export function Board({
                 <span className="pin" />
                 <div className="deduction-label">
                   <span>
-                    0{i + 1} / {["METHOD", "ROUTE", "OPPORTUNITY", "MOTIVE"][i]}
+                    0{i + 1} /{" "}
+                    {d.category ??
+                      ["METHOD", "ROUTE", "OPPORTUNITY", "MOTIVE"][i]}
                   </span>
                   <Icon name={solved ? "check" : "lock"} size={15} />
                 </div>
@@ -76,7 +87,7 @@ export function Board({
                 <div className="node-footer">
                   {solved
                     ? "CONCLUSION ESTABLISHED"
-                    : `${d.evidence.filter((id) => state.evidence.includes(id)).length} / 3 related clues found`}
+                    : `${d.evidence.filter((id) => state.evidence.includes(id)).length} / ${d.evidence.length} related clues found`}
                 </div>
               </article>
             );
@@ -150,7 +161,7 @@ export function Board({
                       aria-label={`${selected.includes(e.id) ? "Unpin" : "Pin"} ${e.title}`}
                       aria-pressed={selected.includes(e.id)}
                       disabled={
-                        !selected.includes(e.id) && selected.length === 3
+                        !selected.includes(e.id) && selected.length === maxPins
                       }
                       onClick={() => toggle(e.id)}
                     >
@@ -176,7 +187,9 @@ export function Board({
             className={`connection-tray ${selected.length ? "has-thread" : ""}`}
           >
             <div>
-              <p className="eyebrow">PINNED THREAD / {selected.length} OF 3</p>
+              <p className="eyebrow">
+                PINNED THREAD / {selected.length} OF {maxPins}
+              </p>
               <div className="pinned-titles">
                 {selected.length ? (
                   selected.map((id) => (
@@ -211,7 +224,9 @@ export function Board({
               {onConnect && (
                 <button
                   className="button primary"
-                  disabled={selected.length !== 3 || !!state.accusation}
+                  disabled={
+                    !sizes.includes(selected.length) || !!state.accusation
+                  }
                   onClick={() => {
                     setMessage(onConnect(selected));
                     setSelected([]);
@@ -236,7 +251,7 @@ export function Board({
               return (
                 <article key={id}>
                   <h3>{e.title}</h3>
-                  <EvidenceFile clue={e} />
+                  <EvidenceFile clue={e} caseId={state.caseId} />
                 </article>
               );
             })}

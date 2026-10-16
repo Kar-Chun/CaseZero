@@ -17,7 +17,9 @@ import {
 } from "@/game/engine";
 import { useGame } from "@/game/useGame";
 import type { Lead } from "@/game/guidance";
-import { evidence } from "@/game/content";
+import { getCase } from "@/game/cases";
+import { selectedCase, selectCase } from "@/game/storage";
+import type { CaseId } from "@/game/types";
 import { Intro, Brand, type Screen } from "./Intro";
 import { Locations } from "./Locations";
 import { Notebook } from "./Notebook";
@@ -44,7 +46,7 @@ export function GameApp() {
     () => false,
   );
   return ready ? (
-    <GameExperience />
+    <GameLibrary />
   ) : (
     <div aria-busy="true">
       <fieldset className="boot-screen" disabled>
@@ -59,19 +61,52 @@ export function GameApp() {
     </div>
   );
 }
-function GameExperience() {
+function GameLibrary() {
+  const [entry, setEntry] = useState<{
+    caseId: CaseId;
+    screen: Screen;
+    replay: boolean;
+  }>(() => ({ caseId: selectedCase(), screen: "home", replay: false }));
+  return (
+    <GameExperience
+      key={entry.caseId}
+      caseId={entry.caseId}
+      initialScreen={entry.screen}
+      initialReplay={entry.replay}
+      onOpenCase={(caseId, screen, replay = false) => {
+        selectCase(caseId);
+        setEntry({ caseId, screen, replay });
+      }}
+    />
+  );
+}
+function GameExperience({
+  caseId,
+  initialScreen,
+  initialReplay,
+  onOpenCase,
+}: {
+  caseId: CaseId;
+  initialScreen: Screen;
+  initialReplay: boolean;
+  onOpenCase: (id: CaseId, screen: Screen, replay?: boolean) => void;
+}) {
+  const c = getCase(caseId);
+  const { evidence } = c;
   const initialFocus = useRef(true);
-  const [screen, setScreen] = useState<Screen>("home");
-  const { state, setState, available, notice, dismissNotice, reset } =
-    useGame();
+  const [screen, setScreen] = useState<Screen>(initialScreen);
+  const { state, library, setState, available, notice, dismissNotice, reset } =
+    useGame(caseId);
   const [tab, setTab] = useState<Tab>("locations");
   const [location, setLocation] = useState<string | null>(null);
   const [guide, setGuide] = useState(false);
   const [file, setFile] = useState<string | null>(null);
-  const [resetMode, setResetMode] = useState<"new" | "reset" | null>(null);
-  const closeReset = useCallback(() => setResetMode(null), []);
-  const closeFile = useCallback(() => setFile(null), []);
-  const closeGuide = useCallback(() => setGuide(false), []);
+  const [resetMode, setResetMode] = useState<"new" | "reset" | null>(
+    initialReplay ? "new" : null,
+  );
+  const closeReset = useCallback(() => setResetMode(null), [setResetMode]);
+  const closeFile = useCallback(() => setFile(null), [setFile]);
+  const closeGuide = useCallback(() => setGuide(false), [setGuide]);
   const selectedClue = evidence.find(
     (e) => e.id === file && state.evidence.includes(e.id),
   );
@@ -93,6 +128,14 @@ function GameExperience() {
   const navigateScreen = (next: Screen) => {
     if (next === "investigation" && state.accusation) setTab("verdict");
     setScreen(next);
+  };
+  const chooseCase = (id: CaseId, next: "briefing" | "investigation") => {
+    if (id === caseId) navigateScreen(next);
+    else onOpenCase(id, next);
+  };
+  const replayCase = (id: CaseId) => {
+    if (id === caseId) setResetMode("new");
+    else onOpenCase(id, "briefing", true);
   };
   const follow = (lead: Lead) => {
     if (lead.kind === "location") {
@@ -148,6 +191,10 @@ function GameExperience() {
             setScreen={navigateScreen}
             onBegin={begin}
             hasProgress={state.started}
+            caseData={c}
+            progress={library}
+            onChooseCase={chooseCase}
+            onResetCase={replayCase}
             onGuide={() => setGuide(true)}
             onNew={() => setResetMode("new")}
           />
@@ -158,10 +205,10 @@ function GameExperience() {
             <Brand onClick={() => setScreen("home")} />
             <div className="case-heading">
               <span className="eyebrow">
-                CASE 001 /{" "}
+                CASE {c.number} /{" "}
                 {state.accusation ? "CASE SUBMITTED" : "ACTIVE INVESTIGATION"}
               </span>
-              <h1>The Quiet Hour</h1>
+              <h1>{c.title}</h1>
             </div>
             <button className="text-link" onClick={() => setGuide(true)}>
               <Icon name="search" size={16} />
@@ -171,16 +218,19 @@ function GameExperience() {
           <div className="investigation-status">
             <span>
               <span className="status-dot" />
-              HALCYON MUSEUM <small>21:25 · EXITS SEALED</small>
+              {c.venue.toUpperCase()}{" "}
+              <small>
+                {c.arrival} · {c.statusLine}
+              </small>
             </span>
             <div>
               <span>
                 {state.evidence.length}
-                <small>/ 16 EVIDENCE</small>
+                <small>/ {c.evidence.length} EVIDENCE</small>
               </span>
               <span>
                 {state.deductions.length}
-                <small>/ 4 CONCLUSIONS</small>
+                <small>/ {c.deductions.length} CONCLUSIONS</small>
               </span>
             </div>
           </div>
@@ -196,6 +246,10 @@ function GameExperience() {
                 {t.label}
               </button>
             ))}
+            <button className="nav-item" onClick={() => setScreen("cases")}>
+              <Icon name="file" />
+              Case files
+            </button>
           </nav>
           <main id="main-content" className="game-main" tabIndex={-1}>
             {tab === "locations" ? (
@@ -238,7 +292,10 @@ function GameExperience() {
                 onSubmit={(value) => setState((s) => accuse(s, value))}
                 onBoard={() => setTab("board")}
                 onRecover={() => {
-                  setLocation("L03");
+                  setLocation(
+                    c.evidence.find((e) => e.id === c.resolution.evidenceId)!
+                      .location,
+                  );
                   setTab("locations");
                 }}
                 onRetry={() => {
@@ -251,7 +308,7 @@ function GameExperience() {
             )}
           </main>
           <footer className="game-footer">
-            <span>CASEZERO / THE QUIET HOUR</span>
+            <span>CASEZERO / {c.title.toUpperCase()}</span>
             <span
               className={
                 available ? "save-indicator" : "save-indicator unavailable"
@@ -267,7 +324,7 @@ function GameExperience() {
       )}
       {selectedClue && (
         <Modal title={selectedClue.title} onClose={closeFile}>
-          <EvidenceFile clue={selectedClue} />
+          <EvidenceFile clue={selectedClue} caseId={caseId} />
           <button
             className="button primary"
             onClick={() => {
@@ -291,8 +348,8 @@ function GameExperience() {
           onClose={closeReset}
         >
           <p>
-            This clears your evidence, interviews, deductions and notes for The
-            Quiet Hour on this device.
+            This clears your evidence, interviews, deductions and notes for{" "}
+            {c.title} on this device. Your other cases are preserved.
           </p>
           <div className="ending-actions">
             <button

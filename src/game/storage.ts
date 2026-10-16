@@ -1,7 +1,26 @@
 import { getCase, isCaseId } from "./cases";
 import { freshState, meets, canAccuse, validAccusation } from "./engine";
-import type { GameState, Accusation } from "./types";
+import type { GameState, Accusation, CaseId } from "./types";
 export const SAVE_KEY = "casezero:progress:v1";
+export const SELECTED_CASE_KEY = "casezero:selected-case";
+export function saveKey(caseId: CaseId = "quiet-hour"): string {
+  return caseId === "quiet-hour" ? SAVE_KEY : `casezero:progress:${caseId}:v2`;
+}
+export function selectedCase(): CaseId {
+  try {
+    const id = window.localStorage.getItem(SELECTED_CASE_KEY);
+    return isCaseId(id) ? id : "quiet-hour";
+  } catch {
+    return "quiet-hour";
+  }
+}
+export function selectCase(caseId: CaseId): void {
+  try {
+    window.localStorage.setItem(SELECTED_CASE_KEY, caseId);
+  } catch {
+    /* In-memory case switching still works. */
+  }
+}
 export type StoragePort = Pick<Storage, "getItem" | "setItem" | "removeItem">;
 export type LoadResult = {
   state: GameState;
@@ -144,24 +163,27 @@ export function parseSave(raw: string): GameState | null {
     return null;
   }
 }
-export function loadGame(storage?: StoragePort): LoadResult {
+export function loadGame(
+  storage?: StoragePort,
+  caseId: CaseId = "quiet-hour",
+): LoadResult {
   try {
     const port = storage ?? window.localStorage,
-      raw = port.getItem(SAVE_KEY);
+      raw = port.getItem(saveKey(caseId));
     if (raw === null)
-      return { state: freshState(), available: true, notice: null };
+      return { state: freshState(caseId), available: true, notice: null };
     const state = parseSave(raw);
-    return state
+    return state && state.caseId === caseId
       ? { state, available: true, notice: null }
       : {
-          state: freshState(),
+          state: freshState(caseId),
           available: true,
           notice:
             "The saved case is invalid or from an unsupported version. Start a new investigation to create a fresh save.",
         };
   } catch {
     return {
-      state: freshState(),
+      state: freshState(caseId),
       available: false,
       notice:
         "Browser saving is unavailable. You can play, but this session will not survive a refresh.",
@@ -170,15 +192,21 @@ export function loadGame(storage?: StoragePort): LoadResult {
 }
 export function saveGame(state: GameState, storage?: StoragePort): boolean {
   try {
-    (storage ?? window.localStorage).setItem(SAVE_KEY, JSON.stringify(state));
+    (storage ?? window.localStorage).setItem(
+      saveKey(state.caseId),
+      JSON.stringify(state),
+    );
     return true;
   } catch {
     return false;
   }
 }
-export function clearGame(storage?: StoragePort): boolean {
+export function clearGame(
+  storage?: StoragePort,
+  caseId: CaseId = "quiet-hour",
+): boolean {
   try {
-    (storage ?? window.localStorage).removeItem(SAVE_KEY);
+    (storage ?? window.localStorage).removeItem(saveKey(caseId));
     return true;
   } catch {
     return false;

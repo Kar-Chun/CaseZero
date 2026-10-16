@@ -1,4 +1,4 @@
-import type { Accusation } from "./types";
+import type { Accusation, CaseId } from "./types";
 export type CaseOutcome = {
   correct: boolean;
   title: string;
@@ -7,7 +7,11 @@ export type CaseOutcome = {
   epilogue: string;
 };
 /** Loaded with the ending UI. This authored solution is inspectable in client source. */
-export function evaluate(value: Accusation): CaseOutcome {
+export function evaluate(
+  value: Accusation,
+  _caseId: CaseId = "quiet-hour",
+): CaseOutcome {
+  void _caseId;
   const correct =
     value.suspect === "S01" && value.method === "M02" && value.motive === "R03";
   if (!correct)

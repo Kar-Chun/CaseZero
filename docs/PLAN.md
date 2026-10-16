@@ -54,8 +54,8 @@ Preserve the original case's IDs, story, outcomes, selectors where practical and
 | Phase 2 milestone                        | Acceptance criteria                                                                                                                                                                                                                                     | Status      |
 | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
 | P1 Case model and compatibility          | Typed case registry and case-aware pure rules; state v2 with validated migration of original v1 saves; graph/recipe integrity checks; old tests, new migration tests, typecheck/lint/build pass                                                         | Complete |
-| P2 Case library and independent progress | Data-driven briefing/UI, per-case save/reset/replay, case progress cards and navigation; original experience works; isolation and switching tests pass                                                                                                  | Pending     |
-| P3 Dead Air and interactive analysis     | Complete new radio-station case with 4 suspects, 4 locations, 14 clues, two evidence-analysis activities, variable-size deductions and coherent outcomes; reference/reachability, dialogue and full-path tests pass                                     | Pending     |
+| P2 Case library and independent progress | Data-driven briefing/UI, per-case save/reset/replay, case progress cards and navigation; original experience works; isolation and switching tests pass                                                                                                  | Complete |
+| P3 Dead Air and interactive analysis     | Complete new radio-station case with 4 suspects, 4 locations, 14 clues, two evidence-analysis activities, variable-size deductions and coherent outcomes; reference/reachability, dialogue and full-path tests pass                                     | In progress |
 | P4 Hints and investigation flow          | Optional three-stage hints for the current obstacle, saved independently; persistent pins, targeted deduction work, useful failed-thread feedback and mobile refinement; focused regression tests pass                                                  | Pending     |
 | P5 Portable saves and finish             | Validated export/import with review, case mismatch protection and no effect on other cases; case-specific artwork and updated concise instructions; backup and UI tests pass                                                                            | Pending     |
 | P6 Complete QA and handoff               | Both cases complete via UI, incorrect verdicts/retry, independent refresh/reset/replay, v1 migration, hint/analysis/backup flows, desktop/mobile/keyboard/axe; clean install, typecheck/lint/unit/build/E2E; commit and update verification/review docs | Pending     |
@@ -73,6 +73,8 @@ Preserve the original case's IDs, story, outcomes, selectors where practical and
 
 P1 complete: TypeScript, ESLint, all 45 unit/component tests and production build passed. Original 41 tests remain intact. Added v1 partial/ending migration, v2 field validation, registry integrity and ambiguous-recipe coverage.
 
+P2 complete: Typecheck, lint, production build and all 48 unit/component tests passed. All 20 original production Playwright tests passed on desktop/mobile, including both original endings, refresh/reset, storage denial, cross-tab updates and accessibility. Per-case save isolation and wrong-key rejection are covered with an alternate-case fixture.
+
 ## Phase 2 handoff
 
-Next: P2 case-aware presentation, per-case storage and library navigation. Continue on develop/casezero; no deployment or external writes.
+Next: P3 authored Dead Air content and interactive analysis. Continue on develop/casezero; no deployment or external writes.

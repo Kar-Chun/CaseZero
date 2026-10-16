@@ -1,5 +1,5 @@
 "use client";
-import { locations, evidence } from "@/game/content";
+import { getCase } from "@/game/cases";
 import { meets } from "@/game/engine";
 import type { GameState } from "@/game/types";
 import { Icon } from "./Icon";
@@ -17,6 +17,8 @@ export function Locations({
   onDiscover: (id: string) => void;
   onInspect: (id: string) => void;
 }) {
+  const c = getCase(state.caseId);
+  const { locations, evidence } = c;
   const location = locations.find((l) => l.id === active);
   const count = (id: string) =>
     evidence.filter((e) => e.location === id && state.evidence.includes(e.id))
@@ -26,13 +28,13 @@ export function Locations({
       <section className="location-detail">
         <button className="text-link back-link" onClick={() => onSelect(null)}>
           <Icon name="back" size={16} />
-          Museum map
+          {c.mapLabel}
         </button>
         <div className="location-banner">
           <RoomArt type={location.icon} />
           <div>
             <p className="eyebrow">
-              HALCYON MUSEUM / LOCATION {location.id.slice(1)}
+              {c.venue.toUpperCase()} / LOCATION {location.id.slice(1)}
             </p>
             <h2>{location.name}</h2>
             <p>{location.atmosphere}</p>
@@ -41,7 +43,11 @@ export function Locations({
         <p className="location-description">{location.description}</p>
         <div className="search-heading">
           <p className="eyebrow">EXAMINE THE ROOM</p>
-          <span>{count(location.id)} / 4 evidence recorded</span>
+          <span>
+            {count(location.id)} /{" "}
+            {evidence.filter((e) => e.location === location.id).length} evidence
+            recorded
+          </span>
         </div>
         <div className="search-grid">
           {evidence
@@ -112,12 +118,13 @@ export function Locations({
       <div className="section-heading">
         <div>
           <p className="eyebrow">FOLLOW THE TRAIL</p>
-          <h2>The museum is yours to examine.</h2>
+          <h2>{c.locationHeading}</h2>
           <p>
-            Four rooms. Sixteen traces. Start wherever your instinct takes you.
+            {locations.length} rooms. {evidence.length} traces. Start wherever
+            your instinct takes you.
           </p>
         </div>
-        <span className="tag">4 LOCATIONS</span>
+        <span className="tag">{locations.length} LOCATIONS</span>
       </div>
       <div className="location-grid">
         {locations.map((l, i) => (
@@ -134,7 +141,11 @@ export function Locations({
               <p className="eyebrow">{l.subtitle}</p>
               <h3>{l.name}</h3>
               <div className="location-card-bottom">
-                <span>{count(l.id)} / 4 evidence · Explore location</span>
+                <span>
+                  {count(l.id)} /{" "}
+                  {evidence.filter((e) => e.location === l.id).length} evidence
+                  · Explore location
+                </span>
                 <Icon name="arrow" size={18} />
               </div>
             </div>

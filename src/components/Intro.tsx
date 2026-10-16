@@ -1,4 +1,5 @@
 "use client";
+import type { CaseDefinition, CaseId, GameState } from "@/game/types";
 import { Home } from "./Home";
 import { CaseSelection } from "./CaseSelection";
 import { Briefing } from "./Briefing";
@@ -10,6 +11,10 @@ export type IntroProps = {
   onGuide: () => void;
   hasProgress: boolean;
   onNew?: () => void;
+  caseData?: CaseDefinition;
+  progress?: GameState[];
+  onChooseCase?: (id: CaseId, screen: "briefing" | "investigation") => void;
+  onResetCase?: (id: CaseId) => void;
 };
 export function Brand({ onClick }: { onClick: () => void }) {
   return (

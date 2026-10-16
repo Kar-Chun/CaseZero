@@ -1,7 +1,7 @@
 "use client";
 import { lazy, Suspense, useState } from "react";
 import { canAccuse, validAccusation } from "@/game/engine";
-import { suspects, methods, motives, deductions } from "@/game/content";
+import { getCase } from "@/game/cases";
 import type { GameState, Accusation } from "@/game/types";
 import { Icon } from "./Icon";
 const Outcome = lazy(() => import("./Outcome"));
@@ -22,6 +22,8 @@ export function Verdict({
   onReplay: () => void;
   onReview: () => void;
 }) {
+  const c = getCase(state.caseId);
+  const { suspects, methods, motives, deductions } = c;
   const [draft, setDraft] = useState<Accusation>({
     suspect: "",
     method: "",
@@ -33,6 +35,7 @@ export function Verdict({
       <Suspense fallback={<p role="status">Reviewing your case…</p>}>
         <Outcome
           accusation={state.accusation}
+          caseId={state.caseId}
           onRetry={onRetry}
           onReplay={onReplay}
           onReview={onReview}
@@ -65,8 +68,8 @@ export function Verdict({
               done: state.deductions.includes(d.id),
             })),
             {
-              title: "The seal recovered",
-              done: state.evidence.includes("E16"),
+              title: c.resolution.proofLabel,
+              done: state.evidence.includes(c.resolution.evidenceId),
             },
           ].map((p) => (
             <div
@@ -89,13 +92,14 @@ export function Verdict({
                 <Icon name="verdict" size={40} />
                 <h3>Your case is still open.</h3>
                 <p>
-                  Establish all four conclusions and recover the seal before
-                  submitting an accusation.
+                  Establish all {deductions.length} conclusions and{" "}
+                  {c.resolution.proofLabel.toLowerCase()} before submitting an
+                  accusation.
                 </p>
               </div>
               {concluded ? (
                 <button className="button primary" onClick={onRecover}>
-                  Search the conservation store
+                  {c.resolution.searchLabel}
                   <Icon name="search" />
                 </button>
               ) : (
@@ -144,11 +148,11 @@ export function Verdict({
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                if (validAccusation(draft)) setReview(true);
+                if (validAccusation(draft, state.caseId)) setReview(true);
               }}
             >
               <p className="eyebrow">YOUR DEDUCTION</p>
-              <h3>Who took the seal?</h3>
+              <h3>{c.resolution.question}</h3>
               <label>
                 Person of interest
                 <select
@@ -167,7 +171,7 @@ export function Verdict({
                 </select>
               </label>
               <label>
-                How was it taken?
+                {c.resolution.methodLabel}
                 <select
                   required
                   value={draft.method}
@@ -184,7 +188,7 @@ export function Verdict({
                 </select>
               </label>
               <label>
-                Why was it taken?
+                {c.resolution.motiveLabel}
                 <select
                   required
                   value={draft.motive}
@@ -202,7 +206,7 @@ export function Verdict({
               </label>
               <button
                 className="button primary"
-                disabled={!validAccusation(draft)}
+                disabled={!validAccusation(draft, state.caseId)}
                 type="submit"
               >
                 Review accusation

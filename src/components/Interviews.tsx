@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { suspects, dialogue, evidence, locations } from "@/game/content";
+import { getCase } from "@/game/cases";
 import { meets } from "@/game/engine";
 import type { GameState } from "@/game/types";
 import { Icon } from "./Icon";
@@ -13,7 +13,8 @@ export function Interviews({
   onAnswer: (id: string) => void;
   onFollow: (id: string) => void;
 }) {
-  const [person, setPerson] = useState("S01");
+  const { suspects, dialogue, evidence, locations } = getCase(state.caseId);
+  const [person, setPerson] = useState(suspects[0].id);
   const [topic, setTopic] = useState<string | null>(null);
   const suspect = suspects.find((s) => s.id === person)!;
   const lines = dialogue.filter((t) => t.suspect === person);
@@ -42,7 +43,9 @@ export function Interviews({
             question.
           </p>
         </div>
-        <span className="tag">{interviewed} / 4 INTERVIEWED</span>
+        <span className="tag">
+          {interviewed} / {suspects.length} INTERVIEWED
+        </span>
       </div>
       <div className="suspect-tabs">
         {suspects.map((s) => {
