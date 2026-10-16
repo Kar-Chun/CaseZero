@@ -32,7 +32,7 @@ Each case saves its evidence, interviews, analysis, conclusions, notes, hints, p
 
 The notebook’s **Export investigation** downloads a portable backup. **Import investigation** accepts an exported file, shows a review and replaces only the matching selected case after confirmation. Original raw version 1 saves are also accepted. Backups include your notes; store them somewhere appropriate.
 
-If browser storage is unavailable, you can play and export, but progress lasts only for that session. Multiple tabs receive the latest saved state; simultaneous edits are not merged. Reset clears only the selected case.
+If browser storage is unavailable or full, you can play, switch cases and export, but unsaved progress lasts only until you refresh or close the page. Multiple tabs receive the latest saved state; simultaneous edits are not merged. Reset clears only the selected case.
 
 ## Checks
 

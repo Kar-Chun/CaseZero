@@ -22,7 +22,7 @@ import { useGame } from "@/game/useGame";
 import type { Lead } from "@/game/guidance";
 import { getCase } from "@/game/cases";
 import { selectedCase, selectCase } from "@/game/storage";
-import type { CaseId } from "@/game/types";
+import type { CaseId, GameState } from "@/game/types";
 import { Intro, Brand, type Screen } from "./Intro";
 import { InspectionPanel } from "./InspectionPanel";
 import { Locations } from "./Locations";
@@ -66,6 +66,7 @@ export function GameApp() {
   );
 }
 function GameLibrary() {
+  const [session] = useState(() => new Map<CaseId, GameState>());
   const [entry, setEntry] = useState<{
     caseId: CaseId;
     screen: Screen;
@@ -74,6 +75,7 @@ function GameLibrary() {
   return (
     <GameExperience
       key={entry.caseId}
+      session={session}
       caseId={entry.caseId}
       initialScreen={entry.screen}
       initialReplay={entry.replay}
@@ -85,11 +87,13 @@ function GameLibrary() {
   );
 }
 function GameExperience({
+  session,
   caseId,
   initialScreen,
   initialReplay,
   onOpenCase,
 }: {
+  session: Map<CaseId, GameState>;
   caseId: CaseId;
   initialScreen: Screen;
   initialReplay: boolean;
@@ -100,7 +104,7 @@ function GameExperience({
   const initialFocus = useRef(initialScreen === "home");
   const [screen, setScreen] = useState<Screen>(initialScreen);
   const { state, library, setState, available, notice, dismissNotice, reset } =
-    useGame(caseId);
+    useGame(caseId, session);
   const [tab, setTab] = useState<Tab>("locations");
   const [location, setLocation] = useState<string | null>(null);
   const [interviewPerson, setInterviewPerson] = useState(c.suspects[0].id);

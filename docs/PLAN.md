@@ -51,14 +51,14 @@ Baseline on 16 October 2026: existing typecheck/lint and all 41 unit/component t
 
 Preserve the original case's IDs, story, outcomes, selectors where practical and saved progress. Keep content and rules separate; add no runtime services or dependencies.
 
-| Phase 2 milestone                        | Acceptance criteria                                                                                                                                                                                                                                     | Status      |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| Phase 2 milestone                        | Acceptance criteria                                                                                                                                                                                                                                     | Status   |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
 | P1 Case model and compatibility          | Typed case registry and case-aware pure rules; state v2 with validated migration of original v1 saves; graph/recipe integrity checks; old tests, new migration tests, typecheck/lint/build pass                                                         | Complete |
 | P2 Case library and independent progress | Data-driven briefing/UI, per-case save/reset/replay, case progress cards and navigation; original experience works; isolation and switching tests pass                                                                                                  | Complete |
 | P3 Dead Air and interactive analysis     | Complete new radio-station case with 4 suspects, 4 locations, 14 clues, two evidence-analysis activities, variable-size deductions and coherent outcomes; reference/reachability, dialogue and full-path tests pass                                     | Complete |
 | P4 Hints and investigation flow          | Optional three-stage hints for the current obstacle, saved independently; persistent pins, targeted deduction work, useful failed-thread feedback and mobile refinement; focused regression tests pass                                                  | Complete |
 | P5 Portable saves and finish             | Validated export/import with review, case mismatch protection and no effect on other cases; case-specific artwork and updated concise instructions; backup and UI tests pass                                                                            | Complete |
-| P6 Complete QA and handoff               | Both cases complete via UI, incorrect verdicts/retry, independent refresh/reset/replay, v1 migration, hint/analysis/backup flows, desktop/mobile/keyboard/axe; clean install, typecheck/lint/unit/build/E2E; commit and update verification/review docs | In progress |
+| P6 Complete QA and handoff               | Both cases complete via UI, incorrect verdicts/retry, independent refresh/reset/replay, v1 migration, hint/analysis/backup flows, desktop/mobile/keyboard/axe; clean install, typecheck/lint/unit/build/E2E; commit and update verification/review docs | Complete |
 
 ## Design and risks
 
@@ -81,6 +81,8 @@ P4 complete: Typecheck, lint, production build, all 71 unit/component tests and 
 
 P5 complete: Typecheck, lint, production build, all 79 unit/component tests and all 36 production desktop/mobile browser tests passed. Actual JSON downloads and file uploads restore notes, hints and pins after review; invalid, oversized, unsupported and foreign-case imports leave progress unchanged. Fixed valid long-note serialization, stale file reads and hidden/dynamic modal focus. Added radio artwork and accurate closed/review-required case badges.
 
+P6 complete: Clean npm ci passed in an isolated directory (320 packages). Final typecheck, lint, all 81 tests in 20 files, production build and all 44 production browser tests passed (22 desktop / 22 mobile; 2.2 minutes). New analyses/import have zero axe violations on audited screens; keyboard, reduced motion, 320px, real v1 migration, independent tabs and storage-denied switching pass. Fixed denied/quota session loss on keyed case changes, with cache invalidation for incoming saves. Visually reviewed archive, radio room and narrow board; an additional desktop focus/skip-link check passed. Updated README, verification and review material. No known blocking issue remains.
+
 ## Phase 2 handoff
 
-Next: P6 final accessibility, migration and cross-case browser checks, clean install and comprehensive verification. Continue on develop/casezero; no deployment or external writes.
+Phase 2 complete; all six milestones committed on develop/casezero. No pending implementation work. Run/play instructions are in README.md; actual checks and limits in VERIFICATION.md, review summary in REVIEW.md. No remote is configured, so no hosted pull request was opened. No deployment or external writes performed. Suggested next work: additional authored cases, optional audio and browser/device coverage.
