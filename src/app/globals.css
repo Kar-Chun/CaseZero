@@ -2919,3 +2919,126 @@ select {
     width: 100%;
   }
 }
+
+/* Evidence analysis: source material stays visible while testing an account. */
+.analysis-instruction {
+  color: #c7c8bc;
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+.analysis-documents {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+.analysis-document {
+  padding: 23px;
+  border: 1px solid #6c6956;
+  background: linear-gradient(130deg, #25323a, #1a272f);
+}
+.analysis-document h3 {
+  font-size: 25px;
+  margin: 12px 0;
+}
+.analysis-document > p:not(.eyebrow) {
+  font-size: 13px;
+  color: #c4cbd0;
+  line-height: 1.9;
+}
+.analysis-document fieldset {
+  border: 0;
+  padding: 0;
+  margin: 24px 0 0;
+  min-width: 0;
+}
+.analysis-document legend {
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  color: var(--gold);
+  margin-bottom: 13px;
+}
+.comparison-choice {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 15px;
+  margin-top: 10px;
+  border: 1px solid #546674;
+  background: #12222c;
+  font-size: 13px;
+  color: #c3cbd2;
+  cursor: pointer;
+  line-height: 1.7;
+}
+.comparison-choice input {
+  flex-shrink: 0;
+  margin-top: 5px;
+  accent-color: var(--gold);
+}
+.comparison-choice.chosen-choice {
+  border-color: var(--gold);
+  background: #d1b1770c;
+}
+.clock-entry {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: var(--gold);
+  font-size: 12px;
+  margin-top: 25px;
+}
+.clock-entry input {
+  width: 100%;
+  max-width: 220px;
+  min-height: 56px;
+  border: 1px solid #667b88;
+  background: #101f29;
+  color: #f0eee7;
+  padding: 12px;
+  font-family: var(--serif);
+  font-size: 25px;
+}
+.analysis-message {
+  color: var(--gold);
+  font-size: 12px;
+  margin: 20px 0;
+}
+.analysis-panel > .small-note {
+  margin-top: 18px;
+  font-size: 11px;
+}
+.selection-radio .selection-art {
+  background:
+    radial-gradient(ellipse at 65% 30%, #7e9ca140, transparent 65%),
+    linear-gradient(135deg, #173541, #0b1723);
+}
+.selection-radio .selection-art::after {
+  content: "ON AIR";
+  font-family: Georgia, serif;
+  letter-spacing: 8px;
+  font-size: 36px;
+  color: #d1b17777;
+  position: absolute;
+  top: 45%;
+  left: 20%;
+  border: 1px solid #d1b17740;
+  padding: 16px;
+}
+@media (max-width: 700px) {
+  .analysis-document {
+    padding: 20px;
+  }
+  .analysis-document h3 {
+    font-size: 23px;
+  }
+  .comparison-choice {
+    padding: 14px;
+    font-size: 13px;
+  }
+  .clock-entry input {
+    max-width: 100%;
+  }
+  .analysis-instruction {
+    font-size: 13px;
+  }
+}

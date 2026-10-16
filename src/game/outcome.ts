@@ -1,3 +1,4 @@
+import { evaluateRadio } from "./episodes/002-ending";
 import type { Accusation, CaseId } from "./types";
 export type CaseOutcome = {
   correct: boolean;
@@ -9,9 +10,9 @@ export type CaseOutcome = {
 /** Loaded with the ending UI. This authored solution is inspectable in client source. */
 export function evaluate(
   value: Accusation,
-  _caseId: CaseId = "quiet-hour",
+  caseId: CaseId = "quiet-hour",
 ): CaseOutcome {
-  void _caseId;
+  if (caseId === "dead-air") return evaluateRadio(value);
   const correct =
     value.suspect === "S01" && value.method === "M02" && value.motive === "R03";
   if (!correct)

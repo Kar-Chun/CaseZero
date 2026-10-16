@@ -10,12 +10,14 @@ export function Locations({
   state,
   onDiscover,
   onInspect,
+  onAnalyze,
 }: {
   active: string | null;
   onSelect: (id: string | null) => void;
   state: GameState;
   onDiscover: (id: string) => void;
   onInspect: (id: string) => void;
+  onAnalyze: (id: string) => void;
 }) {
   const c = getCase(state.caseId);
   const { locations, evidence } = c;
@@ -53,8 +55,13 @@ export function Locations({
           {evidence
             .filter((e) => e.location === location.id)
             .map((e) => {
-              const found = state.evidence.includes(e.id),
-                locked = !meets(state, e.requires);
+              const found = state.evidence.includes(e.id);
+              const activity = c.inspections.find((i) => i.evidenceId === e.id);
+              const canAnalyze =
+                !!activity &&
+                meets(state, activity.requires) &&
+                meets(state, { ...e.requires, inspections: [] });
+              const locked = !meets(state, e.requires) && !canAnalyze;
               return (
                 <article
                   key={e.id}
@@ -84,7 +91,13 @@ export function Locations({
                       found ? "button outline" : "button search-button"
                     }
                     disabled={locked || (!!state.accusation && !found)}
-                    onClick={() => (found ? onInspect(e.id) : onDiscover(e.id))}
+                    onClick={() =>
+                      found
+                        ? onInspect(e.id)
+                        : activity && !state.inspections.includes(activity.id)
+                          ? onAnalyze(activity.id)
+                          : onDiscover(e.id)
+                    }
                     aria-label={
                       found ? `Inspect ${e.title}` : `Search ${e.point}`
                     }
@@ -93,7 +106,9 @@ export function Locations({
                       ? "Read evidence"
                       : locked
                         ? "Awaiting a lead"
-                        : "Examine"}
+                        : activity
+                          ? "Analyze evidence"
+                          : "Examine"}
                     <Icon
                       name={found ? "file" : locked ? "lock" : "arrow"}
                       size={16}

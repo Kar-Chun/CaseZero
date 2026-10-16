@@ -148,13 +148,20 @@ export function parseSave(raw: string): GameState | null {
     if (
       !deductions
         .filter((d) => state.deductions.includes(d.id))
-        .every((d) => meets(state, { evidence: d.evidence }))
+        .every(
+          (d) =>
+            meets(state, { evidence: d.evidence }) &&
+            meets(state, d.requires ?? {}),
+        )
     )
       return null;
     if (
       !inspections
         .filter((i) => state.inspections.includes(i.id))
-        .every((i) => meets(state, i.requires))
+        .every(
+          (i) =>
+            meets(state, i.requires) && state.evidence.includes(i.evidenceId),
+        )
     )
       return null;
     if (state.accusation && !canAccuse(state)) return null;

@@ -1,4 +1,7 @@
+import { RadioRoomArt } from "./RadioRoomArt";
 export function RoomArt({ type }: { type: string }) {
+  if (["studio", "rack", "lounge", "newsroom"].includes(type))
+    return <RadioRoomArt type={type} />;
   const isArchive = type === "archive",
     isSecurity = type === "security",
     isWorkshop = type === "workshop";

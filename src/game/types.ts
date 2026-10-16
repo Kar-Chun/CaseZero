@@ -48,6 +48,7 @@ export type Deduction = {
   evidence: string[];
   conclusion: string;
   category?: string;
+  requires?: Requirement;
 };
 export type Accusation = { suspect: string; method: string; motive: string };
 export type GameState = {

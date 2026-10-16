@@ -1,6 +1,7 @@
 "use client";
 import { useCallback, useState } from "react";
 import { getCase } from "@/game/cases";
+import { meets } from "@/game/engine";
 import type { GameState } from "@/game/types";
 import { Icon } from "./Icon";
 import { EvidenceMark, EvidenceFile } from "./EvidenceFile";
@@ -87,7 +88,9 @@ export function Board({
                 <div className="node-footer">
                   {solved
                     ? "CONCLUSION ESTABLISHED"
-                    : `${d.evidence.filter((id) => state.evidence.includes(id)).length} / ${d.evidence.length} related clues found`}
+                    : !meets(state, d.requires ?? {})
+                      ? "Waiting for an earlier conclusion"
+                      : `${d.evidence.filter((id) => state.evidence.includes(id)).length} / ${d.evidence.length} related clues found`}
                 </div>
               </article>
             );

@@ -55,8 +55,8 @@ Preserve the original case's IDs, story, outcomes, selectors where practical and
 | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
 | P1 Case model and compatibility          | Typed case registry and case-aware pure rules; state v2 with validated migration of original v1 saves; graph/recipe integrity checks; old tests, new migration tests, typecheck/lint/build pass                                                         | Complete |
 | P2 Case library and independent progress | Data-driven briefing/UI, per-case save/reset/replay, case progress cards and navigation; original experience works; isolation and switching tests pass                                                                                                  | Complete |
-| P3 Dead Air and interactive analysis     | Complete new radio-station case with 4 suspects, 4 locations, 14 clues, two evidence-analysis activities, variable-size deductions and coherent outcomes; reference/reachability, dialogue and full-path tests pass                                     | In progress |
-| P4 Hints and investigation flow          | Optional three-stage hints for the current obstacle, saved independently; persistent pins, targeted deduction work, useful failed-thread feedback and mobile refinement; focused regression tests pass                                                  | Pending     |
+| P3 Dead Air and interactive analysis     | Complete new radio-station case with 4 suspects, 4 locations, 14 clues, two evidence-analysis activities, variable-size deductions and coherent outcomes; reference/reachability, dialogue and full-path tests pass                                     | Complete |
+| P4 Hints and investigation flow          | Optional three-stage hints for the current obstacle, saved independently; persistent pins, targeted deduction work, useful failed-thread feedback and mobile refinement; focused regression tests pass                                                  | In progress |
 | P5 Portable saves and finish             | Validated export/import with review, case mismatch protection and no effect on other cases; case-specific artwork and updated concise instructions; backup and UI tests pass                                                                            | Pending     |
 | P6 Complete QA and handoff               | Both cases complete via UI, incorrect verdicts/retry, independent refresh/reset/replay, v1 migration, hint/analysis/backup flows, desktop/mobile/keyboard/axe; clean install, typecheck/lint/unit/build/E2E; commit and update verification/review docs | Pending     |
 
@@ -75,6 +75,8 @@ P1 complete: TypeScript, ESLint, all 45 unit/component tests and production buil
 
 P2 complete: Typecheck, lint, production build and all 48 unit/component tests passed. All 20 original production Playwright tests passed on desktop/mobile, including both original endings, refresh/reset, storage denial, cross-tab updates and accessibility. Per-case save isolation and wrong-key rejection are covered with an alternate-case fixture.
 
+P3 complete: TypeScript, lint, production build and all 64 unit/component tests passed. Both authored cases passed the 26-test production browser suite. Narrative review then added an explicit earlier-window prerequisite to the new identity conclusion; all 6 affected radio/switching browser checks were rerun and passed. New content has 14 clues, 12 interview branches, two distinct analyses, mixed-size deductions, case-specific rooms and two supported outcomes.
+
 ## Phase 2 handoff
 
-Next: P3 authored Dead Air content and interactive analysis. Continue on develop/casezero; no deployment or external writes.
+Next: P4 progressive hints and improved board workflow. Continue on develop/casezero; no deployment or external writes.

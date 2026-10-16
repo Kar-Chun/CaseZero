@@ -1,3 +1,4 @@
+import { inspectionAnswers } from "./inspection-rules";
 import { locations, evidence, suspects, dialogue, deductions } from "./content";
 import type {
   Location,
@@ -73,6 +74,7 @@ export function validateContent(content: CaseContent = caseContent): string[] {
     if (recipes.has(signature)) issues.push(`${d.id}: ambiguous recipe`);
     recipes.add(signature);
     check(d.id, { evidence: d.evidence });
+    check(d.id, d.requires ?? {});
     if (d.evidence.length < 2 || new Set(d.evidence).size !== d.evidence.length)
       issues.push(`${d.id}: invalid recipe`);
   }
@@ -107,7 +109,8 @@ export function validateContent(content: CaseContent = caseContent): string[] {
     for (const i of content.inspections ?? [])
       if (ready(i.requires)) add("inspections", i.id);
     for (const d of content.deductions)
-      if (ready({ evidence: d.evidence })) add("deductions", d.id);
+      if (ready({ evidence: d.evidence }) && ready(d.requires ?? {}))
+        add("deductions", d.id);
   }
   for (const key of [
     "evidence",
@@ -127,6 +130,18 @@ export function validateCase(definition: CaseDefinition): string[] {
   )
     issues.push("Unknown final evidence");
   for (const i of definition.inspections) {
+    const answer = inspectionAnswers[definition.id]?.[i.id];
+    const solution = answer?.split(":");
+    if (
+      i.kind === "clock"
+        ? !answer || !/^([01]\d|2[0-3]):[0-5]\d$/.test(answer)
+        : !solution ||
+          solution.length !== i.panels.length ||
+          !i.panels.every((p, index) =>
+            p.options.some((o) => o.id === solution[index]),
+          )
+    )
+      issues.push(`${i.id}: invalid analysis solution`);
     if (
       !definition.evidence
         .find((e) => e.id === i.evidenceId)
@@ -137,7 +152,7 @@ export function validateCase(definition: CaseDefinition): string[] {
       i.panels.length !== (i.kind === "clock" ? 1 : 2) ||
       i.panels.some(
         (p) =>
-          p.options.length < 2 ||
+          (i.kind === "comparison" && p.options.length < 2) ||
           new Set(p.options.map((o) => o.id)).size !== p.options.length,
       )
     )

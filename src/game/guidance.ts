@@ -60,6 +60,7 @@ export function nextLead(state: GameState): Lead {
     if (visited.has(`d${id}`)) return final;
     visited.add(`d${id}`);
     return (
+      prerequisites(item.requires ?? {}) ??
       prerequisites({ evidence: item.evidence }) ?? {
         kind: "board",
         task: "deduction",

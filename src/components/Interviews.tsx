@@ -13,7 +13,9 @@ export function Interviews({
   onAnswer: (id: string) => void;
   onFollow: (id: string) => void;
 }) {
-  const { suspects, dialogue, evidence, locations } = getCase(state.caseId);
+  const { suspects, dialogue, evidence, locations, inspections } = getCase(
+    state.caseId,
+  );
   const [person, setPerson] = useState(suspects[0].id);
   const [topic, setTopic] = useState<string | null>(null);
   const suspect = suspects.find((s) => s.id === person)!;
@@ -28,7 +30,12 @@ export function Interviews({
   const leads = active
     ? evidence.filter(
         (e) =>
-          e.requires.answers?.includes(active.id) &&
+          (e.requires.answers?.includes(active.id) ||
+            inspections.some(
+              (i) =>
+                i.evidenceId === e.id &&
+                i.requires.answers?.includes(active.id),
+            )) &&
           !state.evidence.includes(e.id),
       )
     : [];

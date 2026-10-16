@@ -73,7 +73,7 @@ Newsroom L14: E32 genuine weather bulletin/channel-open confirmation, E33 contra
 
 I11: terminal's 22:13 reading minus seven minutes = 22:06. Players correct the clock with the calibration and raw records; incorrect attempts cost nothing. I12: compare Celia's claim “payment requires harbor-master closure” with the rider's “any canceled public trial, whatever the cause.” Pairing unrelated true clauses is insufficient. Both originals are displayed, and no outside knowledge or cipher guessing is required.
 
-D11 E24+E25: queued recording, not live interference (method). D12 E23+E29: insertion precedes the call (window). D13 E26+E27+E28: U4 issued to Celia; the others continuously accounted for at 22:06 (identity). D14 E30+E32+E33: false warning triggers a private windfall (motive). E34 follows all four; accusation then requires S13 + M12 (preload reserve cartridge) + R12 (trigger commercial cancellation benefit).
+D11 E24+E25: queued recording, not live interference (method). D12 E23+E29: insertion precedes the call (window). D13 (requires D12) E26+E27+E28: U4 issued to Celia; the others continuously accounted for at 22:06 (identity). D14 E30+E32+E33: false warning triggers a private windfall (motive). E34 follows all four; accusation then requires S13 + M12 (preload reserve cartridge) + R12 (trigger commercial cancellation benefit).
 
 ## Outcomes and fairness
 

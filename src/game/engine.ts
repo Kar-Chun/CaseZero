@@ -1,3 +1,4 @@
+import { inspectionAnswers } from "./inspection-rules";
 import { getCase } from "./cases";
 import type { GameState, Requirement, Accusation, CaseId } from "./types";
 export const freshState = (caseId: CaseId = "quiet-hour"): GameState => ({
@@ -72,6 +73,20 @@ export function combine(state: GameState, ids: string[]): CombinationResult {
       message:
         "These clues do not establish a complete conclusion. Compare the board’s questions and try another connection.",
     };
+  if (!meets(state, match.requires ?? {})) {
+    const titles = (match.requires?.deductions ?? [])
+      .map(
+        (id) =>
+          getCase(state.caseId).deductions.find((d) => d.id === id)?.title,
+      )
+      .filter(Boolean);
+    return {
+      state,
+      message: titles.length
+        ? `This connection needs an earlier conclusion: ${titles.join(", ")}. Establish that question first.`
+        : "This connection needs its supporting records or interviews first.",
+    };
+  }
   if (state.deductions.includes(match.id))
     return {
       state,
@@ -118,4 +133,46 @@ export function resumeInvestigation(state: GameState): GameState {
 }
 export function notebook(state: GameState, notes: string): GameState {
   return { ...state, notes: notes.slice(0, 6000) };
+}
+
+export function analyze(
+  state: GameState,
+  id: string,
+  selection: string,
+): { state: GameState; message: string; solved: boolean } {
+  const c = getCase(state.caseId),
+    activity = c.inspections.find((i) => i.id === id);
+  if (
+    !state.started ||
+    state.accusation ||
+    !activity ||
+    !meets(state, activity.requires)
+  )
+    return {
+      state,
+      message: "Find the supporting records before analyzing this evidence.",
+      solved: false,
+    };
+  if (state.inspections.includes(id))
+    return {
+      state,
+      message: "This analysis is already recorded.",
+      solved: true,
+    };
+  const choices = selection.split(":");
+  if (
+    (activity.kind === "clock"
+      ? !/^([01]\d|2[0-3]):[0-5]\d$/.test(selection)
+      : choices.length !== activity.panels.length ||
+        !activity.panels.every((panel, index) =>
+          panel.options.some((o) => o.id === choices[index]),
+        )) ||
+    inspectionAnswers[state.caseId]?.[id] !== selection
+  )
+    return { state, message: activity.failure, solved: false };
+  const next = discover(
+    { ...state, inspections: [...state.inspections, id] },
+    activity.evidenceId,
+  );
+  return { state: next, message: activity.success, solved: true };
 }

@@ -14,6 +14,7 @@ import {
   accuse,
   resumeInvestigation,
   notebook,
+  analyze,
 } from "@/game/engine";
 import { useGame } from "@/game/useGame";
 import type { Lead } from "@/game/guidance";
@@ -21,6 +22,7 @@ import { getCase } from "@/game/cases";
 import { selectedCase, selectCase } from "@/game/storage";
 import type { CaseId } from "@/game/types";
 import { Intro, Brand, type Screen } from "./Intro";
+import { InspectionPanel } from "./InspectionPanel";
 import { Locations } from "./Locations";
 import { Notebook } from "./Notebook";
 import { FieldGuide } from "./FieldGuide";
@@ -93,13 +95,16 @@ function GameExperience({
 }) {
   const c = getCase(caseId);
   const { evidence } = c;
-  const initialFocus = useRef(true);
+  const initialFocus = useRef(initialScreen === "home");
   const [screen, setScreen] = useState<Screen>(initialScreen);
   const { state, library, setState, available, notice, dismissNotice, reset } =
     useGame(caseId);
   const [tab, setTab] = useState<Tab>("locations");
   const [location, setLocation] = useState<string | null>(null);
   const [guide, setGuide] = useState(false);
+  const [activityId, setActivityId] = useState<string | null>(null);
+  const closeActivity = useCallback(() => setActivityId(null), [setActivityId]);
+  const activity = c.inspections.find((i) => i.id === activityId);
   const [file, setFile] = useState<string | null>(null);
   const [resetMode, setResetMode] = useState<"new" | "reset" | null>(
     initialReplay ? "new" : null,
@@ -259,6 +264,7 @@ function GameExperience({
                 state={state}
                 onDiscover={collect}
                 onInspect={setFile}
+                onAnalyze={setActivityId}
               />
             ) : tab === "board" ? (
               <Board
@@ -335,6 +341,22 @@ function GameExperience({
             View evidence board
             <Icon name="board" size={16} />
           </button>
+        </Modal>
+      )}
+      {activity && (
+        <Modal title={activity.title} onClose={closeActivity}>
+          <InspectionPanel
+            activity={activity}
+            onSubmit={(selection) => {
+              const result = analyze(state, activity.id, selection);
+              if (result.solved) {
+                setState(result.state);
+                closeActivity();
+                setFile(activity.evidenceId);
+              }
+              return result.message;
+            }}
+          />
         </Modal>
       )}
       {guide && <FieldGuide onClose={closeGuide} />}

@@ -7,7 +7,7 @@ export async function navigate(page: Page, name: string) {
 }
 export async function visit(page: Page, name: string) {
   await navigate(page, "Locations");
-  const back = page.getByRole("button", { name: "Museum map" });
+  const back = page.getByRole("button", { name: /^(Museum|Station) map$/ });
   if (await back.isVisible()) await back.click();
   await page.getByRole("button", { name: new RegExp(name) }).click();
 }
@@ -137,10 +137,11 @@ export async function submit(
   suspect = "S01",
   method = "M02",
   motive = "R03",
+  labels = { method: "How was it taken?", motive: "Why was it taken?" },
 ) {
   await page.getByLabel("Person of interest").selectOption(suspect);
-  await page.getByLabel("How was it taken?").selectOption(method);
-  await page.getByLabel("Why was it taken?").selectOption(motive);
+  await page.getByLabel(labels.method).selectOption(method);
+  await page.getByLabel(labels.motive).selectOption(motive);
   await page.getByRole("button", { name: "Review accusation" }).click();
   await expect(
     page.getByRole("heading", { name: "Check your reasoning." }),
