@@ -1,4 +1,4 @@
-import { evidence, dialogue, deductions } from "./content";
+import { getCase, isCaseId } from "./cases";
 import { freshState, meets, canAccuse, validAccusation } from "./engine";
 import type { GameState, Accusation } from "./types";
 export const SAVE_KEY = "casezero:progress:v1";
@@ -26,14 +26,50 @@ export function parseSave(raw: string): GameState | null {
     const s: unknown = JSON.parse(raw);
     if (
       !object(s) ||
-      s.version !== 1 ||
-      s.caseId !== "quiet-hour" ||
+      ![1, 2].includes(s.version as number) ||
+      !isCaseId(s.caseId) ||
+      (s.version === 1 && s.caseId !== "quiet-hour") ||
       typeof s.started !== "boolean" ||
-      !ids(s.evidence, evidence) ||
-      !ids(s.deductions, deductions) ||
-      !ids(s.answers, dialogue) ||
       typeof s.notes !== "string" ||
       s.notes.length > 6000
+    )
+      return null;
+    const definition = getCase(s.caseId);
+    const { evidence, dialogue, deductions, inspections } = definition;
+    if (
+      !ids(s.evidence, evidence) ||
+      !ids(s.deductions, deductions) ||
+      !ids(s.answers, dialogue)
+    )
+      return null;
+    const completed = s.version === 1 ? [] : s.inspections,
+      hints = s.version === 1 ? {} : s.hints,
+      pinned = s.version === 1 ? [] : s.pinned;
+    if (
+      !ids(completed, inspections) ||
+      !ids(pinned, evidence) ||
+      pinned.length > Math.max(...deductions.map((d) => d.evidence.length)) ||
+      !pinned.every(
+        (id) => s.evidence instanceof Array && s.evidence.includes(id),
+      ) ||
+      !object(hints)
+    )
+      return null;
+    const hintKeys = [
+      ...evidence.map((e) => `evidence:${e.id}`),
+      ...dialogue.map((t) => `interview:${t.id}`),
+      ...deductions.map((d) => `deduction:${d.id}`),
+      ...inspections.map((i) => `inspection:${i.id}`),
+    ];
+    if (
+      Object.entries(hints).some(
+        ([key, value]) =>
+          !hintKeys.includes(key) ||
+          typeof value !== "number" ||
+          !Number.isInteger(value) ||
+          value < 1 ||
+          value > 3,
+      )
     )
       return null;
     if (s.accusation !== null) {
@@ -42,13 +78,16 @@ export function parseSave(raw: string): GameState | null {
         typeof s.accusation.suspect !== "string" ||
         typeof s.accusation.method !== "string" ||
         typeof s.accusation.motive !== "string" ||
-        !validAccusation(s.accusation as Accusation)
+        !validAccusation(s.accusation as Accusation, s.caseId)
       )
         return null;
     }
     const state: GameState = {
-      version: 1,
-      caseId: "quiet-hour",
+      version: 2,
+      caseId: s.caseId,
+      inspections: [...completed],
+      hints: { ...hints } as Record<string, number>,
+      pinned: [...pinned],
       started: s.started,
       evidence: [...s.evidence],
       deductions: [...s.deductions],
@@ -69,7 +108,10 @@ export function parseSave(raw: string): GameState | null {
         state.deductions.length ||
         state.answers.length ||
         state.notes ||
-        state.accusation)
+        state.accusation ||
+        state.inspections.length ||
+        state.pinned.length ||
+        Object.keys(state.hints).length)
     )
       return null;
     if (
@@ -88,6 +130,12 @@ export function parseSave(raw: string): GameState | null {
       !deductions
         .filter((d) => state.deductions.includes(d.id))
         .every((d) => meets(state, { evidence: d.evidence }))
+    )
+      return null;
+    if (
+      !inspections
+        .filter((i) => state.inspections.includes(i.id))
+        .every((i) => meets(state, i.requires))
     )
       return null;
     if (state.accusation && !canAccuse(state)) return null;

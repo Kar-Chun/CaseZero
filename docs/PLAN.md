@@ -42,3 +42,37 @@ M7: Clean final npm ci succeeded in an isolated directory. Final typecheck, lint
 ## Handoff
 
 MVP complete. No pending implementation work. See README.md to run/play and docs/VERIFICATION.md for QA scope and limits. Review the committed develop/casezero branch and docs/REVIEW.md. No remote repository is configured; a hosted PR requires a remote. No public deployment performed.
+
+# Phase 2 — a case library and deeper investigations
+
+## Review and priorities
+
+Baseline on 16 October 2026: existing typecheck/lint and all 41 unit/component tests pass. The original narrative, immutable rules, version validation and accessible components are sound. Limitations: engine/UI/save key assume a single case; every discovery is a button and every deduction has three clues; the notebook's single-step hint is explicit; switching views loses pinned evidence; failed combinations discard the whole thread. A second case must vary the reasoning, not only rename museum objects.
+
+Preserve the original case's IDs, story, outcomes, selectors where practical and saved progress. Keep content and rules separate; add no runtime services or dependencies.
+
+| Phase 2 milestone                        | Acceptance criteria                                                                                                                                                                                                                                     | Status      |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| P1 Case model and compatibility          | Typed case registry and case-aware pure rules; state v2 with validated migration of original v1 saves; graph/recipe integrity checks; old tests, new migration tests, typecheck/lint/build pass                                                         | Complete |
+| P2 Case library and independent progress | Data-driven briefing/UI, per-case save/reset/replay, case progress cards and navigation; original experience works; isolation and switching tests pass                                                                                                  | Pending     |
+| P3 Dead Air and interactive analysis     | Complete new radio-station case with 4 suspects, 4 locations, 14 clues, two evidence-analysis activities, variable-size deductions and coherent outcomes; reference/reachability, dialogue and full-path tests pass                                     | Pending     |
+| P4 Hints and investigation flow          | Optional three-stage hints for the current obstacle, saved independently; persistent pins, targeted deduction work, useful failed-thread feedback and mobile refinement; focused regression tests pass                                                  | Pending     |
+| P5 Portable saves and finish             | Validated export/import with review, case mismatch protection and no effect on other cases; case-specific artwork and updated concise instructions; backup and UI tests pass                                                                            | Pending     |
+| P6 Complete QA and handoff               | Both cases complete via UI, incorrect verdicts/retry, independent refresh/reset/replay, v1 migration, hint/analysis/backup flows, desktop/mobile/keyboard/axe; clean install, typecheck/lint/unit/build/E2E; commit and update verification/review docs | Pending     |
+
+## Design and risks
+
+- `CaseDefinition` holds player-facing content and presentation metadata. Registry selection is explicit; no mutable global case. Outcomes and analysis answers remain separate from rendered metadata, with no claim of client-source secrecy.
+- State v2 adds analysis completions, hint stages and pinned evidence. Original save namespace is retained and v1 saves normalize without losing evidence, notes, answers, deductions or endings. Each additional case has its own key. Reset affects only the selected case.
+- New case: **Dead Air**, a forged coastal-radio closure bulletin. The important time is when a recording was queued, not when it aired. A clock correction and a comparison of a sponsor assurance with a contract rider produce evidence; normal searches and evidence-led interviews remain available. Two- and three-clue conclusions avoid a repeated fixed recipe.
+- Verify all content by reference checks and reachability closure including analysis prerequisites, plus explicit engine/UI solution paths. There are no timers, consumables or irreversible dialogue choices.
+- Progressive hints start with a direction, then a reasoning prompt, then a specific lead. Later stages require deliberate reveal and do not name the culprit prematurely. Export/import validates the same invariants as normal storage and reviews replacements before changing progress.
+- Prioritize a complete second case and saved-game compatibility over audio or extra systems. Atmospheric audio is deferred; it adds less investigation value than portable saves and analysis activities.
+
+## Phase 2 verification log
+
+P1 complete: TypeScript, ESLint, all 45 unit/component tests and production build passed. Original 41 tests remain intact. Added v1 partial/ending migration, v2 field validation, registry integrity and ambiguous-recipe coverage.
+
+## Phase 2 handoff
+
+Next: P2 case-aware presentation, per-case storage and library navigation. Continue on develop/casezero; no deployment or external writes.

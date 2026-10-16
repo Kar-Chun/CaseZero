@@ -1,34 +1,31 @@
-import {
-  evidence,
-  dialogue,
-  deductions,
-  suspects,
-  methods,
-  motives,
-} from "./content";
-import type { GameState, Requirement, Accusation } from "./types";
-export const freshState = (): GameState => ({
-  version: 1,
-  caseId: "quiet-hour",
+import { getCase } from "./cases";
+import type { GameState, Requirement, Accusation, CaseId } from "./types";
+export const freshState = (caseId: CaseId = "quiet-hour"): GameState => ({
+  version: 2,
+  caseId,
   started: false,
   evidence: [],
   deductions: [],
   answers: [],
   notes: "",
   accusation: null,
+  inspections: [],
+  hints: {},
+  pinned: [],
 });
 export function meets(state: GameState, req: Requirement): boolean {
   return (
     (req.evidence ?? []).every((id) => state.evidence.includes(id)) &&
     (req.deductions ?? []).every((id) => state.deductions.includes(id)) &&
-    (req.answers ?? []).every((id) => state.answers.includes(id))
+    (req.answers ?? []).every((id) => state.answers.includes(id)) &&
+    (req.inspections ?? []).every((id) => state.inspections.includes(id))
   );
 }
 export function startCase(state: GameState): GameState {
   return { ...state, started: true };
 }
 export function discover(state: GameState, id: string): GameState {
-  const clue = evidence.find((item) => item.id === id);
+  const clue = getCase(state.caseId).evidence.find((item) => item.id === id);
   if (
     !state.started ||
     state.accusation ||
@@ -40,7 +37,7 @@ export function discover(state: GameState, id: string): GameState {
   return { ...state, evidence: [...state.evidence, id] };
 }
 export function answer(state: GameState, id: string): GameState {
-  const line = dialogue.find((item) => item.id === id);
+  const line = getCase(state.caseId).dialogue.find((item) => item.id === id);
   if (
     !state.started ||
     state.accusation ||
@@ -64,7 +61,7 @@ export function combine(state: GameState, ids: string[]): CombinationResult {
     !ids.every((id) => state.evidence.includes(id))
   )
     return { state, message: "Select distinct evidence from your inventory." };
-  const match = deductions.find(
+  const match = getCase(state.caseId).deductions.find(
     (d) =>
       d.evidence.length === ids.length &&
       d.evidence.every((id) => ids.includes(id)),
@@ -90,11 +87,17 @@ export function combine(state: GameState, ids: string[]): CombinationResult {
 export function canAccuse(state: GameState): boolean {
   return (
     state.started &&
-    deductions.every((d) => state.deductions.includes(d.id)) &&
-    state.evidence.includes("E16")
+    getCase(state.caseId).deductions.every((d) =>
+      state.deductions.includes(d.id),
+    ) &&
+    state.evidence.includes(getCase(state.caseId).resolution.evidenceId)
   );
 }
-export function validAccusation(value: Accusation): boolean {
+export function validAccusation(
+  value: Accusation,
+  caseId: CaseId = "quiet-hour",
+): boolean {
+  const { suspects, methods, motives } = getCase(caseId);
   return (
     suspects.some((s) => s.id === value.suspect) &&
     methods.some((m) => m.id === value.method) &&
@@ -102,7 +105,11 @@ export function validAccusation(value: Accusation): boolean {
   );
 }
 export function accuse(state: GameState, value: Accusation): GameState {
-  if (!canAccuse(state) || state.accusation || !validAccusation(value))
+  if (
+    !canAccuse(state) ||
+    state.accusation ||
+    !validAccusation(value, state.caseId)
+  )
     return state;
   return { ...state, accusation: value };
 }

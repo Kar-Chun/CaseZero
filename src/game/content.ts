@@ -1,4 +1,11 @@
-import type { Location, Evidence, Suspect, Dialogue, Deduction } from "./types";
+import type {
+  Location,
+  Evidence,
+  Suspect,
+  Dialogue,
+  Deduction,
+  CaseDefinition,
+} from "./types";
 export const CASE_ID = "quiet-hour";
 export const locations: Location[] = [
   {
@@ -443,3 +450,56 @@ export const motives = [
   { id: "R02", label: "Secure it for a private collection" },
   { id: "R03", label: "Arrange an unauthorized restitution to Neris" },
 ];
+
+/** Original exports remain stable for existing content consumers. */
+export const quietHour: CaseDefinition = {
+  id: "quiet-hour",
+  number: "001",
+  title: "The Quiet Hour",
+  genre: "Museum mystery",
+  summary:
+    "The Asterion Seal has vanished from a locked display during Halcyon’s most exclusive evening. The doors are sealed. The answers are inside.",
+  tagline: "An exclusive evening. An empty display. A room full of secrets.",
+  duration: "30–45 min",
+  venue: "Halcyon Museum",
+  setting: "The Halcyon Museum · 14 November 2025 · 21:25",
+  arrival: "21:25",
+  statusLine: "EXITS SEALED",
+  theme: "museum",
+  mapLabel: "Museum map",
+  locationHeading: "The museum is yours to examine.",
+  enterLabel: "Enter the museum",
+  briefing: {
+    heading: "History has a way of going missing.",
+    paragraphs: [
+      "At 21:18, the host of Halcyon’s private patron evening found the Asterion Seal’s display empty. No broken glass. No alarm. No one admitting they saw a thing.",
+      "The ninth-century seal is the centerpiece of the museum’s new collection. Its disappearance could destroy the institution’s reputation—and the careers of those gathered here tonight.",
+      "The exits were sealed immediately. Four people had reason to want the seal gone. You have unrestricted access to the gallery, security office, conservation workshop and archive.",
+    ],
+    quote:
+      "Find the object. Establish the facts. Let the evidence tell you the rest.",
+    attribution: "Museum liaison",
+    objectives: [
+      "Examine the museum and collect evidence",
+      "Interview all four persons of interest",
+      "Connect clues into four conclusions",
+      "Recover the seal and submit your case",
+    ],
+  },
+  resolution: {
+    evidenceId: "E16",
+    proofLabel: "The seal recovered",
+    searchLabel: "Search the conservation store",
+    question: "Who took the seal?",
+    methodLabel: "How was it taken?",
+    motiveLabel: "Why was it taken?",
+  },
+  locations,
+  evidence,
+  suspects,
+  dialogue,
+  deductions,
+  methods,
+  motives,
+  inspections: [],
+};
