@@ -16,14 +16,19 @@ export function FieldGuide({ onClose }: { onClose: () => void }) {
             "Interview everyone. New evidence unlocks more precise questions; you can return to any conversation.",
           ],
           [
+            "search",
+            "Analyze",
+            "Some records need analysis. All source material stays visible. Reconstruct sequences or compare documents using their stated facts, with no timer or penalty for revision.",
+          ],
+          [
             "board",
             "Connect",
-            "Focus a question and select its related evidence cards. Different connections can use two or three clues; four questions guide the case.",
+            "Focus a question, read the sources and pin related evidence. Test the connection; some cases also ask you to choose the explanation those facts support.",
           ],
           [
             "verdict",
             "Conclude",
-            "Build all four conclusions, recover the object, then identify a suspect, method and motive.",
+            "Build all four conclusions and secure the final proof. Then identify the person, method and motive. Unsupported accounts can be revised without losing progress.",
           ],
         ].map(([icon, title, copy]) => (
           <div key={title}>

@@ -1,9 +1,10 @@
 "use client";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useRef, useEffect } from "react";
 import { getCase } from "@/game/cases";
 import { type CombinationResult, meets, threadDeduction } from "@/game/engine";
 import type { GameState } from "@/game/types";
 import type { Lead } from "@/game/guidance";
+import { FollowUpLinks } from "./FollowUpLinks";
 import { ExplanationChoice } from "./ExplanationChoice";
 import { HintPanel } from "./HintPanel";
 import { Icon } from "./Icon";
@@ -38,6 +39,11 @@ export function Board({
   const [filter, setFilter] = useState("all");
   const [compare, setCompare] = useState(false);
   const [message, setMessage] = useState("");
+  const [established, setEstablished] = useState("");
+  const revelation = useRef<HTMLHeadingElement>(null);
+  useEffect(() => {
+    if (established) revelation.current?.focus();
+  }, [established]);
   const closeCompare = useCallback(() => setCompare(false), []);
   const collected = evidence.filter((e) => state.evidence.includes(e.id));
   const visible = collected.filter(
@@ -72,7 +78,18 @@ export function Board({
           {state.evidence.length} / {evidence.length} COLLECTED
         </span>
       </div>
-      <div className="deduction-board">
+      {collected.length > 0 && (
+        <nav className="board-shortcuts" aria-label="Board shortcuts">
+          <a href="#board-inventory">
+            Jump to evidence <Icon name="arrow" size={14} />
+          </a>
+          <a href="#board-thread">
+            Go to pinned thread ({selected.length}){" "}
+            <Icon name="board" size={14} />
+          </a>
+        </nav>
+      )}
+      <div className="deduction-board" id="board-questions" tabIndex={-1}>
         <div className="board-caption">
           <Icon name="board" size={16} />
           <span>
@@ -108,6 +125,23 @@ export function Board({
                       ? "Waiting for an earlier conclusion"
                       : `${d.evidence.filter((id) => state.evidence.includes(id)).length} / ${d.evidence.length} related clues found`}
                 </div>
+                {solved && (
+                  <details className="conclusion-sources">
+                    <summary>Review supporting records</summary>
+                    <ul>
+                      {d.evidence.map((id) => (
+                        <li key={id}>
+                          <button
+                            className="text-link"
+                            onClick={() => onInspect(id)}
+                          >
+                            {evidence.find((e) => e.id === id)!.title}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </details>
+                )}
                 {!solved && (
                   <button
                     className="text-link focus-question"
@@ -157,7 +191,7 @@ export function Board({
         </div>
       ) : (
         <>
-          <div className="inventory-heading">
+          <div className="inventory-heading" id="board-inventory" tabIndex={-1}>
             <div>
               <p className="eyebrow">EVIDENCE INVENTORY</p>
               <p>Read a file to inspect it. Pin a card to compare its facts.</p>
@@ -259,6 +293,8 @@ export function Board({
             )}
           <div
             className={`connection-tray ${selected.length ? "has-thread" : ""}`}
+            id="board-thread"
+            tabIndex={-1}
           >
             <div>
               <p className="eyebrow">
@@ -307,6 +343,12 @@ export function Board({
                       thread ? explanations[thread.id] : undefined,
                     );
                     setMessage(result.message);
+                    setEstablished(
+                      result.deductionId &&
+                        !state.deductions.includes(result.deductionId)
+                        ? result.deductionId
+                        : "",
+                    );
                     if (result.deductionId) onPinChange([]);
                   }}
                 >
@@ -316,9 +358,30 @@ export function Board({
               )}
             </div>
           </div>
-          <p className="connection-message" role="status">
-            {message}
-          </p>
+          <div
+            className={established && message ? "conclusion-revelation" : ""}
+          >
+            {established && message && (
+              <h3 ref={revelation} tabIndex={-1}>
+                Conclusion established:{" "}
+                {deductions.find((d) => d.id === established)!.title}
+              </h3>
+            )}
+            <p className="connection-message" role="status">
+              {message}
+            </p>
+            {established && message && (
+              <FollowUpLinks
+                state={state}
+                kind="deductions"
+                sourceId={established}
+                onFollow={onFollow}
+              />
+            )}
+          </div>
+          <a href="#board-questions" className="text-link board-return">
+            Back to board questions <Icon name="back" size={14} />
+          </a>
         </>
       )}
       {compare && (

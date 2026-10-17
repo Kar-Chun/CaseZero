@@ -115,8 +115,8 @@ export function Notebook({
           </div>
           <HintPanel state={state} onReveal={onRevealHint} onFollow={onLead} />
           <p className="small-note">
-            Motive is a starting point. Opportunity, method and the object’s
-            route are what make a case.
+            Motive is a starting point. Opportunity, method and a chain of
+            recorded facts are what make a case.
           </p>
         </aside>
       </div>

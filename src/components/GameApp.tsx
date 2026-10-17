@@ -24,6 +24,7 @@ import { getCase } from "@/game/cases";
 import { selectedCase, selectCase } from "@/game/storage";
 import type { CaseId, GameState } from "@/game/types";
 import { Intro, Brand, type Screen } from "./Intro";
+import { FollowUpLinks } from "./FollowUpLinks";
 import { InspectionPanel } from "./InspectionPanel";
 import { Locations } from "./Locations";
 import { Notebook } from "./Notebook";
@@ -350,6 +351,15 @@ function GameExperience({
       {selectedClue && (
         <Modal title={selectedClue.title} onClose={closeFile}>
           <EvidenceFile clue={selectedClue} caseId={caseId} />
+          <FollowUpLinks
+            state={state}
+            kind="evidence"
+            sourceId={selectedClue.id}
+            onFollow={(lead) => {
+              closeFile();
+              follow(lead);
+            }}
+          />
           <button
             className="button primary"
             onClick={() => {

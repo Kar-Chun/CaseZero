@@ -1,5 +1,6 @@
 "use client";
 import { getCase } from "@/game/cases";
+import { nextLead } from "@/game/guidance";
 import { meets } from "@/game/engine";
 import type { GameState } from "@/game/types";
 import { Icon } from "./Icon";
@@ -141,6 +142,35 @@ export function Locations({
         </div>
         <span className="tag">{locations.length} LOCATIONS</span>
       </div>
+      {state.evidence.length === 0 && state.answers.length === 0 && (
+        <aside className="first-approach" aria-label="Getting started">
+          <p className="eyebrow">YOUR FIRST FEW MINUTES</p>
+          <ol>
+            <li>
+              <strong>Read a record.</strong> Choose any room and examine one
+              search point.
+            </li>
+            <li>
+              <strong>Ask a better question.</strong> A discovery can open a
+              follow-up interview.
+            </li>
+            <li>
+              <strong>Build a supported account.</strong> Read the board’s
+              questions; pin related facts and test what they establish.
+            </li>
+          </ol>
+          <button
+            className="text-link"
+            onClick={() => {
+              const lead = nextLead(state);
+              if (lead.kind === "location" && lead.target)
+                onSelect(lead.target);
+            }}
+          >
+            Suggest a starting room <Icon name="arrow" size={15} />
+          </button>
+        </aside>
+      )}
       <div className="location-grid">
         {locations.map((l, i) => (
           <button

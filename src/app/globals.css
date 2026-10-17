@@ -3426,3 +3426,133 @@ select {
     padding: 18px;
   }
 }
+
+/* Clear next actions keep the investigation moving without automatic deductions. */
+.first-approach {
+  border-left: 2px solid var(--gold);
+  padding: 20px 24px;
+  margin: 0 0 28px;
+  background: #14212a;
+}
+.first-approach ol {
+  padding-left: 18px;
+  color: var(--muted);
+  font-size: 13px;
+  margin: 15px 0;
+}
+.first-approach li {
+  padding: 5px 0 5px 5px;
+}
+.first-approach strong {
+  color: #ddd8ca;
+  font-weight: 500;
+}
+.follow-up-links {
+  border-top: 1px solid #6b674f;
+  padding: 20px 0;
+  margin-top: 22px;
+}
+.follow-up-links ul,
+.conclusion-sources ul {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+}
+.follow-up-links li + li {
+  margin-top: 8px;
+}
+.follow-up-links button {
+  line-height: 1.7;
+  text-align: left;
+  justify-content: space-between;
+  width: 100%;
+  gap: 15px;
+  padding: 9px 0;
+  font-size: 13px;
+}
+.follow-up-links svg {
+  flex-shrink: 0;
+}
+.board-shortcuts {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin: -5px 0 22px;
+}
+.board-shortcuts a {
+  display: inline-flex;
+  gap: 9px;
+  align-items: center;
+  color: var(--gold);
+  font-size: 12px;
+  min-height: 44px;
+}
+#board-questions,
+#board-inventory,
+#board-thread {
+  scroll-margin-top: 90px;
+}
+.conclusion-sources {
+  font-size: 11px;
+  color: #b6c4bf;
+  margin-top: 16px;
+}
+.conclusion-sources summary {
+  cursor: pointer;
+  padding: 7px 0;
+}
+.conclusion-sources button {
+  min-height: 38px;
+  text-align: left;
+  line-height: 1.6;
+}
+.conclusion-revelation {
+  margin: 22px 0;
+  padding: 28px;
+  border: 1px solid #a4986d;
+  background: linear-gradient(125deg, #243733, #17262d);
+  animation: conclusion-reveal 0.45s ease-out;
+}
+.conclusion-revelation h3 {
+  font-size: 29px;
+  color: #e1d6b8;
+}
+.conclusion-revelation .connection-message {
+  font-size: 14px;
+  color: #d1d3c7;
+  margin-bottom: 0;
+}
+.board-return {
+  min-height: 44px;
+  margin: 10px 0;
+}
+@keyframes conclusion-reveal {
+  from {
+    opacity: 0.3;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (max-width: 600px) {
+  .first-approach {
+    padding: 18px;
+  }
+  .first-approach ol {
+    font-size: 12px;
+  }
+  .board-shortcuts {
+    gap: 5px 20px;
+  }
+  .conclusion-revelation {
+    padding: 20px;
+  }
+  .conclusion-revelation h3 {
+    font-size: 25px;
+  }
+  .conclusion-revelation .connection-message {
+    font-size: 13px;
+  }
+}
