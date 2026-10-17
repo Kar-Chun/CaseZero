@@ -1,45 +1,43 @@
-# CaseZero Phase 2 verification
+# CaseZero Phase 3 verification
 
-Verified on 16 October 2026 in Linux with Node 24.19.0, npm 11.9.0, Next.js 16.4.0 and React 19.3.0. Original MVP verification and the six Phase 2 milestone results are preserved in PLAN.md.
+Verified on 17 October 2026 in Linux with Node 24.19.0, npm 11.9.0, Next.js 16.4.0 and React 19.3.0. Prior milestone results remain in PLAN.md.
 
-| Check                 | Actual result                                                                                                                                                           |
-| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Clean installation    | `npm ci` succeeded in an isolated directory using the final manifest/lockfile; 320 packages installed                                                                   |
-| TypeScript            | `npm run typecheck` passed                                                                                                                                              |
-| ESLint                | `npm run lint` passed                                                                                                                                                   |
-| Unit/component tests  | `npm test`: 81 tests passed in 20 files                                                                                                                                 |
-| Production build      | `npm run build` passed; App Router pages prerendered successfully                                                                                                       |
-| Production Playwright | 44 passed against the production server: 22 desktop and 22 mobile Chromium tests (2.2 minutes)                                                                          |
-| Accessibility         | axe WCAG 2/2.1 A/AA scans report zero violations on audited entry, original investigation, new analyses and import screens; keyboard/focus/reduced-motion checks passed |
-| Responsive            | Desktop, 390px mobile and 320px narrow investigation layouts checked without document overflow                                                                          |
-| Repository            | Existing `develop/casezero` branch; six completed milestone commits; `git diff --check` passed; no deployment                                                           |
+| Check                    | Actual result                                                                                                           |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| Clean install            | Isolated `npm ci` succeeded with the final manifest/lockfile; 320 packages installed                                    |
+| TypeScript               | `npm run typecheck` passed                                                                                              |
+| ESLint                   | `npm run lint` passed                                                                                                   |
+| Unit/component tests     | `npm test`: 102 passed in 23 files                                                                                      |
+| Production build         | `npm run build` passed; App Router pages prerendered                                                                    |
+| Production browser suite | 81 passed in 7.8 minutes: 27 desktop Chromium, 27 mobile Chromium, 27 desktop WebKit                                    |
+| Accessibility            | Zero axe WCAG 2/2.1 A/AA violations on audited screens; tested keyboard, focus, reduced motion and 320px layouts passed |
+| Repository               | Existing `develop/casezero` branch; five verified milestone commits; `git diff --check` passed                          |
 
-## Verified behavior
+## Gameplay and compatibility
 
-Both authored cases have complete reference/reachability validation, explicit engine solution paths, every dialogue dependency and correct/unsupported verdict tests. The new case has fourteen clues, four suspects, four locations, twelve interview branches and four conclusions. Clock calibration and document comparison produce evidence only after their prerequisites and correct analysis; failed attempts cannot consume evidence or block progress. Identity reasoning explicitly requires the corrected insertion window.
+All three cases complete through actual UI searches, interviews, analysis, deductions and final evidence. Browser journeys cover correct and unsupported verdicts, successful retry, refresh at an ending and independent case progress. The original two cases and their original meaningful tests remain intact.
 
-Production journeys complete The Quiet Hour and Dead Air through actual UI searches, interviews, analyses, board combinations and final evidence. They exercise unsupported accusations, retry, ending restoration and replay. The original sixteen-clue mystery remains intact. Optional three-stage guidance is tested through both complete required paths; requesting hints never discovers clues or establishes conclusions automatically.
+After the Flood adds fourteen clues, four suspects, four rooms, twelve interview topics, one reconstruction and four explanation-dependent deductions. All 24 distinct event orders were tested; exactly one satisfies the authored records. Duplicate/missing/foreign events and unsupported explanations grant no progress. Opportunity requires the reconstructed window. The required path also completes without the optional red-herring correspondence. Every conditional interview is checked with its complete requirements and each missing dependency. Content checks cover reference integrity, reachability, analysis rewards and valid explanation choices.
 
-Save checks cover original version 1 partial/ending migration, independently restored case progress, notes, hints, analysis and pins, reset/replay isolation, invalid/impossible/unsupported data, denied storage and quota errors. Portable backups round-trip all fields. Browser checks download a real JSON file, upload it, review without writing, then restore it; foreign-case and oversized files leave current progress unchanged. Cross-tab checks cover same-case synchronization and different-case isolation. Simultaneous edits use the latest saved snapshot and are not merged.
+Version 2 save shape and existing keys are unchanged. Original version 1 partial/ending saves migrate; original version 2 saves and backups restore. Tests exercise all three independent saves, replay/reset, real JSON downloads and file uploads, review before replacement, notes, hints, pins and completed reconstruction. Invalid, unsupported, oversized, foreign-case and impossible imports leave progress unchanged. Storage denial/quota and same-/different-case tab behavior remain covered. Simultaneous edits use the latest snapshot, without merging.
 
-Desktop archive/radio-room and narrow-board screenshots were visually reviewed. Monitored journeys reported no page or application console errors. An additional desktop check confirmed room-heading focus and the skip link staying outside the viewport after navigation.
+Discovery links select the relevant suspect or location without collecting evidence. Answered topics disappear. Board shortcuts focus their destinations; conclusion feedback receives focus and supporting records reopen correctly. New reconstruction, explanation, revelation and backup-review screens have narrow-layout and axe checks. Monitored journeys reported no page or application console errors. Archive, conservatory hall, reconstruction source/order and narrow-board screenshots were visually reviewed.
 
-## Issues resolved
+## Issues addressed
 
-- Added the missing time-window dependency before the new identity conclusion; custody alone cannot establish who had opportunity at the corrected time.
-- Pinned threads now survive navigation and refresh; unsuccessful connections retain the selected evidence for revision.
-- Hidden controls and dynamically replaced dialog content no longer let keyboard focus escape. Ending and backup-review headings receive focus.
-- Increased the save-size guard to accommodate valid 6,000-character notes containing JSON-escaped characters. Export/import round-trip coverage verifies this boundary.
-- Canceled stale asynchronous file reads so an earlier upload cannot replace a later selection or pasted backup.
-- Preserved per-case session progress through case switching when storage is denied or full; incoming storage events invalidate cached snapshots.
-- Corrected ambiguous clock wording and made the final recording's witnessed transfer explicit during narrative review.
+- Explanation selection is enforced alongside evidence; correct cards alone cannot establish a new-case conclusion.
+- Sequence validation rejects repeated events and preserves progress after unsuccessful attempts.
+- Narrative review aligned the report and preserved observations to the same evaluation time and explained the director’s mistaken assumption about the surviving material. Exact narrative review details are in CASE_BIBLE.md (spoilers).
+- Removed object-recovery assumptions from the general field guide and notebook; all cases now use accurate final-proof guidance.
+- Added actionable discovery relationships and source review to reduce repeated navigation and lost context.
+- Corrected an overly narrow inferred state type in the new component-test harness. No meaningful tests were removed to pass checks.
 
-Final QA initially used a fresh-game helper in a tab with an existing investigation. The helper expected “Explore” where “Continue” was shown; the test now opens the archive directly. Its focused rerun passed. No tests were removed to pass checks.
+## Browser environment and limits
 
-## Limits and handoff
+The production run selected `desktop`, `mobile` and `webkit` with `CASEZERO_CROSS_BROWSER=1 CASEZERO_PRODUCTION=1`. WebKit's missing Debian libraries were extracted under `/tmp` and supplied to its local bundle without replacing existing files. Playwright’s ldconfig-only check cannot see the supplied GLES library; host validation was skipped after launch verification, and all 27 real WebKit tests passed. A normal Linux machine can use `npx playwright install-deps`.
 
-No known blocking gameplay issue remains. Browser coverage uses Chromium desktop and mobile emulation. Safari, Firefox, physical devices and a manual screen-reader audit were not run. Automated scans cover representative screens and do not establish complete accessibility conformance. Browser and test-runner environment warnings are not application console errors.
+Firefox binaries downloaded, but repeated launch attempts failed with “Could not find profile folder”; tracing showed a read-only home configuration path during initialization. No Firefox gameplay tests ran. Opt-in Firefox/WebKit projects are included for environments that support them. Linux WebKit testing does not establish native Safari or physical iOS coverage. Physical devices and a manual screen-reader audit were not tested. Automated scans cover representative screens, not complete conformance.
 
-Saves are local, with portable export/import available. When storage fails, case progress survives switching within the current session, but a refresh still loses unsaved changes. View position, filters and question focus are temporary; pinned threads are saved. Solutions are authored and fixed, and client source remains inspectable. Optional audio is deferred.
+No known blocking gameplay issue remains. View position, filters, question focus and unsubmitted analysis/explanation selections are temporary; completed analyses, conclusions and pins save. Solutions are fixed authored narratives and remain inspectable in client source. Audio is deferred. Unsaved session progress cannot survive refresh if storage fails.
 
-No remote repository is configured; a hosted pull request has not been opened. Review material is in REVIEW.md. No public deployment was performed. See README.md to run/play. Future work could add another authored case, optional ambient sound, and testing on additional browser engines and physical devices.
+No deployment was performed. No remote is configured, so a hosted PR was not opened. REVIEW.md contains the review summary; README.md explains installation and play. Phase 4 priorities: human playtesting to tune difficulty, Firefox/native Safari/device/screen-reader coverage, and carefully authored alternate proof paths before more systems.

@@ -29,7 +29,7 @@ Optional hints in the board and notebook unfold in three deliberate stages. Ther
 
 ## Your case files
 
-Each case saves its evidence, interviews, analysis, conclusions, notes, hints, pinned thread and submitted ending independently in this browser. Use **Case files** to switch investigations or replay one; the others stay intact. Existing version 1 Quiet Hour saves migrate automatically. View position and question focus are temporary.
+Each case saves its evidence, interviews, analysis, conclusions, notes, hints, pinned thread and submitted ending independently in this browser. Use **Case files** to switch investigations or replay one; the others stay intact. Existing version 1 Quiet Hour saves migrate automatically. View position, filters, question focus and unsubmitted analysis/explanation selections are temporary. Completed analyses and conclusions save.
 
 The notebook’s **Export investigation** downloads a portable backup. **Import investigation** accepts an exported file, shows a review and replaces only the matching selected case after confirmation. Original raw version 1 saves are also accepted. Backups include your notes; store them somewhere appropriate.
 
