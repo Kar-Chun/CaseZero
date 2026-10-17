@@ -12,6 +12,12 @@ export default defineConfig({
     screenshot: "only-on-failure",
   },
   projects: [
+    ...(process.env.CASEZERO_CROSS_BROWSER === "1"
+      ? [
+          { name: "firefox", use: { ...devices["Desktop Firefox"] } },
+          { name: "webkit", use: { ...devices["Desktop Safari"] } },
+        ]
+      : []),
     { name: "desktop", use: { ...devices["Desktop Chrome"] } },
     {
       name: "mobile",

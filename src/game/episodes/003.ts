@@ -211,7 +211,7 @@ export const afterTheFlood: CaseDefinition = {
       summary:
         "Authenticated pre-flood photographs show 20% treated survival and 60% untreated.",
       detail:
-        "Under the standing audit protocol, Noor photographed and registered the original trial at 18:30 and retained a small duplicate set in the dry cupboard. The signed batch IDs and independent camera timestamps agree: treated survival 20%, untreated 60%. These observations predate the flood and can be checked against the sealed duplicate register, not a later recollection.",
+        "Under the standing audit protocol, Noor photographed and registered the original trial at 18:30 and retained a small duplicate set in the dry cupboard. The signed batch IDs and independent camera timestamps agree: treated survival 20%, untreated 60%. A bench amendment records that Noor retained the duplicate set dry rather than following the director’s earlier preview checklist, which would have moved both sets into the hall. These observations predate the flood and can be checked against the sealed duplicate register, not a later recollection.",
       requires: { answers: ["T44"] },
       lockHint:
         "Ask Noor about preserved trial records after examining the blue waterline.",
@@ -238,7 +238,7 @@ export const afterTheFlood: CaseDefinition = {
       summary:
         "Elin reported 95% treated survival. An independent audit was due the next morning.",
       detail:
-        "Elin personally signed a 95% treated-survival claim for the same batch IDs photographed at 18:30. The auditor’s notice confirms that living trial material and original registers would be inspected at 08:00 tomorrow. Flood damage would require rescheduling, according to the attached protocol. The reported figure is incompatible with the authenticated pre-flood observations.",
+        "At 18:35 Elin personally signed a 95% treated-survival claim explicitly certifying the final 18:30 evaluation for the same batch IDs. Her earlier preview checklist assigns both the main trial and duplicate set to the hall; the later potting-bench amendment is not in this file. The auditor’s notice confirms that living trial material and original registers would be inspected at 08:00 tomorrow. Flood damage would require rescheduling, according to the attached protocol. The reported figure is incompatible with the authenticated pre-flood observations.",
       requires: {},
       lockHint: "",
     },
