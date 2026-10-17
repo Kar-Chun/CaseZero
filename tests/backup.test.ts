@@ -6,10 +6,10 @@ import {
 } from "../src/game/backup";
 import { saveGame, loadGame, parseSave, saveKey } from "../src/game/storage";
 import { notebook, pinEvidence, revealHint } from "../src/game/engine";
-import { solveCase, solveRadio } from "./helpers";
+import { solveCase, solveRadio, solveConservatory } from "./helpers";
 describe("portable case saves", () => {
-  it("round trips both cases including notes, analysis, hints and pinned evidence", () => {
-    for (const s of [solveCase(), solveRadio()]) {
+  it("round trips all cases including notes, analysis, hints and pinned evidence", () => {
+    for (const s of [solveCase(), solveRadio(), solveConservatory()]) {
       const state = pinEvidence(
         revealHint(
           notebook(s, "A working theory, with punctuation & unicode: café ☂."),

@@ -1,3 +1,4 @@
+import { evaluateConservatory } from "./episodes/003-ending";
 import { evaluateRadio } from "./episodes/002-ending";
 import type { Accusation, CaseId } from "./types";
 export type CaseOutcome = {
@@ -12,6 +13,7 @@ export function evaluate(
   value: Accusation,
   caseId: CaseId = "quiet-hour",
 ): CaseOutcome {
+  if (caseId === "after-the-flood") return evaluateConservatory(value);
   if (caseId === "dead-air") return evaluateRadio(value);
   const correct =
     value.suspect === "S01" && value.method === "M02" && value.motive === "R03";

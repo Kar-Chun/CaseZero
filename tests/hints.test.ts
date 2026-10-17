@@ -12,6 +12,7 @@ import {
   canAccuse,
 } from "../src/game/engine";
 import { progressiveHint, nextLead } from "../src/game/guidance";
+import { deductionAnswers } from "../src/game/deduction-rules";
 import { inspectionAnswers } from "../src/game/inspection-rules";
 import { parseSave, saveGame, loadGame } from "../src/game/storage";
 import { solveCase } from "./helpers";
@@ -57,6 +58,7 @@ describe("progressive assistance and board state", () => {
             s = combine(
               s,
               c.deductions.find((d) => d.id === lead.id)!.evidence,
+              deductionAnswers[c.id]?.[lead.id!],
             ).state;
             break;
           default:

@@ -1,3 +1,4 @@
+import { deductionAnswers } from "./deduction-rules";
 import { inspectionAnswers } from "./inspection-rules";
 import { getCase, isHintKey } from "./cases";
 import type { GameState, Requirement, Accusation, CaseId } from "./types";
@@ -54,7 +55,18 @@ export type CombinationResult = {
   message: string;
   deductionId?: string;
 };
-export function combine(state: GameState, ids: string[]): CombinationResult {
+export function threadDeduction(state: GameState, ids: string[]) {
+  return getCase(state.caseId).deductions.find(
+    (d) =>
+      d.evidence.length === ids.length &&
+      d.evidence.every((id) => ids.includes(id)),
+  );
+}
+export function combine(
+  state: GameState,
+  ids: string[],
+  interpretation?: string,
+): CombinationResult {
   if (
     !state.started ||
     state.accusation ||
@@ -62,11 +74,7 @@ export function combine(state: GameState, ids: string[]): CombinationResult {
     !ids.every((id) => state.evidence.includes(id))
   )
     return { state, message: "Select distinct evidence from your inventory." };
-  const match = getCase(state.caseId).deductions.find(
-    (d) =>
-      d.evidence.length === ids.length &&
-      d.evidence.every((id) => ids.includes(id)),
-  );
+  const match = threadDeduction(state, ids);
   if (!match)
     return {
       state,
@@ -92,6 +100,18 @@ export function combine(state: GameState, ids: string[]): CombinationResult {
       state,
       message: "This conclusion is already on your board.",
       deductionId: match.id,
+    };
+  if (
+    match.interpretations &&
+    (!interpretation ||
+      !match.interpretations.some((option) => option.id === interpretation) ||
+      deductionAnswers[state.caseId]?.[match.id] !== interpretation)
+  )
+    return {
+      state,
+      message: !interpretation
+        ? "These records connect. Choose the explanation they support, then test the connection."
+        : "That explanation does not account for all these records. Compare their details and revise your explanation.",
     };
   return {
     state: { ...state, deductions: [...state.deductions, match.id] },
@@ -164,6 +184,8 @@ export function analyze(
     (activity.kind === "clock"
       ? !/^([01]\d|2[0-3]):[0-5]\d$/.test(selection)
       : choices.length !== activity.panels.length ||
+        (activity.kind === "sequence" &&
+          new Set(choices).size !== choices.length) ||
         !activity.panels.every((panel, index) =>
           panel.options.some((o) => o.id === choices[index]),
         )) ||

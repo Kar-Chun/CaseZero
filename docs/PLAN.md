@@ -86,3 +86,33 @@ P6 complete: Clean npm ci passed in an isolated directory (320 packages). Final 
 ## Phase 2 handoff
 
 Phase 2 complete; all six milestones committed on develop/casezero. No pending implementation work. Run/play instructions are in README.md; actual checks and limits in VERIFICATION.md, review summary in REVIEW.md. No remote is configured, so no hosted pull request was opened. No deployment or external writes performed. Suggested next work: additional authored cases, optional audio and browser/device coverage.
+
+# Phase 3 — reasoning, consequences and a third case
+
+## Review and priorities
+
+The existing three-layer design (authored content, pure rules, reusable UI) remains appropriate. Phase 2 fixed independent saves and useful guidance. Its main gameplay limit is that a correct set of cards automatically supplies the interpretation; analysis is confined to two activities in one case. The board also asks narrow-screen players to repeatedly scroll past four questions. Discovery files do not surface newly available follow-up interviews. The field guide still assumes every case recovers an object. Fixed authored solutions support fresh play rather than randomized replay; preserve that deliberate narrative consistency.
+
+Keep the two existing cases, IDs, schema version 2 and original v1 migration unchanged. Add content and optional deduction interpretation rules without new persisted fields. Finished analysis/deductions already represent these actions. Preserve old backups and save keys. No new runtime dependencies or services. Audio is deferred in favor of stronger reasoning and clearer story feedback.
+
+| Milestone                             | Acceptance criteria                                                                                                                                                                                                                                             | Status      |
+| ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| R1 Narrative and reasoning rules      | Author After the Flood and internal chronology; typed sequence analysis and explanation-dependent deductions; strict reference/reachability/answer validation, unique timeline solution, full pure journey and old save regressions; typecheck/lint/tests/build | Complete |
+| R2 Complete playable case             | Third archive entry, local conservatory artwork, accessible sequence reconstruction and explanation selection; full UI correct/unsupported endings and retry, saved reconstruction, original-case regression; typecheck/lint/tests/build/browser checks         | In progress     |
+| R3 Investigation flow and atmosphere  | Contextual discovery follow-ups, board navigation for long mobile investigations, stronger deduction presentation and natural onboarding; keyboard/reduced-motion and important interaction tests; all regression checks                                        | Pending     |
+| R4 Browser compatibility and final QA | Run all three complete cases, both outcomes, case isolation/reset/replay/backups/legacy migration; production Chromium desktop/mobile plus Firefox/WebKit where supported, axe/keyboard/narrow layouts; investigate failures; clean install and final checks    | Pending     |
+| R5 Review and delivery                | Review chronology, state transitions, source and screenshots; concise README/verification/review updates, complete plan and passing commits; clean working tree, no deployment                                                                                  | Pending     |
+
+## Design and risks
+
+**After the Flood:** a conservatory trial is deliberately waterlogged before an independent audit. A colored nutrient tracer and physical plumbing distinguish a second manual flow from an earlier legitimate test. Players reconstruct four events, then choose explanations supported by selected records. The question is how a plausible accident becomes provable sabotage and why the destroyed plants mattered.
+
+Sequence reconstruction uses labeled native selects, source records, distinct-event validation and no timer/drag requirement. Wrong attempts have no cost. Explanation choices are optional content on new deductions; existing recipes keep their behavior. The third hint can explicitly assist with interpretation, but ordinary discovery never auto-solves it. No inference should identify opportunity before the reconstructed window. Evidence required for final proof remains reachable without optional red herrings or wrong verdicts.
+
+Technical risks: duplicated sequence slots, premature explanations, inaccessible dynamic board content, unintended backward-save validation changes, stale progress across cases, and browser differences in focus/native controls. Cover these with pure rules, focused components and real browser journeys. Browser binaries may need installation; document actual availability and results.
+
+## Phase 3 verification and handoff
+
+R1 complete: Baseline typecheck/lint and all 81 tests passed. After content/rules work, typecheck/lint, all 97 tests in 21 files and production build passed. All 24 distinct timeline permutations were checked: exactly one is supported. Missing/duplicate/foreign events, wrong explanations, premature opportunity, dialogue gates, all three save/backup paths and both endings are covered. Save schema remains version 2; original migration unchanged.
+
+Next: R2 playable sequence/explanation UI and local case artwork. Chromium, Firefox and WebKit binaries downloaded; WebKit reports missing host libraries, to investigate in R4. No deployment or external writes.

@@ -1,3 +1,4 @@
+import { deductionAnswers } from "./deduction-rules";
 import { getCase } from "./cases";
 import type { GameState, Requirement } from "./types";
 export type Lead = {
@@ -137,7 +138,7 @@ export function progressiveHint(
       stages = [
         `You have the recorded facts needed for “${deduction.title}”. Think about what they establish together.`,
         deduction.prompt,
-        `Pin ${deduction.evidence.map((id) => `“${c.evidence.find((e) => e.id === id)!.title}”`).join(", ")} and test the connection.`,
+        `Pin ${deduction.evidence.map((id) => `“${c.evidence.find((e) => e.id === id)!.title}”`).join(", ")}.${deduction.interpretations ? ` Choose the explanation: “${deduction.interpretations.find((o) => o.id === deductionAnswers[c.id]?.[deduction.id])!.label}”` : ""} Then test the connection.`,
       ];
       break;
     }

@@ -16,8 +16,8 @@ import { evaluate } from "../src/game/outcome";
 import { solveRadio } from "./helpers";
 const radio = getCase("dead-air");
 describe("Dead Air", () => {
-  it("authors two complete reachable cases with different settings and deduction sizes", () => {
-    expect(cases).toHaveLength(2);
+  it("authors complete reachable cases with different settings and deduction sizes", () => {
+    expect(cases).toHaveLength(3);
     expect(radio.evidence).toHaveLength(14);
     expect(radio.locations).toHaveLength(4);
     expect(radio.suspects).toHaveLength(4);

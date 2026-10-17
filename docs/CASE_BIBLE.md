@@ -78,3 +78,35 @@ D11 E24+E25: queued recording, not live interference (method). D12 E23+E29: inse
 ## Outcomes and fairness
 
 Correct: Celia's explanation fails against independent records; she admits the prepared cartridge, the broadcast complaint and original media are preserved, credit frozen pending investigation and public trial rebooked. Incorrect suspect or reasoning: unsupported account rejected, evidence retained, investigation resumes. Both activities, interviews and locations can be revisited, all gates are monotonic, and the first case's progress is untouched. No audio listening ability, real-time speed, color perception or drag gesture is required.
+
+# Case 003 — After the Flood (Phase 3; internal spoilers)
+
+## Truth and chronology
+
+Larkspur Conservatory, 7 May 2026. At 19:08 a high-water alarm reveals waterlogged salt-tolerance trial beds before a patron preview. No person is harmed. Trial director Dr. Elin March (S21) deliberately opens the manual bypass at 18:56 to destroy living evidence that contradicts her reported results before the next morning's independent audit. A genuine equipment test and a threatened donation make plausible alternative explanations.
+
+18:40 engineer Tomas Reed begins a clean-water bypass test. 18:46 Tomas closes it, with a witnessed completion record and the independent flow counter returning to zero. 18:50 horticulturist Noor Hale adds harmless blue nutrient tracer to the reservoir in front of a staff witness; the sealed mixing record and batch label agree. 18:52–19:02 Noor is continuously visible presenting seedlings in the public hall, Tomas continuously visible at the external pump monitor, and Vera Quinn continuously visible at the donor desk. All cameras use the same correct clock. 18:54 Elin signs into the single-access service enclosure, claiming to collect labels. There is no label storage there; the approved plan shows only the bypass wheel and its gauge. 18:56 the mechanical counter records a new manual flow. 18:59 Elin signs out. 19:08 the high-water alarm sounds. Reservoir, beds and wheel recess bear the same blue tracer. Automatic-feed tray is dry and its independently sealed totalizer records zero. The bypass is downstream of the automatic controller; the sensor cannot open it. The wheel must be held locally throughout this short flow; no latch, remote control or timer exists. Only these four staff had access to the enclosure approach, confirmed by the continuous entrance record.
+
+The new flow, not a continuing clean-water test, carried the blue tracer. The reconstruction order is test closure → tracer addition → manual flow → alarm. All other suspects are accounted for continuously during flow; Elin is the sole enclosure visitor. She knowingly claims the sensor did it, then minimizes her visit. No admission occurs before a supported verdict.
+
+## Suspects and motives
+
+S21 Dr. Elin March, trial director: faces repayment of an £18,000 advance and loss of position if a false report is substantiated; signed report claims 95% treated survival, but authenticated pre-flood samples/photos show 20% versus 60% untreated. Weather/equipment damage would postpone the audit; false reporting triggers clawback. Claimed label errand at 18:54–18:59 hides local wheel operation.
+S22 Noor Hale, horticulturist: opposes commercialization of the salt-tolerance plants and argued with Elin. Public seedling demonstration covers the full flow. Preserved a small authenticated duplicate set before the preview under the audit protocol, not in anticipation of sabotage. Reveals its record after the tracer is discovered.
+S23 Tomas Reed, engineer: reputation depends on the earlier test being safe, and his test initially looks suspicious. Witnessed closure and the later tracer addition refute continued leakage; external monitor footage covers the new flow.
+S24 Vera Quinn, donor representative: threatened to withdraw support over naming rights, but the already executed endowment is non-revocable this year. The argument was real and cannot explain the physical act; donor-desk footage covers the relevant window.
+
+## Evidence and unlocks
+
+Propagation Hall L21: E41 high-water alarm (19:08), E42 blue residue (shared tracer), E43 dry automatic feed / zero totalizer.
+Pump House L22: E44 witnessed test closure (18:46), E45 witnessed tracer addition (18:50), E46 mechanical new flow at 18:56 and enclosure approach record (18:54–18:59), E47 reconstructed sequence (I21 after E41+E44+E45+E46).
+Potting Studio L23: E48 continuous alibis / only four admitted, E49 enclosure counterfoil and plan (Elin T43 after E46), E50 authenticated pre-flood duplicate results (Noor T44 after E42), E54 secured surviving audit set (all four deductions).
+Director's Office L24: E51 non-revocable donor letter (optional red herring), E52 Elin's signed 95% report and next-morning audit notice, E53 signed advance conditions (genuine loss postpones audit; false report triggers personal £18,000 repayment).
+
+D21 E42+E43+E46: manual bypass, not sensor or continuous test. D22 E44+E45+E47: second flow after closure/tracer, not unfinished work or late alarm alone. D23 (requires D22) E48+E49: sole enclosure visitor during local operation, not a donor argument or job title. D24 E50+E52+E53: conceal false reporting/avoid repayment, not weather protection or naming rights. Each requires the supported explanation in addition to its evidence. These choices use the displayed facts; no obscure knowledge is required.
+
+I21 presents the original records and asks for four chronological positions, each event exactly once. Correct IDs V3:V1:V4:V2. Wrong and duplicate orders change no progress. Optional hint stages point to the records, then the closure/tracer relationship, then the full chronological reasoning. Deductions and all activity conditions are monotonic.
+
+## Endings and fairness
+
+Final proof requires D21–D24 and E54. Correct accusation S21 + M22 (operate manual bypass after completed test) + R23 (destroy contradictory trial evidence before audit). Elin admits the staged accident; surviving sample custody and original logs support an independent audit, advance frozen for review, research protected from the false report. Incorrect suspect/method/motive produces an unsupported account; nobody is punished, evidence retained, retry available. No random culprit, consumable clue, timed action or external scientific knowledge. E51 and optional confrontation interviews are never required for completion.

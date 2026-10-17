@@ -48,6 +48,7 @@ export type Deduction = {
   evidence: string[];
   conclusion: string;
   category?: string;
+  interpretations?: { id: string; label: string }[];
   requires?: Requirement;
 };
 export type Accusation = { suspect: string; method: string; motive: string };
@@ -65,10 +66,10 @@ export type GameState = {
   pinned: string[];
 };
 
-export type CaseId = "quiet-hour" | "dead-air";
+export type CaseId = "quiet-hour" | "dead-air" | "after-the-flood";
 export type Inspection = {
   id: string;
-  kind: "clock" | "comparison";
+  kind: "clock" | "comparison" | "sequence";
   title: string;
   instruction: string;
   requires: Requirement;
@@ -95,7 +96,7 @@ export type CaseDefinition = {
   setting: string;
   arrival: string;
   statusLine: string;
-  theme: "museum" | "radio";
+  theme: "museum" | "radio" | "conservatory";
   mapLabel: string;
   locationHeading: string;
   enterLabel: string;

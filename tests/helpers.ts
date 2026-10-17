@@ -67,3 +67,31 @@ export function solveRadio() {
     state = combine(state, ids).state;
   return discover(state, "E34");
 }
+
+export function solveConservatory(includeOptional = true) {
+  let s = startCase(freshState("after-the-flood"));
+  for (const id of [
+    "E41",
+    "E42",
+    "E43",
+    "E44",
+    "E45",
+    "E46",
+    "E48",
+    "E52",
+    "E53",
+  ])
+    s = discover(s, id);
+  if (includeOptional) s = discover(s, "E51");
+  s = analyze(s, "I21", "V3:V1:V4:V2").state;
+  for (const id of ["T43", "T44"]) s = answer(s, id);
+  for (const id of ["E49", "E50"]) s = discover(s, id);
+  for (const [ids, explanation] of [
+    [["E42", "E43", "E46"], "C2"],
+    [["E44", "E45", "E47"], "C3"],
+    [["E48", "E49"], "C1"],
+    [["E50", "E52", "E53"], "C2"],
+  ] as [string[], string][])
+    s = combine(s, ids, explanation).state;
+  return discover(s, "E54");
+}

@@ -3,5 +3,6 @@ import type { CaseId } from "./types";
 export const inspectionAnswers: Partial<
   Record<CaseId, Record<string, string>>
 > = {
+  "after-the-flood": { I21: "V3:V1:V4:V2" },
   "dead-air": { I11: "22:06", I12: "A1:B2" },
 };

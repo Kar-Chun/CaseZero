@@ -1,3 +1,4 @@
+import { deductionAnswers } from "./deduction-rules";
 import { inspectionAnswers } from "./inspection-rules";
 import { locations, evidence, suspects, dialogue, deductions } from "./content";
 import type {
@@ -129,7 +130,23 @@ export function validateCase(definition: CaseDefinition): string[] {
     !definition.evidence.some((e) => e.id === definition.resolution.evidenceId)
   )
     issues.push("Unknown final evidence");
+  for (const d of definition.deductions) {
+    if (
+      d.interpretations &&
+      (d.interpretations.length < 2 ||
+        new Set(d.interpretations.map((o) => o.id)).size !==
+          d.interpretations.length ||
+        !d.interpretations.some(
+          (o) => o.id === deductionAnswers[definition.id]?.[d.id],
+        ))
+    )
+      issues.push(`${d.id}: invalid deduction explanations`);
+  }
+  const rewards = new Set<string>();
   for (const i of definition.inspections) {
+    if (rewards.has(i.evidenceId))
+      issues.push(`${i.id}: ambiguous analysis reward`);
+    rewards.add(i.evidenceId);
     const answer = inspectionAnswers[definition.id]?.[i.id];
     const solution = answer?.split(":");
     if (
@@ -137,6 +154,8 @@ export function validateCase(definition: CaseDefinition): string[] {
         ? !answer || !/^([01]\d|2[0-3]):[0-5]\d$/.test(answer)
         : !solution ||
           solution.length !== i.panels.length ||
+          (i.kind === "sequence" &&
+            new Set(solution).size !== solution.length) ||
           !i.panels.every((p, index) =>
             p.options.some((o) => o.id === solution[index]),
           )
@@ -149,14 +168,41 @@ export function validateCase(definition: CaseDefinition): string[] {
     )
       issues.push(`${i.id}: reward must require analysis`);
     if (
-      i.panels.length !== (i.kind === "clock" ? 1 : 2) ||
+      i.panels.length !==
+        (i.kind === "clock" ? 1 : i.kind === "comparison" ? 2 : 4) ||
       i.panels.some(
         (p) =>
-          (i.kind === "comparison" && p.options.length < 2) ||
+          (i.kind !== "clock" && p.options.length < 2) ||
           new Set(p.options.map((o) => o.id)).size !== p.options.length,
       )
     )
       issues.push(`${i.id}: invalid activity options`);
+    if (
+      i.kind === "sequence" &&
+      i.panels.some(
+        (p) =>
+          p.options.length !== i.panels.length ||
+          !i.panels.every((other) =>
+            other.options.every((o) =>
+              p.options.some((candidate) => candidate.id === o.id),
+            ),
+          ),
+      )
+    )
+      issues.push(`${i.id}: inconsistent sequence events`);
+    const reward = definition.evidence.find((e) => e.id === i.evidenceId);
+    if (
+      reward &&
+      (["evidence", "deductions", "answers", "inspections"] as const).some(
+        (key) =>
+          (reward.requires[key] ?? []).some(
+            (id) =>
+              !(key === "inspections" && id === i.id) &&
+              !i.requires[key]?.includes(id),
+          ),
+      )
+    )
+      issues.push(`${i.id}: reward has unsupported prerequisites`);
   }
   return issues;
 }
