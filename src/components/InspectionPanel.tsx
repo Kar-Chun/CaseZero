@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import type { Inspection } from "@/game/types";
+import { SequenceAnalysis } from "./SequenceAnalysis";
 import { Icon } from "./Icon";
 export function InspectionPanel({
   activity,
@@ -15,6 +16,8 @@ export function InspectionPanel({
   );
   const [message, setMessage] = useState("");
   const ready = activity.kind === "clock" ? !!time : choices.every(Boolean);
+  if (activity.kind === "sequence")
+    return <SequenceAnalysis activity={activity} onSubmit={onSubmit} />;
   return (
     <form
       className="analysis-panel"

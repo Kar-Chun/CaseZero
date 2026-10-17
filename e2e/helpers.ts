@@ -7,7 +7,9 @@ export async function navigate(page: Page, name: string) {
 }
 export async function visit(page: Page, name: string) {
   await navigate(page, "Locations");
-  const back = page.getByRole("button", { name: /^(Museum|Station) map$/ });
+  const back = page.getByRole("button", {
+    name: /^(Museum|Station|Conservatory) map$/,
+  });
   if (await back.isVisible()) await back.click();
   await page.getByRole("button", { name: new RegExp(name) }).click();
 }
@@ -20,7 +22,11 @@ export async function search(page: Page, point: string, title: string) {
   ).toBeVisible();
   await page.keyboard.press("Escape");
 }
-export async function connect(page: Page, titles: string[]) {
+export async function connect(
+  page: Page,
+  titles: string[],
+  explanation?: string,
+) {
   await navigate(page, "Evidence board");
   const clear = page.getByRole("button", { name: "Clear", exact: true });
   if (await clear.isEnabled()) await clear.click();
@@ -28,6 +34,8 @@ export async function connect(page: Page, titles: string[]) {
     await page
       .getByRole("button", { name: `Pin ${title}`, exact: true })
       .click();
+  if (explanation)
+    await page.getByRole("radio", { name: explanation, exact: true }).check();
   await page.getByRole("button", { name: "Test connection" }).click();
 }
 export async function investigate(page: Page) {

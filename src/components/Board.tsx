@@ -1,9 +1,10 @@
 "use client";
 import { useCallback, useState } from "react";
 import { getCase } from "@/game/cases";
-import { type CombinationResult, meets } from "@/game/engine";
+import { type CombinationResult, meets, threadDeduction } from "@/game/engine";
 import type { GameState } from "@/game/types";
 import type { Lead } from "@/game/guidance";
+import { ExplanationChoice } from "./ExplanationChoice";
 import { HintPanel } from "./HintPanel";
 import { Icon } from "./Icon";
 import { EvidenceMark, EvidenceFile } from "./EvidenceFile";
@@ -20,7 +21,7 @@ export function Board({
   state: GameState;
   onInspect: (id: string) => void;
   onExplore: () => void;
-  onConnect?: (ids: string[]) => CombinationResult;
+  onConnect?: (ids: string[], interpretation?: string) => CombinationResult;
   onPinChange: (ids: string[]) => void;
   onRevealHint: (key: string) => void;
   onFollow: (lead: Lead) => void;
@@ -29,6 +30,8 @@ export function Board({
   const maxPins = Math.max(...deductions.map((d) => d.evidence.length));
   const sizes = [...new Set(deductions.map((d) => d.evidence.length))].sort();
   const selected = state.pinned;
+  const thread = threadDeduction(state, selected);
+  const [explanations, setExplanations] = useState<Record<string, string>>({});
   const [focused, setFocused] = useState<string>("");
   const focusedQuestion = deductions.find((d) => d.id === focused);
   const [query, setQuery] = useState("");
@@ -241,6 +244,19 @@ export function Board({
                 : "No evidence from this location yet. Explore it, or choose another filter."}
             </p>
           )}
+          {thread?.interpretations &&
+            meets(state, thread.requires ?? {}) &&
+            !state.deductions.includes(thread.id) && (
+              <ExplanationChoice
+                question={thread}
+                value={explanations[thread.id] ?? ""}
+                disabled={!!state.accusation}
+                onChange={(value) => {
+                  setExplanations((old) => ({ ...old, [thread.id]: value }));
+                  setMessage("");
+                }}
+              />
+            )}
           <div
             className={`connection-tray ${selected.length ? "has-thread" : ""}`}
           >
@@ -286,7 +302,10 @@ export function Board({
                     !sizes.includes(selected.length) || !!state.accusation
                   }
                   onClick={() => {
-                    const result = onConnect(selected);
+                    const result = onConnect(
+                      selected,
+                      thread ? explanations[thread.id] : undefined,
+                    );
                     setMessage(result.message);
                     if (result.deductionId) onPinChange([]);
                   }}

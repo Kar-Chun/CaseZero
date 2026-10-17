@@ -126,8 +126,8 @@ function GameExperience({
     setState((s) => discover(s, id));
     setFile(id);
   };
-  const connect = (ids: string[]) => {
-    const result = combine(state, ids);
+  const connect = (ids: string[], interpretation?: string) => {
+    const result = combine(state, ids, interpretation);
     setState(result.state);
     return result;
   };
