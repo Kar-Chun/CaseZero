@@ -54,8 +54,12 @@ export function Notebook({
             <Icon name="notebook" />
           </div>
           <label className="notes-label" htmlFor="case-notes">
-            Your working theory
+            Your working theory (unproven)
           </label>
+          <p className="small-note">
+            Separate what you observed from what you suspect. Notes never
+            establish a conclusion.
+          </p>
           <textarea
             id="case-notes"
             aria-label="Case notes"
@@ -165,6 +169,20 @@ export function Notebook({
                   ? d.conclusion
                   : "Not yet established. Follow this question on the evidence board."}
               </p>
+              {state.deductions.includes(d.id) && (
+                <details className="conclusion-sources">
+                  <summary>Supporting records</summary>
+                  {(state.proofs[d.id] ?? d.evidence).map((id) => (
+                    <button
+                      key={id}
+                      className="record-button"
+                      onClick={() => onInspect(id)}
+                    >
+                      {evidence.find((e) => e.id === id)!.title}
+                    </button>
+                  ))}
+                </details>
+              )}
             </div>
           ))}
           <details className="notebook-interviews">

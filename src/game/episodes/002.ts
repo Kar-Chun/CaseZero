@@ -33,6 +33,11 @@ export const deadAir: CaseDefinition = {
       "Secure the original recording and submit your account",
     ],
   },
+  accountEvidence: {
+    suspect: ["D13"],
+    method: ["D11", "D12"],
+    motive: ["D14"],
+  },
   resolution: {
     evidenceId: "E34",
     proofLabel: "Original recording secured",

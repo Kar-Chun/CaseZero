@@ -493,6 +493,11 @@ export const quietHour: CaseDefinition = {
       "Recover the seal and submit your case",
     ],
   },
+  accountEvidence: {
+    suspect: ["D03"],
+    method: ["D01", "D02"],
+    motive: ["D04"],
+  },
   resolution: {
     evidenceId: "E16",
     proofLabel: "The seal recovered",

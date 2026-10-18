@@ -1,16 +1,19 @@
 import { useRef, useEffect } from "react";
 import { evaluate } from "@/game/outcome";
 import { getCase } from "@/game/cases";
-import type { Accusation, CaseId } from "@/game/types";
+import { CaseDebrief } from "./CaseDebrief";
+import type { GameState, Accusation, CaseId } from "@/game/types";
 import { Icon } from "./Icon";
 export default function Outcome({
   accusation,
+  state,
   caseId = "quiet-hour",
   onRetry,
   onReplay,
   onReview,
 }: {
   accusation: Accusation;
+  state: GameState;
   caseId?: CaseId;
   onRetry: () => void;
   onReplay: () => void;
@@ -51,6 +54,7 @@ export default function Outcome({
           {motives.find((m) => m.id === accusation.motive)?.label}
         </p>
       </div>
+      <CaseDebrief state={state} result={result} />
       <blockquote>{result.epilogue}</blockquote>
       <div className="ending-actions">
         {!result.correct && (
@@ -65,13 +69,21 @@ export default function Outcome({
             <Icon name="notebook" />
           </button>
         )}
+        {result.correct && (
+          <button className="button outline" onClick={onRetry}>
+            Reopen investigation
+            <Icon name="search" size={18} />
+          </button>
+        )}
         <button className="button outline" onClick={onReplay}>
           Play again
           <Icon name="reset" size={18} />
         </button>
       </div>
       <p className="small-note">
-        Replay starts a fresh investigation of the same authored mystery.
+        Reopen keeps your discoveries and clears the submitted account. Replay
+        starts the same authored mystery again after confirmation; export a
+        backup first to preserve this investigation.
       </p>
     </section>
   );

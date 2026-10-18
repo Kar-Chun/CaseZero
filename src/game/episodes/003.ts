@@ -38,6 +38,11 @@ export const afterTheFlood: CaseDefinition = {
       "Secure the surviving audit material",
     ],
   },
+  accountEvidence: {
+    suspect: ["D23"],
+    method: ["D21", "D22"],
+    motive: ["D24"],
+  },
   resolution: {
     evidenceId: "E54",
     proofLabel: "Audit originals secured",

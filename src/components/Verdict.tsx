@@ -34,6 +34,7 @@ export function Verdict({
     return (
       <Suspense fallback={<p role="status">Reviewing your case…</p>}>
         <Outcome
+          state={state}
           accusation={state.accusation}
           caseId={state.caseId}
           onRetry={onRetry}

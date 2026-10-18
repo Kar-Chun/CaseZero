@@ -23,7 +23,7 @@ export function FieldGuide({ onClose }: { onClose: () => void }) {
           [
             "board",
             "Connect",
-            "Focus a question, read the sources and pin related evidence. Test the connection; some cases also ask you to choose the explanation those facts support.",
+            "Focus a question, read the sources and pin related evidence. More than one set of records may support a question; optional clues need not all be collected. Test the connection; some cases also ask you to choose the explanation those facts support.",
           ],
           [
             "verdict",

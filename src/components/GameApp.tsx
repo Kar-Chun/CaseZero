@@ -132,17 +132,13 @@ function GameExperience({
     setState(result.state);
     return result;
   };
-  const replay = () => {
-    reset();
-    setTab("locations");
-    setLocation(null);
-    setScreen("briefing");
-  };
   const navigateScreen = (next: Screen) => {
+    if (next === "investigation") selectCase(caseId);
     if (next === "investigation" && state.accusation) setTab("verdict");
     setScreen(next);
   };
   const chooseCase = (id: CaseId, next: "briefing" | "investigation") => {
+    selectCase(id);
     if (id === caseId) navigateScreen(next);
     else onOpenCase(id, next);
   };
@@ -180,6 +176,7 @@ function GameExperience({
     heading?.focus({ preventScroll: true });
   }, [effectiveScreen, tab, location]);
   const begin = () => {
+    selectCase(caseId);
     setState((s) => startCase(s));
     navigateScreen("investigation");
   };
@@ -329,7 +326,7 @@ function GameExperience({
                   setState((s) => resumeInvestigation(s));
                   setTab("board");
                 }}
-                onReplay={replay}
+                onReplay={() => setResetMode("new")}
                 onReview={() => setTab("notebook")}
               />
             )}

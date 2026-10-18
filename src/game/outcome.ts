@@ -3,6 +3,7 @@ import { evaluateRadio } from "./episodes/002-ending";
 import type { Accusation, CaseId } from "./types";
 export type CaseOutcome = {
   correct: boolean;
+  matches: Record<keyof Accusation, boolean>;
   title: string;
   subtitle: string;
   paragraphs: string[];
@@ -15,11 +16,17 @@ export function evaluate(
 ): CaseOutcome {
   if (caseId === "after-the-flood") return evaluateConservatory(value);
   if (caseId === "dead-air") return evaluateRadio(value);
+  const matches = {
+    suspect: value.suspect === "S01",
+    method: value.method === "M02",
+    motive: value.motive === "R03",
+  };
   const correct =
     value.suspect === "S01" && value.method === "M02" && value.motive === "R03";
   if (!correct)
     return {
       correct: false,
+      matches,
       title: "Not yet proven.",
       subtitle: "A suspicion is not a complete case.",
       paragraphs: [
@@ -31,6 +38,7 @@ export function evaluate(
     };
   return {
     correct: true,
+    matches,
     title: "Case closed.",
     subtitle: "The quiet hour finally has a voice.",
     paragraphs: [

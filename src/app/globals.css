@@ -3569,3 +3569,24 @@ select {
   min-height: 44px;
   text-align: left;
 }
+.case-debrief {
+  margin: 24px 0;
+  text-align: left;
+  border-top: 1px solid var(--line);
+}
+.case-debrief summary {
+  cursor: pointer;
+  color: var(--gold);
+  padding: 18px 0;
+  min-height: 48px;
+}
+.case-debrief article {
+  border-left: 2px solid #7e866c;
+  margin: 18px 0;
+  padding: 5px 18px;
+}
+.case-debrief h3 { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: baseline; }
+.case-debrief h4 { margin: 18px 0 8px; color: #e2dfd3; }
+.review-status { font: 12px monospace; color: #c4c9b8; }
+.case-debrief li { margin: 12px 0; }
+.case-debrief p { overflow-wrap: anywhere; }

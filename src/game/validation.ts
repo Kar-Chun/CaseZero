@@ -164,6 +164,14 @@ export function validateCase(definition: CaseDefinition): string[] {
     )
       issues.push(`${d.id}: invalid deduction explanations`);
   }
+  for (const key of ["suspect", "method", "motive"] as const) {
+    const refs = definition.accountEvidence[key];
+    if (
+      !refs.length ||
+      refs.some((id) => !definition.deductions.some((d) => d.id === id))
+    )
+      issues.push(`Invalid ${key} account support`);
+  }
   const rewards = new Set<string>();
   for (const i of definition.inspections) {
     if (rewards.has(i.evidenceId))

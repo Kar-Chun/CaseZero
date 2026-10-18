@@ -1,11 +1,17 @@
 import type { Accusation } from "../types";
 import type { CaseOutcome } from "../outcome";
 export function evaluateRadio(value: Accusation): CaseOutcome {
+  const matches = {
+    suspect: value.suspect === "S13",
+    method: value.method === "M12",
+    motive: value.motive === "R12",
+  };
   const correct =
     value.suspect === "S13" && value.method === "M12" && value.motive === "R12";
   if (!correct)
     return {
       correct: false,
+      matches,
       title: "Not yet proven.",
       subtitle: "The right question has to survive the records.",
       paragraphs: [
@@ -17,6 +23,7 @@ export function evaluateRadio(value: Accusation): CaseOutcome {
     };
   return {
     correct: true,
+    matches,
     title: "Case closed.",
     subtitle: "The lie was recorded. So was the truth.",
     paragraphs: [

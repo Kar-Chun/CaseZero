@@ -9,6 +9,12 @@ export function saveKey(caseId: CaseId = "quiet-hour"): string {
 }
 export function selectedCase(): CaseId {
   try {
+    const id = window.sessionStorage.getItem(SELECTED_CASE_KEY);
+    if (isCaseId(id)) return id;
+  } catch {
+    /* A denied tab preference must not prevent reading the older preference. */
+  }
+  try {
     const id = window.localStorage.getItem(SELECTED_CASE_KEY);
     return isCaseId(id) ? id : "quiet-hour";
   } catch {
@@ -16,6 +22,11 @@ export function selectedCase(): CaseId {
   }
 }
 export function selectCase(caseId: CaseId): void {
+  try {
+    window.sessionStorage.setItem(SELECTED_CASE_KEY, caseId);
+  } catch {
+    /* Local preference remains available. */
+  }
   try {
     window.localStorage.setItem(SELECTED_CASE_KEY, caseId);
   } catch {

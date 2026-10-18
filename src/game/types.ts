@@ -114,6 +114,7 @@ export type CaseDefinition = {
     attribution: string;
     objectives: string[];
   };
+  accountEvidence: Record<keyof Accusation, string[]>;
   resolution: {
     evidenceId: string;
     proofLabel: string;

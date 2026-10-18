@@ -1,11 +1,17 @@
 import type { Accusation } from "../types";
 import type { CaseOutcome } from "../outcome";
 export function evaluateConservatory(value: Accusation): CaseOutcome {
+  const matches = {
+    suspect: value.suspect === "S21",
+    method: value.method === "M22",
+    motive: value.motive === "R23",
+  };
   const correct =
     value.suspect === "S21" && value.method === "M22" && value.motive === "R23";
   if (!correct)
     return {
       correct: false,
+      matches,
       title: "Not yet proven.",
       subtitle: "An accident is not disproved by suspicion alone.",
       paragraphs: [
@@ -17,6 +23,7 @@ export function evaluateConservatory(value: Accusation): CaseOutcome {
     };
   return {
     correct: true,
+    matches,
     title: "Case closed.",
     subtitle: "The water could not erase the order of events.",
     paragraphs: [

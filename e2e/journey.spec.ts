@@ -25,6 +25,10 @@ test("complete logical investigation reaches the correct ending and replay", asy
     page.getByRole("heading", { name: "Case closed." }),
   ).toBeVisible();
   await page.getByRole("button", { name: "Play again" }).click();
+  await expect(
+    page.getByRole("dialog", { name: "Start a new investigation?" }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Start new game" }).click();
   await page.getByRole("button", { name: "Enter the museum" }).click();
   await navigate(page, "Evidence board");
   await expect(
