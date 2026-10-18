@@ -3604,3 +3604,46 @@ select {
   font-size: 14px;
 }
 .save-warning p { margin-top: 6px; max-width: 65ch; line-height: 1.6; }
+
+/* Keep a long investigation navigable without covering its reasoning controls. */
+.board-shortcuts {
+  position: sticky;
+  top: 0;
+  z-index: 6;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+  padding: 4px 0;
+}
+.thread-workspace { display: flow-root; }
+.thread-remove {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border: 1px solid #748174;
+  background: #142126;
+  color: #dfdfd2;
+  min-height: 44px;
+  font-size: 12px;
+  text-align: left;
+}
+.thread-remove svg { flex-shrink: 0; }
+.file-thread-action { margin: 20px 0; }
+.file-thread-action p { margin-top: 10px; line-height: 1.7; }
+.filter-reset, .analysis-jump { min-height: 44px; margin-bottom: 12px; }
+.sequence-sources, .sequence-order { scroll-margin-block: 20px; }
+@media (max-width: 700px) {
+  .game-main input:not([type="radio"]):not([type="checkbox"]),
+  .game-main select, .game-main textarea,
+  .modal input:not([type="radio"]):not([type="checkbox"]),
+  .modal select, .modal textarea,
+  .sequence-order select, .verdict-form select, .inventory-search input {
+    font-size: 16px;
+  }
+  .pin-button, .evidence-card-actions .text-link,
+  .conclusion-sources button, .tray-actions .button { min-height: 44px; }
+  .board-shortcuts { gap: 4px 14px; }
+  .board-shortcuts a { font-size: 11px; }
+  .thread-remove { max-width: 100%; overflow-wrap: anywhere; }
+}
+.thread-workspace .connection-tray.has-thread { position: static; box-shadow: none; }

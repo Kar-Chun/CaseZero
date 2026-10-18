@@ -47,6 +47,7 @@ export function Board({
   const [compare, setCompare] = useState(false);
   const [message, setMessage] = useState("");
   const [established, setEstablished] = useState("");
+  const searchInput = useRef<HTMLInputElement>(null);
   const revelation = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
     if (established) revelation.current?.focus();
@@ -228,12 +229,25 @@ export function Board({
           <label className="inventory-search">
             Search collected evidence
             <input
+              ref={searchInput}
               type="search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search titles, facts or evidence types…"
             />
           </label>
+          {(query || filter !== "all") && (
+            <button
+              className="text-link filter-reset"
+              onClick={() => {
+                setQuery("");
+                setFilter("all");
+                searchInput.current?.focus();
+              }}
+            >
+              Reset evidence filters
+            </button>
+          )}
           <div className="evidence-grid">
             {visible.map((e) => (
               <article
@@ -291,107 +305,118 @@ export function Board({
                 : "No evidence from this location yet. Explore it, or choose another filter."}
             </p>
           )}
-          {thread?.interpretations &&
-            meets(state, thread.requires ?? {}) &&
-            !state.deductions.includes(thread.id) && (
-              <ExplanationChoice
-                question={thread}
-                value={explanations[thread.id] ?? ""}
-                disabled={!!state.accusation}
-                onChange={(value) => {
-                  setExplanations((old) => ({ ...old, [thread.id]: value }));
-                  setMessage("");
-                }}
-              />
-            )}
-          <div
-            className={`connection-tray ${selected.length ? "has-thread" : ""}`}
-            id="board-thread"
-            tabIndex={-1}
-          >
-            <div>
-              <p className="eyebrow">
-                PINNED THREAD / {selected.length} OF {maxPins}
-              </p>
-              <div className="pinned-titles">
-                {selected.length ? (
-                  selected.map((id) => (
-                    <span key={id}>
-                      {evidence.find((e) => e.id === id)?.title}
-                    </span>
-                  ))
-                ) : (
-                  <span>Choose evidence cards to start a thread.</span>
+          <div id="board-thread" tabIndex={-1} className="thread-workspace">
+            {thread?.interpretations &&
+              meets(state, thread.requires ?? {}) &&
+              !state.deductions.includes(thread.id) && (
+                <ExplanationChoice
+                  question={thread}
+                  value={explanations[thread.id] ?? ""}
+                  disabled={!!state.accusation}
+                  onChange={(value) => {
+                    setExplanations((old) => ({ ...old, [thread.id]: value }));
+                    setMessage("");
+                  }}
+                />
+              )}
+            <div
+              className={`connection-tray ${selected.length ? "has-thread" : ""}`}
+            >
+              <div>
+                <p className="eyebrow">
+                  PINNED THREAD / {selected.length} OF {maxPins}
+                </p>
+                <div className="pinned-titles">
+                  {selected.length ? (
+                    selected.map((id) => (
+                      <button
+                        key={id}
+                        className="thread-remove"
+                        aria-label={`Remove ${evidence.find((e) => e.id === id)!.title} from thread`}
+                        onClick={() => {
+                          onPinChange(selected.filter((value) => value !== id));
+                          document
+                            .getElementById("board-thread")
+                            ?.focus({ preventScroll: true });
+                        }}
+                      >
+                        {evidence.find((e) => e.id === id)?.title}
+                        <Icon name="close" size={14} />
+                      </button>
+                    ))
+                  ) : (
+                    <span>Choose evidence cards to start a thread.</span>
+                  )}
+                </div>
+              </div>
+              <div className="tray-actions">
+                <button
+                  className="text-link"
+                  disabled={!selected.length}
+                  onClick={() => {
+                    onPinChange([]);
+                    setMessage("");
+                  }}
+                >
+                  Clear
+                </button>
+                <button
+                  className="button outline"
+                  disabled={selected.length < 2}
+                  onClick={() => setCompare(true)}
+                >
+                  Compare evidence
+                  <Icon name="board" size={16} />
+                </button>
+                {onConnect && (
+                  <button
+                    className="button primary"
+                    disabled={
+                      !sizes.includes(selected.length) || !!state.accusation
+                    }
+                    onClick={() => {
+                      const result = onConnect(
+                        selected,
+                        thread ? explanations[thread.id] : undefined,
+                        focused || undefined,
+                      );
+                      setMessage(result.message);
+                      setEstablished(
+                        result.deductionId &&
+                          !state.deductions.includes(result.deductionId)
+                          ? result.deductionId
+                          : "",
+                      );
+                      if (result.deductionId) onPinChange([]);
+                    }}
+                  >
+                    Test connection
+                    <Icon name="spark" size={16} />
+                  </button>
                 )}
               </div>
             </div>
-            <div className="tray-actions">
-              <button
-                className="text-link"
-                disabled={!selected.length}
-                onClick={() => {
-                  onPinChange([]);
-                  setMessage("");
-                }}
-              >
-                Clear
-              </button>
-              <button
-                className="button outline"
-                disabled={selected.length < 2}
-                onClick={() => setCompare(true)}
-              >
-                Compare evidence
-                <Icon name="board" size={16} />
-              </button>
-              {onConnect && (
-                <button
-                  className="button primary"
-                  disabled={
-                    !sizes.includes(selected.length) || !!state.accusation
-                  }
-                  onClick={() => {
-                    const result = onConnect(
-                      selected,
-                      thread ? explanations[thread.id] : undefined,
-                      focused || undefined,
-                    );
-                    setMessage(result.message);
-                    setEstablished(
-                      result.deductionId &&
-                        !state.deductions.includes(result.deductionId)
-                        ? result.deductionId
-                        : "",
-                    );
-                    if (result.deductionId) onPinChange([]);
-                  }}
-                >
-                  Test connection
-                  <Icon name="spark" size={16} />
-                </button>
+            <div
+              className={established && message ? "conclusion-revelation" : ""}
+            >
+              {established && message && (
+                <h3 ref={revelation} tabIndex={-1}>
+                  Conclusion established:{" "}
+                  {deductions.find((d) => d.id === established)!.title}
+                </h3>
+              )}
+              <p className="connection-message" role="status">
+                {message}
+              </p>
+              {established && message && (
+                <FollowUpLinks
+                  state={state}
+                  kind="deductions"
+                  sourceId={established}
+                  onFollow={onFollow}
+                />
               )}
             </div>
-          </div>
-          <div
-            className={established && message ? "conclusion-revelation" : ""}
-          >
-            {established && message && (
-              <h3 ref={revelation} tabIndex={-1}>
-                Conclusion established:{" "}
-                {deductions.find((d) => d.id === established)!.title}
-              </h3>
-            )}
-            <p className="connection-message" role="status">
-              {message}
-            </p>
-            {established && message && (
-              <FollowUpLinks
-                state={state}
-                kind="deductions"
-                sourceId={established}
-                onFollow={onFollow}
-              />
-            )}
           </div>
           <a href="#board-questions" className="text-link board-return">
             Back to board questions <Icon name="back" size={14} />

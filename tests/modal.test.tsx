@@ -31,3 +31,28 @@ it("traps focus using visible controls and native summaries, including after foc
   await user.keyboard("{Tab}");
   expect(screen.getByRole("button", { name: "Close dialog" })).toHaveFocus();
 });
+
+it("isolates background branches and restores their prior inert state on close", () => {
+  const outside = document.createElement("div");
+  outside.inert = true;
+  document.body.append(outside);
+  const { container, unmount } = render(
+    <>
+      <section data-testid="background">Case file</section>
+      <div>
+        <Modal title="Isolation test" onClose={() => {}}>
+          <button>Inside</button>
+        </Modal>
+      </div>
+    </>,
+  );
+  const background = screen.getByTestId("background");
+  const dialog = screen.getByRole("dialog");
+  expect(background.inert).toBe(true);
+  expect(outside.inert).toBe(true);
+  expect(dialog.closest("[inert]")).toBeNull();
+  unmount();
+  expect(outside.inert).toBe(true);
+  outside.remove();
+  expect(container.childElementCount).toBe(0);
+});

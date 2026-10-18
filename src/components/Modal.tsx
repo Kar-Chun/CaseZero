@@ -14,6 +14,20 @@ export function Modal({
   const id = useId();
   useEffect(() => {
     const previous = document.activeElement as HTMLElement | null;
+    // Isolate the dialog at each ancestor, including dialogs nested inside the board.
+    const isolated: { element: HTMLElement; inert: boolean }[] = [];
+    let branch: HTMLElement | null = ref.current;
+    while (branch && branch !== document.body) {
+      const parent: HTMLElement | null = branch.parentElement;
+      if (!parent) break;
+      for (const sibling of Array.from(parent.children)) {
+        if (sibling !== branch && sibling instanceof HTMLElement) {
+          isolated.push({ element: sibling, inert: sibling.inert });
+          sibling.inert = true;
+        }
+      }
+      branch = parent;
+    }
     ref.current?.focus();
     const handle = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -79,7 +93,8 @@ export function Modal({
     return () => {
       document.removeEventListener("keydown", handle);
       document.body.style.overflow = overflow;
-      previous?.focus();
+      for (const { element, inert } of isolated) element.inert = inert;
+      if (previous?.isConnected) previous.focus();
     };
   }, [onClose]);
   return (

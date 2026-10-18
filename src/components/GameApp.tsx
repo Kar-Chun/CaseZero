@@ -20,6 +20,7 @@ import {
 } from "@/game/engine";
 import { useGame } from "@/game/useGame";
 import type { Lead } from "@/game/guidance";
+import { maxPins } from "@/game/proofs";
 import { getCase } from "@/game/cases";
 import { selectedCase, selectCase } from "@/game/storage";
 import type { CaseId, GameState } from "@/game/types";
@@ -376,6 +377,39 @@ function GameExperience({
       {selectedClue && (
         <Modal title={selectedClue.title} onClose={closeFile}>
           <EvidenceFile clue={selectedClue} caseId={caseId} />
+          <div className="file-thread-action">
+            <button
+              className="button outline"
+              aria-pressed={state.pinned.includes(selectedClue.id)}
+              disabled={
+                !state.pinned.includes(selectedClue.id) &&
+                state.pinned.length >= maxPins(c)
+              }
+              onClick={() =>
+                setState((s) =>
+                  pinEvidence(
+                    s,
+                    s.pinned.includes(selectedClue.id)
+                      ? s.pinned.filter((id) => id !== selectedClue.id)
+                      : [...s.pinned, selectedClue.id],
+                  ),
+                )
+              }
+            >
+              {state.pinned.includes(selectedClue.id)
+                ? "Unpin evidence"
+                : "Pin for comparison"}
+              <Icon name="board" size={16} />
+            </button>
+            <p aria-live="polite" className="small-note">
+              {state.pinned.includes(selectedClue.id)
+                ? "This record is in your thread."
+                : state.pinned.length >= maxPins(c)
+                  ? "Your thread is full. Remove a pin on the board to try a different connection."
+                  : "Pin related records, then compare their facts on the board."}{" "}
+              {state.pinned.length}/{maxPins(c)} pinned.
+            </p>
+          </div>
           <FollowUpLinks
             state={state}
             kind="evidence"

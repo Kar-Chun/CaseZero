@@ -81,9 +81,11 @@ export default function Outcome({
         </button>
       </div>
       <p className="small-note">
-        Reopen keeps your discoveries and clears the submitted account. Replay
-        starts the same authored mystery again after confirmation; export a
-        backup first to preserve this investigation.
+        {result.correct
+          ? "Reopen keeps your discoveries and clears the submitted account."
+          : "Return to investigation keeps your discoveries so you can revise this account."}{" "}
+        Replay starts the same authored mystery again after confirmation; export
+        a backup first to preserve this investigation.
       </p>
     </section>
   );

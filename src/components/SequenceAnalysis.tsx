@@ -12,6 +12,8 @@ export function SequenceAnalysis({
   const [order, setOrder] = useState(activity.panels.map(() => ""));
   const [message, setMessage] = useState("");
   const helpId = useId();
+  const sourceId = useId();
+  const orderId = useId();
   const filled = order.filter(Boolean);
   const repeated = new Set(filled).size !== filled.length;
   return (
@@ -26,7 +28,10 @@ export function SequenceAnalysis({
       <p className="analysis-instruction" id={helpId}>
         {activity.instruction}
       </p>
-      <div className="sequence-sources">
+      <a className="text-link analysis-jump" href={`#${orderId}`}>
+        Jump to event order
+      </a>
+      <div className="sequence-sources" id={sourceId} tabIndex={-1}>
         {activity.panels.map((p, i) => (
           <article className="analysis-document" key={p.title}>
             <p className="eyebrow">
@@ -37,8 +42,17 @@ export function SequenceAnalysis({
           </article>
         ))}
       </div>
-      <fieldset className="sequence-order" aria-describedby={helpId}>
+      <fieldset
+        className="sequence-order"
+        aria-describedby={helpId}
+        id={orderId}
+        tabIndex={-1}
+      >
         <legend>Your reconstruction · earliest to latest</legend>
+        <p className="small-note" aria-live="polite">
+          {filled.length}/{order.length} positions filled. Each event belongs
+          once.
+        </p>
         <ol>
           {activity.panels.map((panel, index) => (
             <li key={panel.label}>
@@ -70,6 +84,9 @@ export function SequenceAnalysis({
           ))}
         </ol>
       </fieldset>
+      <a className="text-link analysis-jump" href={`#${sourceId}`}>
+        Return to source records
+      </a>
       <p className="analysis-message" role="status">
         {repeated
           ? "An event is used more than once. Give each event a different position."
@@ -98,7 +115,8 @@ export function SequenceAnalysis({
       </div>
       <p className="small-note">
         No timer or penalty. Test your order against every source, including the
-        untimed record.
+        untimed record. An unfinished order is temporary until you record a
+        supported reconstruction.
       </p>
     </form>
   );
