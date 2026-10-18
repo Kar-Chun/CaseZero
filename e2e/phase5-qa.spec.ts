@@ -47,6 +47,14 @@ test("failed writes and malformed live updates preserve notes and recover throug
   await expect(
     page.getByRole("alert", { name: "Progress needs saving" }),
   ).toBeVisible();
+  const { default: AxeBuilder } = await import("@axe-core/playwright");
+  expect(
+    (
+      await new AxeBuilder({ page })
+        .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+        .analyze()
+    ).violations,
+  ).toEqual([]);
   await page.evaluate(() => {
     (
       window as Window & { casezeroWriteBlocked?: boolean }
@@ -245,6 +253,9 @@ test("feedback downloads only reviewed context and falls back safely when clipbo
         .analyze()
     ).violations,
   ).toEqual([]);
+  await expect(
+    page.getByRole("button", { name: "Close dialog" }),
+  ).toBeInViewport();
   const pending = page.waitForEvent("download");
   await page.getByRole("link", { name: "Download report" }).click();
   const file = await pending;
@@ -288,6 +299,14 @@ test("a failed ending chunk offers a production recovery screen and reload resto
   await expect(
     page.getByRole("heading", { name: "The case file could not open." }),
   ).toBeFocused({ timeout: 20000 });
+  const { default: AxeBuilder } = await import("@axe-core/playwright");
+  expect(
+    (
+      await new AxeBuilder({ page })
+        .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+        .analyze()
+    ).violations,
+  ).toEqual([]);
   expect(failures).toBeGreaterThan(0);
   await page.unroute(pattern);
   await page.getByRole("button", { name: "Reload saved game" }).click();

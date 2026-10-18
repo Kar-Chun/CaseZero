@@ -71,6 +71,10 @@ test("sequence analysis, explanations and revelations support narrow-screen keyb
   ).toBeFocused();
   await scan();
   await page.keyboard.press("Shift+Tab");
+  await expect(
+    page.getByRole("link", { name: "Return to source records" }),
+  ).toBeFocused();
+  await page.keyboard.press("Shift+Tab");
   await expect(page.getByLabel("Position 4")).toBeFocused();
   for (const [i, id] of ["V3", "V1", "V4", "V2"].entries())
     await page.getByLabel(`Position ${i + 1}`).selectOption(id);

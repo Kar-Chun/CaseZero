@@ -3677,3 +3677,19 @@ select {
 .recovery-screen { max-width: 760px; padding: 80px 24px; margin: auto; }
 .recovery-screen h1 { font-size: clamp(32px, 6vw, 52px); margin: 20px 0; }
 .recovery-screen p { line-height: 1.8; margin-bottom: 22px; }
+/* Keep dismissal reachable while reading long files and reports. */
+.modal-heading {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: #141e28;
+  padding-block: 8px;
+  box-shadow: 0 4px 0 #141e28;
+}
+.sequence-sources, .sequence-order { scroll-margin-block: 70px; }
+.sequence-selected { display: none; }
+@media (max-width: 700px) {
+  .sequence-selected { display: block; margin-top: 8px; color: #e2dfd1; font-size: 14px; line-height: 1.6; }
+}
+.sequence-position { flex: 1; min-width: 0; }
+.sequence-position label { display: block; }

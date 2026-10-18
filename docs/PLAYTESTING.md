@@ -23,7 +23,7 @@ After the case, ask for difficulty, clarity and enjoyment in the player's own wo
 
 ## Quick manual checklist
 
-On the actual phone/browser being tested:
+Use this after free play, or as a separate compatibility session; do not coach a first-time player through it. On the actual phone/browser being tested:
 
 - [ ] Open a fresh case and explain the objective without help; find and read a clue.
 - [ ] Pin from its file, reach the thread, compare records and remove a pin hidden by a filter.

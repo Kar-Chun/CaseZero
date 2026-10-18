@@ -59,27 +59,37 @@ export function SequenceAnalysis({
               <span className="sequence-step" aria-hidden="true">
                 {String(index + 1).padStart(2, "0")}
               </span>
-              <label>
-                {panel.label}
-                <select
-                  value={order[index]}
-                  onChange={(e) => {
-                    setOrder((old) =>
-                      old.map((value, i) =>
-                        i === index ? e.target.value : value,
-                      ),
-                    );
-                    setMessage("");
-                  }}
-                >
-                  <option value="">Choose an event…</option>
-                  {panel.options.map((option) => (
-                    <option key={option.id} value={option.id}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </label>
+              <div className="sequence-position">
+                <label>
+                  {panel.label}
+                  <select
+                    value={order[index]}
+                    onChange={(e) => {
+                      setOrder((old) =>
+                        old.map((value, i) =>
+                          i === index ? e.target.value : value,
+                        ),
+                      );
+                      setMessage("");
+                    }}
+                  >
+                    <option value="">Choose an event…</option>
+                    {panel.options.map((option) => (
+                      <option key={option.id} value={option.id}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                {order[index] && (
+                  <span className="sequence-selected" aria-hidden="true">
+                    {
+                      panel.options.find((option) => option.id === order[index])
+                        ?.label
+                    }
+                  </span>
+                )}
+              </div>
             </li>
           ))}
         </ol>

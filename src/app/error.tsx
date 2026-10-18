@@ -7,7 +7,7 @@ export default function ErrorPage() {
   }, []);
   return (
     <main className="recovery-screen">
-      <p className="eyebrow">CASEZERO / CONNECTION INTERRUPTED</p>
+      <p className="eyebrow">CASEZERO / RECOVERY</p>
       <h1 tabIndex={-1} ref={title}>
         The case file could not open.
       </h1>

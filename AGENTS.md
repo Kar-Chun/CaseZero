@@ -8,6 +8,8 @@
 - Validate content references/reachability and saved-state dependencies. No required path may rely on a wrong verdict or optional evidence.
 - Run `npm run typecheck`, `npm run lint`, `npm test`, `npm run build` and `npm run test:e2e` for relevant changes. Record actual outcomes and limitations in docs/PLAN.md.
 - Proof alternatives are exact, complete sets in `Deduction.alternatives`; keep hints route-aware and display `state.proofs` as the actual support. Never replace independent timing/custody with motive alone. Keep ending comparisons lazy-loaded.
+- Feedback reports must use an explicit context allowlist; never serialize GameState, notebook text, clue contents or accusation choices into a report. Copy/download is voluntary; do not add automatic submission.
+- Preserve good session snapshots on unreadable live updates. Saving failures need visible retry; a reset retry must save the fresh state, including through case remounts. Keep dialog backgrounds inert and accessible field names stable.
 - Current state is v3. Preserve valid v1/v2 canonical-proof migration before accepting new alternatives; storage key versions are stable namespaces, not payload versions.
 - Preserve v1 Quiet Hour save migration, stable case IDs and independent save keys. Bump save version if state compatibility changes. Keep dependencies minimal. Do not deploy without authorization.
 
