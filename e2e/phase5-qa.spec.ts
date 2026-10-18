@@ -199,3 +199,100 @@ test("timeline shortcuts retain the unfinished order and modal focus", async ({
     page.getByRole("button", { name: "Search Reconstruction bench" }),
   ).toBeFocused();
 });
+
+test("feedback downloads only reviewed context and falls back safely when clipboard access is denied", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  const state = {
+    ...discover(startCase(freshState()), "E01"),
+    notes: "PRIVATE_NOTE_MUST_NOT_LEAK",
+  };
+  await restore(page, state);
+  await page
+    .getByRole("button", { name: "Playtest feedback", exact: true })
+    .click();
+  await page
+    .getByLabel("What happened or how did it feel?")
+    .fill("I did not know where to pin a record.");
+  await page.getByLabel("Browser or device (optional)").fill("Phone playtest");
+  await page.evaluate(() =>
+    Object.defineProperty(navigator, "clipboard", {
+      configurable: true,
+      value: { writeText: () => Promise.reject(new Error("Denied")) },
+    }),
+  );
+  await page.getByText("Review the report", { exact: true }).click();
+  await page.getByRole("button", { name: "Copy report" }).click();
+  await expect(page.getByRole("dialog").getByRole("status")).toContainText(
+    "Clipboard access is unavailable",
+  );
+  await expect(
+    page.getByRole("textbox", { name: "Feedback report" }),
+  ).toBeFocused();
+  const report = await page
+    .getByRole("textbox", { name: "Feedback report" })
+    .inputValue();
+  expect(report).toContain("I did not know where to pin a record.");
+  expect(report).not.toContain(state.notes);
+  expect(report).not.toContain("Maintenance slip");
+  const { default: AxeBuilder } = await import("@axe-core/playwright");
+  expect(
+    (
+      await new AxeBuilder({ page })
+        .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+        .analyze()
+    ).violations,
+  ).toEqual([]);
+  const pending = page.waitForEvent("download");
+  await page.getByRole("link", { name: "Download report" }).click();
+  const file = await pending;
+  expect(file.suggestedFilename()).toBe("casezero-feedback.txt");
+  const { readFile } = await import("node:fs/promises");
+  expect(await readFile((await file.path())!, "utf8")).toBe(report);
+  await page.keyboard.press("Escape");
+  await expect(
+    page.getByRole("button", { name: "Playtest feedback", exact: true }),
+  ).toBeFocused();
+  const saved = await page.evaluate(() =>
+    JSON.parse(localStorage.getItem("casezero:progress:v1")!),
+  );
+  expect(saved).toEqual(state);
+});
+
+test("a failed ending chunk offers a production recovery screen and reload restores the submitted account", async ({
+  page,
+}) => {
+  test.setTimeout(90000);
+  const { solveCase } = await import("../tests/helpers");
+  await restore(page, solveCase());
+  await navigate(page, "Accusation");
+  await page.getByLabel("Person of interest").selectOption("S01");
+  await page.getByLabel("How was it taken?").selectOption("M02");
+  await page.getByLabel("Why was it taken?").selectOption("R03");
+  await page.getByRole("button", { name: "Review accusation" }).click();
+  let failedPath: string | null = null;
+  let failures = 0;
+  const pattern = "**/_next/static/chunks/*.js*";
+  await page.route(pattern, (route) => {
+    const path = new URL(route.request().url()).pathname;
+    failedPath ??= path;
+    if (path === failedPath) {
+      failures++;
+      return route.abort("failed");
+    }
+    return route.continue();
+  });
+  await page.getByRole("button", { name: "Submit accusation" }).click();
+  await expect(
+    page.getByRole("heading", { name: "The case file could not open." }),
+  ).toBeFocused({ timeout: 20000 });
+  expect(failures).toBeGreaterThan(0);
+  await page.unroute(pattern);
+  await page.getByRole("button", { name: "Reload saved game" }).click();
+  await page.getByRole("button", { name: "Continue investigation" }).click();
+  await expect(
+    page.getByRole("heading", { name: "Case closed." }),
+  ).toBeVisible();
+});

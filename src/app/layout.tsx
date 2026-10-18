@@ -12,7 +12,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <noscript>
+          CaseZero needs JavaScript to open your investigations. Enable it in
+          your browser settings, then reload.
+        </noscript>
+        {children}
+      </body>
     </html>
   );
 }

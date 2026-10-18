@@ -35,6 +35,7 @@ import { Interviews } from "./Interviews";
 import { Board } from "./Board";
 import { EvidenceFile } from "./EvidenceFile";
 import { Icon } from "./Icon";
+import { Feedback } from "./Feedback";
 import { Modal } from "./Modal";
 type Tab = "locations" | "board" | "interviews" | "notebook" | "verdict";
 const tabs: { id: Tab; label: string; icon: string }[] = [
@@ -55,6 +56,9 @@ export function GameApp() {
     <GameLibrary />
   ) : (
     <div aria-busy="true">
+      <p className="boot-status" role="status">
+        Opening your case files…
+      </p>
       <fieldset className="boot-screen" disabled>
         <Intro
           screen="home"
@@ -119,6 +123,8 @@ function GameExperience({
   const [location, setLocation] = useState<string | null>(null);
   const [interviewPerson, setInterviewPerson] = useState(c.suspects[0].id);
   const [guide, setGuide] = useState(false);
+  const [feedback, setFeedback] = useState(false);
+  const closeFeedback = useCallback(() => setFeedback(false), [setFeedback]);
   const [activityId, setActivityId] = useState<string | null>(null);
   const closeActivity = useCallback(() => setActivityId(null), [setActivityId]);
   const activity = c.inspections.find((i) => i.id === activityId);
@@ -373,6 +379,26 @@ function GameExperience({
             </span>
           </footer>
         </div>
+      )}
+      <div className="playtest-entry">
+        <button className="text-link" onClick={() => setFeedback(true)}>
+          Playtest feedback
+        </button>
+        <span>
+          Confusing moment or useful discovery? Share a report with your
+          organizer.
+        </span>
+      </div>
+      {feedback && (
+        <Feedback
+          state={state}
+          view={
+            effectiveScreen === "investigation"
+              ? `${tabs.find((t) => t.id === tab)!.label}${tab === "locations" && location ? ` / ${c.locations.find((l) => l.id === location)?.name}` : ""}`
+              : effectiveScreen
+          }
+          onClose={closeFeedback}
+        />
       )}
       {selectedClue && (
         <Modal title={selectedClue.title} onClose={closeFile}>

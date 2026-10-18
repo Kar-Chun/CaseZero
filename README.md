@@ -19,11 +19,13 @@ npm run dev
 
 Open http://localhost:3000. For production, run `npm run build` and `npm start`.
 
+To play on your iPhone or prepare a small tester group, follow [the GitHub/Vercel guide](docs/DEPLOYMENT.md). No repository has been pushed or site deployed. Standard hosting needs Node 24.x and no environment configuration.
+
 ## Play
 
 Choose a case, read its briefing and enter the investigation. Examine search points and return to suspects as evidence unlocks new questions. Discovery files link to available follow-up questions. Dead Air asks you to correct a recorded time and compare documents. After the Flood asks you to order events, including an untimed record. All necessary information is shown; no outside knowledge, audio listening, dragging or timed input is required.
 
-On the board, focus a question, search your inventory and pin related evidence. Connections use two or three clues, as indicated by the question. In After the Flood, also select the explanation supported by every pinned record. **Test connection** forms a supported conclusion; unsuccessful threads stay pinned for revision. The museum and radio cases accept alternative evidence-supported paths; optional clues need not all be collected. Use the board shortcuts to move between questions and evidence, and reopen a conclusion’s sources to review the records you actually used. Establish all four conclusions and secure the final evidence before selecting a person, method and motive. Interview checks distinguish recorded claims from corroborated facts when you have the relevant evidence. Unsupported accusations let you return and try again.
+On the board, focus a question, search your inventory and pin related evidence. Connections use two or three clues, as indicated by the question. In After the Flood, also select the explanation supported by every pinned record. **Test connection** forms a supported conclusion; unsuccessful threads stay pinned for revision. The museum and radio cases accept alternative evidence-supported paths; optional clues need not all be collected. Pin directly from an open evidence file or from the inventory. Use the sticky board shortcuts to reach evidence and the whole thread, including explanation choices; remove a pin from the thread even if search hides its card. Reopen a conclusion’s sources to review the records you actually used. Establish all four conclusions and secure the final evidence before selecting a person, method and motive. Interview checks distinguish recorded claims from corroborated facts when you have the relevant evidence. Unsupported accusations let you return and try again.
 
 Optional hints in the board and notebook unfold in three deliberate stages. There is no timer or penalty for asking for help. At the ending, **Review your reasoning** compares your person, method and motive with your proof. A successful account can reveal overlooked search points. **Reopen investigation** keeps discoveries; **Play again** asks for confirmation before clearing this case. All three cases have fixed solutions; replay lets you explore different proof or context, not a randomized culprit.
 
@@ -33,7 +35,11 @@ Each case saves its evidence, interviews, analysis, conclusions and their suppor
 
 The notebook’s **Export investigation** downloads a portable backup. **Import investigation** accepts an exported file, shows a review and replaces only the matching selected case after confirmation. Original raw version 1 saves are also accepted. Backups include your notes; store them somewhere appropriate.
 
-If browser storage is unavailable or full, you can play, switch cases and export, but unsaved progress lasts only until you refresh or close the page. Multiple tabs receive the latest saved state; simultaneous edits are not merged. Reset clears only the selected case.
+If browser storage is unavailable or full, a visible warning offers **Retry saving**. You can play, switch cases and export, but unsaved progress lasts only until you refresh or close the page. Invalid live updates preserve the investigation in the current tab; retry saving to repair its browser copy. Multiple tabs receive the latest saved state; simultaneous edits are not merged. Reset clears only the selected case.
+
+## Playtest feedback
+
+Use **Playtest feedback** at the bottom of any screen to describe confusion, bugs, difficulty or enjoyment. Review the report, copy/download it, and share it with your organizer. Nothing is sent automatically; notes, clue contents and accusation choices are excluded. Manual copy remains available when clipboard permission fails. Draft feedback is temporary.
 
 ## Checks
 

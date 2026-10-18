@@ -1,10 +1,10 @@
 # CaseZero human playtest
 
-Phase 4 is ready for human feedback. No human sessions or enjoyment results are claimed. Automated walkthroughs check engineering behavior; they cannot establish whether deduction feels satisfying.
+Phase 5 is ready for human feedback. No human sessions or enjoyment results are claimed. Automated walkthroughs check engineering behavior; they cannot establish whether deduction feels satisfying.
 
 ## Run a session
 
-Use the README to run the game locally. Allow 30–45 minutes, with permission to stop earlier. Recruit first-time players with different levels of mystery-game experience. Assign one of the three cases; spread sessions across all three. Keep the case bible, source and walkthroughs out of sight. Use a fresh investigation or a separate browser profile; export any investigation you want to keep before resetting it.
+Use the README to run locally, or [DEPLOYMENT.md](DEPLOYMENT.md) to prepare a stable Safari URL. Allow 30–45 minutes, with permission to stop earlier. Recruit first-time players with different levels of mystery-game experience. Assign one of the three cases; spread sessions across all three. Keep the case bible, source and walkthroughs out of sight. Use a fresh investigation or a separate browser profile; export any investigation you want to keep before resetting it.
 
 Ask the player to investigate at their own pace and say what they are thinking if comfortable. Do not teach the controls ahead of time or suggest the culprit. Record the point at which help becomes necessary. Let the player try the optional hint ladder; note which stage helped and whether it revealed too much. If they remain stuck, record the blocker before offering help. Do not treat a facilitator-assisted ending as an unaided completion.
 
@@ -21,9 +21,28 @@ Run additional sessions on an actual phone and with keyboard-only input; do not 
 
 After the case, ask for difficulty, clarity and enjoyment in the player's own words. Ask what they believed immediately before the decisive deduction and what changed their mind. A quick replay can test another proof route, but is not evidence about first-time difficulty because the solution is already known.
 
+## Quick manual checklist
+
+On the actual phone/browser being tested:
+
+- [ ] Open a fresh case and explain the objective without help; find and read a clue.
+- [ ] Pin from its file, reach the thread, compare records and remove a pin hidden by a filter.
+- [ ] Interview a suspect, follow an unlocked lead and explain what a conclusion establishes.
+- [ ] In Dead Air, compare clocks/documents; in After the Flood, move between timeline sources and event order.
+- [ ] Try an unsupported thread/explanation and judge whether feedback helps; reveal hints only as needed.
+- [ ] Rotate/zoom, use touch and keyboard where available, close a modal and check focus/scroll position.
+- [ ] Write a non-private test note, refresh and Continue; switch cases and confirm independent progress.
+- [ ] Export to Files, replay/reset only after confirmation, and import the matching backup after review.
+- [ ] Complete a justified accusation, review its sources, and compare reopening with replay.
+- [ ] Create feedback, try copy/download, and confirm the organizer receives what you intended.
+
+Record device/browser, help required, unclear steps and enjoyment in the player’s own words. These are manual checks to perform; they are not completed-device claims.
+
 ## Feedback to keep
 
-Use this blank template in a local text file or your normal feedback channel. No telemetry or external service is built into the game. Ask before recording a session; do not request personal details, full exports or private notebook text. Share only what the player agrees to share.
+For an immediate problem, use **Playtest feedback** at the bottom of the game. Choose a topic, describe the moment, review and copy/download the report, then send it through the organizer’s invitation channel. If clipboard access fails, use the selected report’s native Copy command or download. Reports add only the case/view/progress/build label; no notebook text, clue contents or accusation choices are attached. Nothing is sent automatically and closing discards the draft.
+
+Use the blank template below for broader session observations or if the app cannot open. No telemetry or external feedback service is built into the game. Ask before recording a session; do not request personal details, full exports or private notebook text. Share only what the player agrees to share.
 
 ```text
 Case / build commit:
