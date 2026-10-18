@@ -17,7 +17,7 @@ export function CaseDebrief({
         <summary>Review your reasoning</summary>
         <p className="small-note">
           Compare your submitted account with the conclusions you established.
-          These are the records you used, not a discovery score.
+          This review follows the records you used to establish each conclusion.
         </p>
         {accountReview(state, result.matches).map((part) => (
           <article key={part.key}>

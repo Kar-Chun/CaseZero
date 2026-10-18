@@ -21,8 +21,7 @@ export function evaluate(
     method: value.method === "M02",
     motive: value.motive === "R03",
   };
-  const correct =
-    value.suspect === "S01" && value.method === "M02" && value.motive === "R03";
+  const correct = Object.values(matches).every(Boolean);
   if (!correct)
     return {
       correct: false,

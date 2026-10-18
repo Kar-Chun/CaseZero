@@ -24,6 +24,11 @@ describe("entry and investigation navigation", () => {
     expect(
       screen.getByRole("heading", { name: "The Grand Gallery" }),
     ).toBeVisible();
+    expect(window.scrollTo).toHaveBeenLastCalledWith({
+      top: 0,
+      left: 0,
+      behavior: "instant",
+    });
     await user.click(screen.getByRole("button", { name: "Museum map" }));
     for (const label of [
       "Evidence board",

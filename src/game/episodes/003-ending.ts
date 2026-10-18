@@ -6,8 +6,7 @@ export function evaluateConservatory(value: Accusation): CaseOutcome {
     method: value.method === "M22",
     motive: value.motive === "R23",
   };
-  const correct =
-    value.suspect === "S21" && value.method === "M22" && value.motive === "R23";
+  const correct = Object.values(matches).every(Boolean);
   if (!correct)
     return {
       correct: false,

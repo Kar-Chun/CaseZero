@@ -174,6 +174,7 @@ function GameExperience({
       ?.querySelector<HTMLElement>("h1,h2");
     heading?.setAttribute("tabindex", "-1");
     heading?.focus({ preventScroll: true });
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   }, [effectiveScreen, tab, location]);
   const begin = () => {
     selectCase(caseId);

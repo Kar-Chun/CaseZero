@@ -6,8 +6,7 @@ export function evaluateRadio(value: Accusation): CaseOutcome {
     method: value.method === "M12",
     motive: value.motive === "R12",
   };
-  const correct =
-    value.suspect === "S13" && value.method === "M12" && value.motive === "R12";
+  const correct = Object.values(matches).every(Boolean);
   if (!correct)
     return {
       correct: false,

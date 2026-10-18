@@ -1,43 +1,52 @@
-# CaseZero Phase 3 verification
+# CaseZero Phase 4 verification
 
-Verified on 17 October 2026 in Linux with Node 24.19.0, npm 11.9.0, Next.js 16.4.0 and React 19.3.0. Prior milestone results remain in PLAN.md.
+Verified on 18 October 2026 in Linux with Node 24.19.0, npm 11.9.0, Next.js 16.4.0 and React 19.3.0. Prior milestone results remain in PLAN.md.
 
-| Check                    | Actual result                                                                                                           |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
-| Clean install            | Isolated `npm ci` succeeded with the final manifest/lockfile; 320 packages installed                                    |
-| TypeScript               | `npm run typecheck` passed                                                                                              |
-| ESLint                   | `npm run lint` passed                                                                                                   |
-| Unit/component tests     | `npm test`: 102 passed in 23 files                                                                                      |
-| Production build         | `npm run build` passed; App Router pages prerendered                                                                    |
-| Production browser suite | 81 passed in 7.8 minutes: 27 desktop Chromium, 27 mobile Chromium, 27 desktop WebKit                                    |
-| Accessibility            | Zero axe WCAG 2/2.1 A/AA violations on audited screens; tested keyboard, focus, reduced motion and 320px layouts passed |
-| Repository               | Existing `develop/casezero` branch; five verified milestone commits; `git diff --check` passed                          |
+| Check                    | Actual result                                                                                                   |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------- |
+| Clean install            | Isolated `npm ci` succeeded with the final manifest/lockfile; 320 packages installed                            |
+| TypeScript               | `npm run typecheck` passed                                                                                      |
+| ESLint                   | `npm run lint` passed                                                                                           |
+| Unit/component tests     | `npm test`: 116 passed in 26 files                                                                              |
+| Production build         | `npm run build` passed; App Router pages prerendered                                                            |
+| Production browser suite | 128 passed in 11.3 minutes: 32 each in desktop Chromium, mobile Chromium emulation, Firefox and WebKit          |
+| Accessibility            | Zero axe WCAG 2/2.1 A/AA violations on audited screens; keyboard, focus, reduced motion and 320px checks passed |
+| Repository               | Existing `develop/casezero` branch; four verified milestone commits; `git diff --check` passed                  |
 
 ## Gameplay and compatibility
 
-All three cases complete through actual UI searches, interviews, analysis, deductions and final evidence. Browser journeys cover correct and unsupported verdicts, successful retry, refresh at an ending and independent case progress. The original two cases and their original meaningful tests remain intact.
+All three cases retain their original story, solution and canonical proof. Production journeys perform searches, evidence-dependent interviews, analysis, deductions, final-proof collection and both correct/unsupported accusations with preserved retry. The museum also completes without the attendance record, using timed access, continuous alibis and credential custody; its sensor record can support the maintenance conclusion. Dead Air also completes without the acoustic transcript, using selected-input and physical-splice records. After the Flood retains its sequence and explanation requirements. There is no fourth case, score or randomized culprit.
 
-After the Flood adds fourteen clues, four suspects, four rooms, twelve interview topics, one reconstruction and four explanation-dependent deductions. All 24 distinct event orders were tested; exactly one satisfies the authored records. Duplicate/missing/foreign events and unsupported explanations grant no progress. Opportunity requires the reconstructed window. The required path also completes without the optional red-herring correspondence. Every conditional interview is checked with its complete requirements and each missing dependency. Content checks cover reference integrity, reachability, analysis rewards and valid explanation choices.
+Pure tests reject every insufficient subset of the museum opportunity proofs, duplicates, unrelated extra cards, unsupported radio connections and incorrect explanations. Proof revision replaces only the supporting set, without duplicating conclusions. Content validation checks every reference, exact-set ambiguity, monotonic reachability and independently circular alternative proofs. Full hint-led journeys complete all three cases without demanding optional canonical evidence once another route is available. Every conditional interview retains its dependency tests; all 24 distinct conservatory event orders still have exactly one supported answer.
 
-Version 2 save shape and existing keys are unchanged. Original version 1 partial/ending saves migrate; original version 2 saves and backups restore. Tests exercise all three independent saves, replay/reset, real JSON downloads and file uploads, review before replacement, notes, hints, pins and completed reconstruction. Invalid, unsupported, oversized, foreign-case and impossible imports leave progress unchanged. Storage denial/quota and same-/different-case tab behavior remain covered. Simultaneous edits use the latest snapshot, without merging.
+Version 3 stores the actual proof used for each conclusion. Valid v1 museum and v2 partial/completed saves migrate using the former canonical requirements, including correct and incorrect submitted accounts for every v2 case. Newly added alternatives cannot make a malformed older save valid. Missing, foreign, duplicate, unowned or inconsistent proof data rejects. Existing save namespaces and backup wrapper remain unchanged. Import/export round trips proof-bearing endings; existing browser tests use actual downloads/uploads and confirm review before replacement. Invalid, unsupported, oversized and foreign-case imports leave progress intact.
 
-Discovery links select the relevant suspect or location without collecting evidence. Answered topics disappear. Board shortcuts focus their destinations; conclusion feedback receives focus and supporting records reopen correctly. New reconstruction, explanation, revelation and backup-review screens have narrow-layout and axe checks. Monitored journeys reported no page or application console errors. Archive, conservatory hall, reconstruction source/order and narrow-board screenshots were visually reviewed.
+Independent cases retain notes, hints, pins, analysis and conclusions through switching, refresh, replay/reset and backup replacement. Tabs retain their own selected case using session storage, with a fallback to the original shared preference. Same-case edits still synchronize the latest saved snapshot, without merging concurrent changes. Denied/quota storage retains in-memory play and case switching; that unsaved session cannot survive refresh.
+
+End review compares person/method/motive with the established conclusions and actual source titles. Overlooked search points appear only after a successful verdict and never auto-collect evidence or expose undiscovered file contents. Reopen clears only the submitted account; replay requires confirmation. Tests check cancellation, focus return, resumed proof preservation and fresh replay. Statement reviews require both a heard claim and the relevant records; tests distinguish a conflicting alibi, limited-scope alibi and corroborated statement. Narrow-screen tests open source files with the keyboard and return focus correctly.
 
 ## Issues addressed
 
-- Explanation selection is enforced alongside evidence; correct cards alone cannot establish a new-case conclusion.
-- Sequence validation rejects repeated events and preserves progress after unsuccessful attempts.
-- Narrative review aligned the report and preserved observations to the same evaluation time and explained the director’s mistaken assumption about the surviving material. Exact narrative review details are in CASE_BIBLE.md (spoilers).
-- Removed object-recovery assumptions from the general field guide and notebook; all cases now use accurate final-proof guidance.
-- Added actionable discovery relationships and source review to reduce repeated navigation and lost context.
-- Corrected an overly narrow inferred state type in the new component-test harness. No meaningful tests were removed to pass checks.
+- Exact canonical recipes rejected sufficient substitutes; three authored alternatives now use the same complete-set validation and conclusion.
+- Hints and source summaries assumed canonical evidence. They now select an attainable route and show actual recorded support. The guided-walkthrough regression was updated to follow that route; no meaningful test was removed.
+- Generic explanation failures did not identify the unsupported inference. Conservatory responses now point to the conflicting physical/timing fact, preserving the player's thread for revision.
+- Recorded statements appeared without a corroboration distinction. Evidence-gated reviews separate claims from conflict, consistency and limited scope without treating motive as proof.
+- Endings offered no review of the player's reasoning and replay immediately erased progress. Review, optional overlooked leads, reopening and confirmed replay now distinguish those intentions.
+- A shared last-selected-case preference could open another tab's investigation after refresh. Per-tab restoration fixes this while preserving the old fallback.
+- Visual review found that section changes could retain a long ending's bottom scroll position. Navigation now immediately returns to the top and focuses the new heading; the browser regression checks both position and focus. This does not add motion or change native board shortcuts.
 
-## Browser environment and limits
+## Browser setup and verification limits
 
-The production run selected `desktop`, `mobile` and `webkit` with `CASEZERO_CROSS_BROWSER=1 CASEZERO_PRODUCTION=1`. WebKit's missing Debian libraries were extracted under `/tmp` and supplied to its local bundle without replacing existing files. Playwright’s ldconfig-only check cannot see the supplied GLES library; host validation was skipped after launch verification, and all 27 real WebKit tests passed. A normal Linux machine can use `npx playwright install-deps`.
+The final production run enabled all four configured projects with `CASEZERO_CROSS_BROWSER=1 CASEZERO_PRODUCTION=1`. Browser binaries were installed under `/tmp/casezero-browsers`. WebKit's missing Debian libraries were SHA-verified and extracted into its local bundle without replacing existing files. Playwright's ldconfig-only check cannot see the supplied GLES library, so host validation was skipped after a successful launch probe. On a normal supported Linux machine, use `npx playwright install-deps` instead.
 
-Firefox binaries downloaded, but repeated launch attempts failed with “Could not find profile folder”; tracing showed a read-only home configuration path during initialization. No Firefox gameplay tests ran. Opt-in Firefox/WebKit projects are included for environments that support them. Linux WebKit testing does not establish native Safari or physical iOS coverage. Physical devices and a manual screen-reader audit were not tested. Automated scans cover representative screens, not complete conformance.
+Firefox's initial profile error was environmental. Tracing identified read-only configuration and cache paths; assigning temporary `XDG_CONFIG_HOME` and `XDG_CACHE_HOME` fixed initialization. Its content process then failed writing `/proc/self/uid_map` in this container. The test-only `MOZ_DISABLE_CONTENT_SANDBOX=1` setting enabled actual rendering and gameplay testing inside the existing workspace isolation. No browser-security setting was added to the application or Playwright configuration. All 32 actual Firefox tests passed with this environment setup.
 
-No known blocking gameplay issue remains. View position, filters, question focus and unsubmitted analysis/explanation selections are temporary; completed analyses, conclusions and pins save. Solutions are fixed authored narratives and remain inspectable in client source. Audio is deferred. Unsaved session progress cannot survive refresh if storage fails.
+An initial matrix was intentionally stopped after 22 successful Firefox tests to fix the visually discovered scroll issue; two in-flight tests were interrupted and 104 had not run. Those results are not counted as a completed suite. The rebuilt production run completed all 128 tests without failures, retries or skips.
 
-No deployment was performed. No remote is configured, so a hosted PR was not opened. REVIEW.md contains the review summary; README.md explains installation and play. Phase 4 priorities: human playtesting to tune difficulty, Firefox/native Safari/device/screen-reader coverage, and carefully authored alternate proof paths before more systems.
+Screenshots of desktop review, the 320px reasoning review and the board were visually inspected. Monitored journeys report no application console/page errors. Browser emulation and Linux WebKit do not establish native Safari or physical-device support. No physical devices, manual screen-reader audit or human playtesting sessions were performed. Axe checks cover representative screens, not complete accessibility conformance.
+
+## Handoff
+
+No known blocking gameplay bug remains. Fixed narratives limit replay to exploring reasoning and missed context; alternate routes are authored, not unrestricted free-form deductions. Unsubmitted explanations, view position, filters and question focus remain temporary. Solutions remain inspectable in client source. No deployment was performed, and no remote is configured for a hosted pull request; REVIEW.md is the review summary.
+
+The next priority is real human sessions using PLAYTESTING.md: assess discoverability, reasoning satisfaction, hint pacing and enjoyment, then tune repeated friction. Follow with physical phones, native Safari and screen-reader users. Do not infer those results from automated walkthroughs.
