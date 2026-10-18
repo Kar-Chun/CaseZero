@@ -296,6 +296,11 @@ export const dialogue: Dialogue[] = [
     question: "Where were you when the seal vanished?",
     response:
       "In the atrium, watching Elise work. Ten past nine until sixteen past, perhaps. I returned to the gallery afterward. You can ask the usher.",
+    review: {
+      evidence: ["E04"],
+      finding: "conflict",
+      text: "The usher\u2019s attendance record does not support this claimed continuous presence. A conflicting alibi is a lead, not proof of theft.",
+    },
     requires: {},
     lockHint: "",
   },
@@ -423,7 +428,7 @@ export const deductions: Deduction[] = [
     id: "D03",
     title: "The missing minutes",
     prompt:
-      "Who had both the credential and the opportunity? Connect attendance, continuous alibis and card custody.",
+      "Who had both the credential and the opportunity? Compare independent timing or attendance with continuous alibis and card custody.",
     evidence: ["E04", "E07", "E08"],
     alternatives: [["E05", "E07", "E08"]],
     conclusion:

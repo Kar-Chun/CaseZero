@@ -1,3 +1,4 @@
+import { preferredProof } from "../src/game/proofs";
 import { describe, it, expect } from "vitest";
 import { cases, getCase } from "../src/game/cases";
 import {
@@ -57,7 +58,7 @@ describe("progressive assistance and board state", () => {
           case "deduction":
             s = combine(
               s,
-              c.deductions.find((d) => d.id === lead.id)!.evidence,
+              preferredProof(s, c.deductions.find((d) => d.id === lead.id)!),
               deductionAnswers[c.id]?.[lead.id!],
             ).state;
             break;

@@ -127,8 +127,8 @@ function GameExperience({
     setState((s) => discover(s, id));
     setFile(id);
   };
-  const connect = (ids: string[], interpretation?: string) => {
-    const result = combine(state, ids, interpretation);
+  const connect = (ids: string[], interpretation?: string, goalId?: string) => {
+    const result = combine(state, ids, interpretation, goalId);
     setState(result.state);
     return result;
   };
@@ -289,6 +289,7 @@ function GameExperience({
               />
             ) : tab === "interviews" ? (
               <Interviews
+                onInspect={setFile}
                 state={state}
                 initialPerson={interviewPerson}
                 onPersonChange={setInterviewPerson}

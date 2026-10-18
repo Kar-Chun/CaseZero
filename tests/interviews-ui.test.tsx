@@ -42,3 +42,24 @@ it("shows evidence-dependent questions, records the answer, and exposes a real n
   expect(follow).toEqual(["L02"]);
   expect(screen.getByText("Interview record (1)")).toBeVisible();
 });
+it("distinguishes a recorded claim from an evidence-supported conflict and opens its source", async () => {
+  const user = userEvent.setup();
+  const sources: string[] = [];
+  const heard = answer(startCase(freshState()), "T01");
+  const props = {
+    onAnswer: () => {},
+    onFollow: () => {},
+    onInspect: (id: string) => sources.push(id),
+  };
+  const { rerender } = render(<Interviews state={heard} {...props} />);
+  await user.click(
+    screen.getByRole("button", {
+      name: "Where were you when the seal vanished?",
+    }),
+  );
+  expect(screen.queryByText("CONFLICT WITH RECORDS")).not.toBeInTheDocument();
+  rerender(<Interviews state={discover(heard, "E04")} {...props} />);
+  expect(screen.getByText("CONFLICT WITH RECORDS")).toBeVisible();
+  await user.click(screen.getByRole("button", { name: "Atrium attendance" }));
+  expect(sources).toEqual(["E04"]);
+});

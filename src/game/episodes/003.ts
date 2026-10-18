@@ -332,6 +332,11 @@ export const afterTheFlood: CaseDefinition = {
       question: "What do you think caused the flood?",
       response:
         "The sensor, presumably. Tomas tested the system earlier. I collected labels from the service enclosure and returned before the alarm. There is no reason to turn an equipment fault into a scandal.",
+      review: {
+        evidence: ["E43", "E46"],
+        finding: "conflict",
+        text: "The dry automatic feed and fresh manual flow do not support the proposed sensor route. Establish the cause before assigning responsibility.",
+      },
       requires: {},
       lockHint: "",
     },
@@ -368,6 +373,11 @@ export const afterTheFlood: CaseDefinition = {
       question: "Why did you argue with Elin?",
       response:
         "I oppose selling exclusive rights to the seed line. That is a real disagreement. It is also why I insisted on preserving the audit samples. I was presenting seedlings in public from 18:52; the continuous camera shows it.",
+      review: {
+        evidence: ["E48"],
+        finding: "consistent",
+        text: "The continuous recording supports the claimed public presentation during the relevant window. Disagreement alone does not establish opportunity.",
+      },
       requires: {},
       lockHint: "",
     },
@@ -446,6 +456,8 @@ export const afterTheFlood: CaseDefinition = {
       interpretations: [
         {
           id: "C1",
+          challenge:
+            "Check the automatic feed\u2019s independent totalizer and whether its pipe is wet.",
           label: "A sensor fault delivered water through the automatic feed.",
         },
         {
@@ -455,6 +467,8 @@ export const afterTheFlood: CaseDefinition = {
         },
         {
           id: "C3",
+          challenge:
+            "Account for the tracer color and the fresh flow recorded at the local wheel.",
           label: "Rain entered through the roof and left unrelated residue.",
         },
       ],
@@ -471,11 +485,15 @@ export const afterTheFlood: CaseDefinition = {
       interpretations: [
         {
           id: "C1",
+          challenge:
+            "Compare the stopped test counter with when tracer was added.",
           label:
             "The clean-water test continued without interruption until the alarm.",
         },
         {
           id: "C2",
+          challenge:
+            "The alarm reports detected damage; compare it with the mechanical flow time.",
           label: "The 19:08 alarm proves the wheel was first opened at 19:08.",
         },
         {
@@ -503,11 +521,15 @@ export const afterTheFlood: CaseDefinition = {
         },
         {
           id: "C2",
+          challenge:
+            "Technical skill is an assumption. Compare actual presence in the enclosure during the reconstructed window.",
           label:
             "Only an engineer could turn a manual wheel, regardless of the recordings.",
         },
         {
           id: "C3",
+          challenge:
+            "A disagreement can suggest motive; it cannot place someone at the wheel.",
           label:
             "The naming-rights argument establishes who operated the wheel.",
         },
@@ -525,6 +547,8 @@ export const afterTheFlood: CaseDefinition = {
       interpretations: [
         {
           id: "C1",
+          challenge:
+            "Compare the signed survival claim with the authenticated pre-flood results.",
           label: "The flood protected the trial from dangerous weather.",
         },
         {
@@ -534,6 +558,8 @@ export const afterTheFlood: CaseDefinition = {
         },
         {
           id: "C3",
+          challenge:
+            "Read the executed endowment terms separately from the personal advance conditions.",
           label:
             "Flood damage released the foundation from this year’s endowment.",
         },

@@ -40,6 +40,11 @@ export type Dialogue = {
   response: string;
   requires: Requirement;
   lockHint: string;
+  review?: {
+    evidence: string[];
+    finding: "consistent" | "conflict" | "limited";
+    text: string;
+  };
 };
 export type Deduction = {
   id: string;
@@ -49,7 +54,7 @@ export type Deduction = {
   conclusion: string;
   category?: string;
   alternatives?: string[][];
-  interpretations?: { id: string; label: string }[];
+  interpretations?: { id: string; label: string; challenge?: string }[];
   requires?: Requirement;
 };
 export type Accusation = { suspect: string; method: string; motive: string };

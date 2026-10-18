@@ -7,7 +7,7 @@ export async function beginRadio(page: Page) {
   await expect(page.getByRole("heading", { name: "Dead Air" })).toBeFocused();
   await page.getByRole("button", { name: "Enter the station" }).click();
 }
-export async function investigateRadio(page: Page) {
+export async function investigateRadio(page: Page, alternative = false) {
   await beginRadio(page);
   await navigate(page, "Accusation");
   await expect(
@@ -33,7 +33,8 @@ export async function investigateRadio(page: Page) {
     page.getByRole("dialog", { name: "The corrected insertion" }),
   ).toBeVisible();
   await page.keyboard.press("Escape");
-  await search(page, "Broadcast transcript", "The false warning");
+  if (!alternative)
+    await search(page, "Broadcast transcript", "The false warning");
   await visit(page, "Equipment Room");
   for (const [point, title] of [
     ["Reserve input rack", "The selected input"],
@@ -113,7 +114,10 @@ export async function investigateRadio(page: Page) {
   await expect(page.getByRole("status")).toContainText(
     "needs an earlier conclusion",
   );
-  await connect(page, ["The false warning", "The selected input"]);
+  await connect(page, [
+    alternative ? "The U4 splice" : "The false warning",
+    "The selected input",
+  ]);
   await expect(page.getByRole("status")).toContainText("prepared recording");
   await connect(page, ["The corrected insertion", "A genuine, late alibi"]);
   await expect(page.getByRole("status")).toContainText("22:06");

@@ -69,6 +69,11 @@ export function validateContent(content: CaseContent = caseContent): string[] {
     if (!content.suspects.some((s) => s.id === t.suspect))
       issues.push(`${t.id}: unknown suspect`);
     check(t.id, t.requires);
+    if (t.review) {
+      check(t.id, { evidence: t.review.evidence });
+      if (!t.review.evidence.length)
+        issues.push(`${t.id}: empty statement review`);
+    }
   }
   const recipes = new Set<string>();
   for (const d of content.deductions) {

@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useState, useRef, useEffect } from "react";
+import { maxPins as pinLimit, preferredProof, proofSets } from "@/game/proofs";
 import { getCase } from "@/game/cases";
 import { type CombinationResult, meets, threadDeduction } from "@/game/engine";
 import type { GameState } from "@/game/types";
@@ -22,14 +23,20 @@ export function Board({
   state: GameState;
   onInspect: (id: string) => void;
   onExplore: () => void;
-  onConnect?: (ids: string[], interpretation?: string) => CombinationResult;
+  onConnect?: (
+    ids: string[],
+    interpretation?: string,
+    goalId?: string,
+  ) => CombinationResult;
   onPinChange: (ids: string[]) => void;
   onRevealHint: (key: string) => void;
   onFollow: (lead: Lead) => void;
 }) {
   const { evidence, deductions, locations } = getCase(state.caseId);
-  const maxPins = Math.max(...deductions.map((d) => d.evidence.length));
-  const sizes = [...new Set(deductions.map((d) => d.evidence.length))].sort();
+  const maxPins = pinLimit(getCase(state.caseId));
+  const sizes = [
+    ...new Set(deductions.flatMap((d) => proofSets(d).map((p) => p.length))),
+  ].sort();
   const selected = state.pinned;
   const thread = threadDeduction(state, selected);
   const [explanations, setExplanations] = useState<Record<string, string>>({});
@@ -123,13 +130,13 @@ export function Board({
                     ? "CONCLUSION ESTABLISHED"
                     : !meets(state, d.requires ?? {})
                       ? "Waiting for an earlier conclusion"
-                      : `${d.evidence.filter((id) => state.evidence.includes(id)).length} / ${d.evidence.length} related clues found`}
+                      : `${preferredProof(state, d).filter((id) => state.evidence.includes(id)).length} / ${preferredProof(state, d).length} related clues found`}
                 </div>
                 {solved && (
                   <details className="conclusion-sources">
                     <summary>Review supporting records</summary>
                     <ul>
-                      {d.evidence.map((id) => (
+                      {(state.proofs[d.id] ?? d.evidence).map((id) => (
                         <li key={id}>
                           <button
                             className="text-link"
@@ -165,7 +172,13 @@ export function Board({
             <h3>{focusedQuestion.title}</h3>
             <p>
               {focusedQuestion.prompt} This question uses{" "}
-              {focusedQuestion.evidence.length} clues.
+              {[
+                ...new Set(proofSets(focusedQuestion).map((p) => p.length)),
+              ].join(" or ")}{" "}
+              clues.{" "}
+              {focusedQuestion.alternatives
+                ? "More than one set of records can support this conclusion."
+                : ""}
             </p>
           </div>
           <button className="text-link" onClick={() => setFocused("")}>
@@ -341,6 +354,7 @@ export function Board({
                     const result = onConnect(
                       selected,
                       thread ? explanations[thread.id] : undefined,
+                      focused || undefined,
                     );
                     setMessage(result.message);
                     setEstablished(

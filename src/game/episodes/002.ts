@@ -364,6 +364,11 @@ export const deadAir: CaseDefinition = {
       question: "Where were you when the warning aired?",
       response:
         "On a call to our office from ten past until eighteen past. The carrier can confirm it. I donated money, not my time to a criminal broadcast. I was not at a microphone at fourteen past.",
+      review: {
+        evidence: ["E23", "E29"],
+        finding: "limited",
+        text: "The call is independently confirmed, but begins after the corrected insertion time. It accounts for the broadcast, not the earlier preparation.",
+      },
       requires: {},
       lockHint: "",
     },
@@ -428,8 +433,9 @@ export const deadAir: CaseDefinition = {
       category: "METHOD",
       title: "A voice on a timer",
       prompt:
-        "Was the warning spoken live or played from a prepared source? Compare the transmitted voice with the selected input.",
+        "Was the warning spoken live or played from a prepared source? Compare the transmitted voice or physical recording with the selected input.",
       evidence: ["E24", "E25"],
+      alternatives: [["E25", "E26"]],
       conclusion:
         "The false warning was a prepared recording on the reserve cartridge. Neither a live microphone nor an external call carried it.",
     },

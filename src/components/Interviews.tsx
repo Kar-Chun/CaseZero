@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { getCase } from "@/game/cases";
+import { statementReview } from "@/game/statements";
 import { meets } from "@/game/engine";
 import type { GameState } from "@/game/types";
 import { Icon } from "./Icon";
@@ -9,12 +10,14 @@ export function Interviews({
   onAnswer,
   onFollow,
   initialPerson,
+  onInspect,
   onPersonChange,
 }: {
   state: GameState;
   onAnswer: (id: string) => void;
   onFollow: (id: string) => void;
   initialPerson?: string;
+  onInspect?: (id: string) => void;
   onPersonChange?: (id: string) => void;
 }) {
   const { suspects, dialogue, evidence, locations, inspections } = getCase(
@@ -28,6 +31,7 @@ export function Interviews({
   const active = lines.find(
     (t) => t.id === topic && state.answers.includes(t.id),
   );
+  const review = active ? statementReview(state, active.id) : null;
   const interviewed = suspects.filter((s) =>
     dialogue.some((t) => t.suspect === s.id && state.answers.includes(t.id)),
   ).length;
@@ -154,6 +158,28 @@ export function Interviews({
               <>
                 <p className="eyebrow">{suspect.name} / ON THE RECORD</p>
                 <blockquote>“{active.response}”</blockquote>
+                {review && (
+                  <aside className="statement-review">
+                    <p className="eyebrow">
+                      {review.finding === "conflict"
+                        ? "CONFLICT WITH RECORDS"
+                        : review.finding === "limited"
+                          ? "LIMITED SCOPE"
+                          : "CONSISTENT WITH RECORDS"}
+                    </p>
+                    <p>{review.text}</p>
+                    {onInspect &&
+                      review.evidence.map((id) => (
+                        <button
+                          key={id}
+                          className="text-link"
+                          onClick={() => onInspect(id)}
+                        >
+                          {evidence.find((e) => e.id === id)!.title}
+                        </button>
+                      ))}
+                  </aside>
+                )}
                 {leads.map((e) => (
                   <div className="interview-lead" key={e.id}>
                     <Icon name="search" size={18} />

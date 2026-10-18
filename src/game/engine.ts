@@ -64,6 +64,7 @@ export function combine(
   state: GameState,
   ids: string[],
   interpretation?: string,
+  goalId?: string,
 ): CombinationResult {
   if (
     !state.started ||
@@ -77,7 +78,10 @@ export function combine(
     return {
       state,
       message:
-        "These clues do not establish a complete conclusion. Compare the board’s questions and try another connection.",
+        "These clues do not establish a complete conclusion. " +
+        (getCase(state.caseId).deductions.find((d) => d.id === goalId)
+          ?.prompt ??
+          "Compare the board’s questions and try another connection."),
     };
   if (!meets(state, match.requires ?? {})) {
     const titles = (match.requires?.deductions ?? [])
@@ -112,7 +116,10 @@ export function combine(
       state,
       message: !interpretation
         ? "These records connect. Choose the explanation they support, then test the connection."
-        : "That explanation does not account for all these records. Compare their details and revise your explanation.",
+        : "That explanation does not account for all these records. " +
+          (match.interpretations.find((o) => o.id === interpretation)
+            ?.challenge ??
+            "Compare their details and revise your explanation."),
     };
   return {
     state: {

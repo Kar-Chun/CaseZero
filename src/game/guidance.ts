@@ -1,3 +1,4 @@
+import { preferredProof } from "./proofs";
 import { deductionAnswers } from "./deduction-rules";
 import { getCase } from "./cases";
 import type { GameState, Requirement } from "./types";
@@ -62,7 +63,7 @@ export function nextLead(state: GameState, goalId?: string): Lead {
     visited.add(`d${id}`);
     return (
       prerequisites(item.requires ?? {}) ??
-      prerequisites({ evidence: item.evidence }) ?? {
+      prerequisites({ evidence: preferredProof(state, item) }) ?? {
         kind: "board",
         task: "deduction",
         id,
@@ -138,7 +139,11 @@ export function progressiveHint(
       stages = [
         `You have the recorded facts needed for “${deduction.title}”. Think about what they establish together.`,
         deduction.prompt,
-        `Pin ${deduction.evidence.map((id) => `“${c.evidence.find((e) => e.id === id)!.title}”`).join(", ")}.${deduction.interpretations ? ` Choose the explanation: “${deduction.interpretations.find((o) => o.id === deductionAnswers[c.id]?.[deduction.id])!.label}”` : ""} Then test the connection.`,
+        `Pin ${preferredProof(state, deduction)
+          .map((id) => `“${c.evidence.find((e) => e.id === id)!.title}”`)
+          .join(
+            ", ",
+          )}.${deduction.interpretations ? ` Choose the explanation: “${deduction.interpretations.find((o) => o.id === deductionAnswers[c.id]?.[deduction.id])!.label}”` : ""} Then test the connection.`,
       ];
       break;
     }

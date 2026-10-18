@@ -38,7 +38,7 @@ export async function connect(
     await page.getByRole("radio", { name: explanation, exact: true }).check();
   await page.getByRole("button", { name: "Test connection" }).click();
 }
-export async function investigate(page: Page) {
+export async function investigate(page: Page, alternative = false) {
   await page.goto("/");
   await page.getByRole("button", { name: "Explore the case" }).click();
   await page.getByRole("button", { name: "Begin investigation" }).click();
@@ -54,7 +54,8 @@ export async function investigate(page: Page) {
     ["Abandoned champagne table", "A patron’s offer"],
     ["Usher’s station", "Atrium attendance"],
   ])
-    await search(page, point, title);
+    if (!(alternative && point === "Usher’s station"))
+      await search(page, point, title);
   await visit(page, "Security Office");
   for (const [point, title] of [
     ["Access terminal", "Credential trail"],
@@ -105,7 +106,7 @@ export async function investigate(page: Page) {
     "do not establish a complete conclusion",
   );
   await connect(page, [
-    "Maintenance slip",
+    alternative ? "Silent sensor" : "Maintenance slip",
     "Credential trail",
     "Unbroken power",
   ]);
@@ -117,7 +118,7 @@ export async function investigate(page: Page) {
   ]);
   await expect(page.getByRole("status")).toContainText("Crate K17");
   await connect(page, [
-    "Atrium attendance",
+    alternative ? "Credential trail" : "Atrium attendance",
     "Three verified alibis",
     "Card custody receipt",
   ]);
