@@ -3590,3 +3590,17 @@ select {
 .review-status { font: 12px monospace; color: #c4c9b8; }
 .case-debrief li { margin: 12px 0; }
 .case-debrief p { overflow-wrap: anywhere; }
+
+.save-warning {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px max(5%, 18px);
+  border-block: 1px solid #a79468;
+  background: #302b20;
+  color: #f0e3c7;
+  font-size: 14px;
+}
+.save-warning p { margin-top: 6px; max-width: 65ch; line-height: 1.6; }

@@ -38,6 +38,7 @@ export type LoadResult = {
   state: GameState;
   available: boolean;
   notice: string | null;
+  invalid?: boolean;
 };
 const object = (v: unknown): v is Record<string, unknown> =>
   typeof v === "object" && v !== null && !Array.isArray(v);
@@ -222,6 +223,7 @@ export function loadGame(
       ? { state, available: true, notice: null }
       : {
           state: freshState(caseId),
+          invalid: true,
           available: true,
           notice:
             "The saved case is invalid or from an unsupported version. Start a new investigation to create a fresh save.",

@@ -75,3 +75,33 @@ it("ignores a slower previously selected file when a newer file has finished rea
   );
   expect(restored[0].notes).toBe("Newer selected file.");
 });
+
+it("announces a pending read, retries the same file and returns focus from review", async () => {
+  const user = userEvent.setup();
+  const state = solveCase();
+  let fail: ((reason: Error) => void) | undefined;
+  const file = new File(["{}"], "retry.json", { type: "application/json" });
+  let reads = 0;
+  Object.defineProperty(file, "text", {
+    value: () =>
+      ++reads === 1
+        ? new Promise<string>((_, reject) => {
+            fail = reject;
+          })
+        : Promise.resolve(exportBackup(state)),
+  });
+  render(<SaveTools state={state} onImport={() => {}} />);
+  await user.click(
+    screen.getByRole("button", { name: "Import investigation" }),
+  );
+  const input = screen.getByLabelText("Choose a case backup");
+  await user.upload(input, file);
+  expect(screen.getByRole("status")).toHaveTextContent("Reading your backup");
+  expect(screen.getByRole("button", { name: "Review backup" })).toBeDisabled();
+  await act(async () => fail?.(Error("Read failed")));
+  expect(screen.getByRole("status")).toHaveTextContent("could not be read");
+  await user.upload(input, file);
+  await user.click(screen.getByRole("button", { name: "Review backup" }));
+  await user.click(screen.getByRole("button", { name: "Back to file" }));
+  expect(screen.getByLabelText("Choose a case backup")).toHaveFocus();
+});

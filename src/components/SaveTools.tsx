@@ -15,11 +15,18 @@ export function SaveTools({
   const [open, setOpen] = useState(false),
     [raw, setRaw] = useState(""),
     [error, setError] = useState(""),
+    [reading, setReading] = useState(false),
     [preview, setPreview] = useState<GameState | null>(null);
   const fileRequest = useRef(0);
+  const fileInput = useRef<HTMLInputElement>(null);
+  const backToFile = useRef(false);
   const reviewTitle = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
     if (preview) reviewTitle.current?.focus();
+    else if (backToFile.current) {
+      fileInput.current?.focus();
+      backToFile.current = false;
+    }
   }, [preview]);
   const close = useCallback(() => {
     fileRequest.current++;
@@ -28,6 +35,7 @@ export function SaveTools({
   const c = getCase(state.caseId);
   const resetEditor = () => {
     fileRequest.current++;
+    setReading(false);
     setRaw("");
     setError("");
     setPreview(null);
@@ -35,6 +43,7 @@ export function SaveTools({
   };
   const readFile = async (file: File | undefined) => {
     const request = ++fileRequest.current;
+    setReading(false);
     setRaw("");
     setPreview(null);
     setError("");
@@ -45,6 +54,7 @@ export function SaveTools({
       );
       return;
     }
+    setReading(true);
     try {
       const contents = await file.text();
       if (request === fileRequest.current) setRaw(contents);
@@ -53,6 +63,8 @@ export function SaveTools({
       setError(
         "The file could not be read. Choose it again, or paste a backup below.",
       );
+    } finally {
+      if (request === fileRequest.current) setReading(false);
     }
   };
   return (
@@ -136,7 +148,10 @@ export function SaveTools({
                 </button>
                 <button
                   className="button outline"
-                  onClick={() => setPreview(null)}
+                  onClick={() => {
+                    backToFile.current = true;
+                    setPreview(null);
+                  }}
                 >
                   Back to file
                 </button>
@@ -154,9 +169,14 @@ export function SaveTools({
               <label className="backup-file-label">
                 Choose a case backup
                 <input
+                  ref={fileInput}
                   type="file"
                   accept=".json,application/json"
-                  onChange={(e) => void readFile(e.target.files?.[0])}
+                  onChange={(e) => {
+                    const file = e.currentTarget.files?.[0];
+                    e.currentTarget.value = "";
+                    void readFile(file);
+                  }}
                 />
               </label>
               <p className="small-note">
@@ -174,6 +194,7 @@ export function SaveTools({
                     maxLength={MAX_BACKUP_SIZE + 1}
                     onChange={(e) => {
                       fileRequest.current++;
+                      setReading(false);
                       setRaw(e.target.value);
                       setError("");
                     }}
@@ -182,12 +203,12 @@ export function SaveTools({
                 </label>
               </details>
               <p className="backup-error" role="status">
-                {error}
+                {reading ? "Reading your backup…" : error}
               </p>
               <button
                 className="button primary"
                 type="submit"
-                disabled={!raw.trim()}
+                disabled={reading || !raw.trim()}
               >
                 Review backup
                 <Icon name="arrow" size={16} />

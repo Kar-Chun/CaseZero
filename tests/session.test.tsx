@@ -72,3 +72,95 @@ it("invalidates inactive cached progress when another tab saves or resets that c
     active.result.current.library.find((c) => c.caseId === "dead-air")?.started,
   ).toBe(false);
 });
+
+it("preserves good active and inactive snapshots when a live save becomes malformed, and repairs on retry", () => {
+  const first = notebook(startCase(freshState()), "Keep my active notes");
+  const other = notebook(
+    startCase(freshState("dead-air")),
+    "Keep my cached notes",
+  );
+  saveGame(first);
+  saveGame(other);
+  const session = new Map<CaseId, GameState>([["dead-air", other]]);
+  const h = renderHook(() => useGame("quiet-hour", session));
+  for (const id of ["quiet-hour", "dead-air"] as const) {
+    localStorage.setItem(saveKey(id), "{broken");
+    act(() =>
+      window.dispatchEvent(new StorageEvent("storage", { key: saveKey(id) })),
+    );
+  }
+  expect(h.result.current.state).toEqual(first);
+  expect(h.result.current.library.find((c) => c.caseId === "dead-air")).toEqual(
+    other,
+  );
+  expect(h.result.current.available).toBe(false);
+  act(() => h.result.current.retrySave());
+  expect(h.result.current.available).toBe(true);
+  expect(JSON.parse(localStorage.getItem(saveKey())!)).toEqual(first);
+  const denied = vi
+    .spyOn(Storage.prototype, "getItem")
+    .mockImplementation(() => {
+      throw Error("Read denied");
+    });
+  try {
+    act(() =>
+      window.dispatchEvent(new StorageEvent("storage", { key: saveKey() })),
+    );
+    expect(h.result.current.state).toEqual(first);
+    expect(h.result.current.available).toBe(false);
+  } finally {
+    denied.mockRestore();
+  }
+  act(() => h.result.current.retrySave());
+  expect(h.result.current.notice).toBeNull();
+});
+it("keeps a failed reset through case remounts and retries a fresh snapshot instead of resurrecting the old case", () => {
+  const old = startCase(freshState());
+  saveGame(old);
+  const session = new Map<CaseId, GameState>();
+  const h = renderHook(() => useGame("quiet-hour", session));
+  const remove = vi
+    .spyOn(Storage.prototype, "removeItem")
+    .mockImplementation(() => {
+      throw Error("Denied");
+    });
+  const write = vi
+    .spyOn(Storage.prototype, "setItem")
+    .mockImplementation(() => {
+      throw Error("Full");
+    });
+  try {
+    act(() => h.result.current.reset());
+    expect(h.result.current.state.started).toBe(false);
+    expect(h.result.current.available).toBe(false);
+    expect(h.result.current.notice).toMatch(/previous saved case/);
+    h.unmount();
+    const restored = renderHook(() => useGame("quiet-hour", session));
+    expect(restored.result.current.available).toBe(false);
+    expect(restored.result.current.state.started).toBe(false);
+    write.mockRestore();
+    act(() => restored.result.current.retrySave());
+    expect(restored.result.current.available).toBe(true);
+    expect(JSON.parse(localStorage.getItem(saveKey())!)).toEqual(freshState());
+    restored.unmount();
+  } finally {
+    write.mockRestore();
+    remove.mockRestore();
+  }
+});
+it("records a fresh reset snapshot if removal is denied but writing succeeds", () => {
+  saveGame(startCase(freshState()));
+  const h = renderHook(() => useGame());
+  const remove = vi
+    .spyOn(Storage.prototype, "removeItem")
+    .mockImplementation(() => {
+      throw Error("Denied");
+    });
+  try {
+    act(() => h.result.current.reset());
+    expect(h.result.current.available).toBe(true);
+    expect(JSON.parse(localStorage.getItem(saveKey())!)).toEqual(freshState());
+  } finally {
+    remove.mockRestore();
+  }
+});

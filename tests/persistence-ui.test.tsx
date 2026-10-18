@@ -53,3 +53,39 @@ it("explains incompatible saves and permits a fresh investigation", async () => 
     screen.queryByRole("button", { name: "Continue investigation" }),
   ).not.toBeInTheDocument();
 });
+
+it("makes a failed save visible and retries the latest in-memory notes", async () => {
+  const { vi } = await import("vitest");
+  const { solveCase } = await import("./helpers");
+  localStorage.setItem(SAVE_KEY, JSON.stringify(solveCase()));
+  const user = userEvent.setup();
+  render(<GameApp />);
+  await user.click(
+    screen.getByRole("button", { name: "Continue investigation" }),
+  );
+  await user.click(
+    screen.getByRole("button", { name: "Notebook" }),
+  );
+  const writes = vi
+    .spyOn(Storage.prototype, "setItem")
+    .mockImplementation(() => {
+      throw Error("Full");
+    });
+  try {
+    await user.type(
+      screen.getByRole("textbox", { name: "Case notes" }),
+      "Keep this new note.",
+    );
+    expect(
+      screen.getByRole("alert", { name: "Progress needs saving" }),
+    ).toBeVisible();
+    writes.mockRestore();
+    await user.click(screen.getByRole("button", { name: "Retry saving" }));
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    expect(JSON.parse(localStorage.getItem(SAVE_KEY)!).notes).toBe(
+      "Keep this new note.",
+    );
+  } finally {
+    writes.mockRestore();
+  }
+});

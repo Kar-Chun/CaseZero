@@ -166,3 +166,31 @@ Q4 complete: Final typecheck/lint, all 116 unit/component tests in 26 files and 
 Visual review covered desktop/320px reasoning review, the board and mobile statement feedback. Fixed retained bottom scroll on section navigation and added position/focus regressions. An initial matrix was intentionally interrupted after 22 Firefox passes for that fix; only the rebuilt complete 128-test run is reported as final. Firefox configuration/cache and namespace restrictions were resolved with temporary test-only environment settings; WebKit used extracted Debian libraries. Exact setup and limits are in VERIFICATION.md.
 
 Phase 4 complete on develop/casezero with four verified milestone commits. No pending implementation work or known blocking gameplay issue. Added one practical human playtest guide; updated existing README, agent guidance, case bible, plan, review and verification. No new mystery, runtime dependency, analytics service or deployment. No remote is configured, so REVIEW.md prepares the local review handoff instead of a hosted PR. Human sessions, physical devices, native Safari and manual screen-reader use remain unverified. Next priority: real first-time playtesting and evidence-led difficulty/hint tuning, then actual device/accessibility sessions.
+
+# Phase 5 — playtest readiness and final polish
+
+## Product review and priorities
+
+The three stories, exact proof alternatives, progression gates and v3 state model remain appropriate. Preserve every case, clue ID, solution, save key and migration. Baseline typecheck/lint and all 116 tests pass. The main opportunities are interaction/recovery rather than new mechanics:
+
+- Failed writes only change a footer indicator; a player can miss it on a long board. A malformed/unreadable live storage update currently replaces the active case with a fresh state. Failed reset removal can leave old progress on disk without explaining that it may return.
+- The board's thread anchor is below explanation choices, so a mobile shortcut can skip required reasoning. Pins hidden by filters cannot be removed individually from the tray. Discovering a file requires finding its inventory card again to pin it. Timeline source records and event order require repeated long scrolling; several mobile inputs use text below 16px, which can trigger Safari zoom.
+- Dialog focus is trapped, but background content is not inert for assistive navigation. Import lacks an explicit reading state and focused return from review. The rejected ending describes a reopening action that is only labeled that way after success.
+- Feedback requires leaving the game and creating a report manually. No deployment guide explains how workspace files reach GitHub/Vercel, which URL retains phone saves, or the approval boundary. Standard Next.js build/start already work; pin the tested Node major and ignore local hosting artifacts rather than adding hosting infrastructure.
+
+| Milestone | Acceptance criteria | Status |
+| --- | --- | --- |
+| S1 Visible save recovery | Prominent write-failure warning and retry save latest in-memory state, including reset tombstones; invalid/unreadable live updates preserve current/cached progress; import reading/retry/back-focus states work; regression tests, typecheck/lint/build | Complete |
+| S2 Investigation and accessible controls | Thread shortcut includes explanation; direct unpin and filter reset; pin from discovered files without changing proof rules; timeline source/order shortcuts and placement feedback; touch-size/input refinements; modal background isolation; keyboard/component/mobile regressions, typecheck/lint/build | In progress |
+| S3 Tester handoff and hosting readiness | Local-only feedback form with copy/download/manual fallback and no automatic notes/evidence disclosure; recoverable production error screen and explicit boot status; tested Node pinned, hosting artifacts ignored; practical phone/GitHub/Vercel instructions and manual checklist; no external writes; tests/typecheck/lint/build | Pending |
+| S4 Final product verification | All three complete mysteries and both outcomes, alternatives, hints, saves/migration/replay/backups, new recovery/feedback/touch paths; production Chromium desktop/mobile, Firefox/WebKit where supported; axe/keyboard/reduced-motion/320px checks; clean install/build and final docs/commits | Pending |
+
+## Boundaries and risks
+
+No fourth mystery, random solution, analytics, new runtime dependency, schema change or speculative rewrite. Keep unsubmitted analysis temporary and say so. Feedback stays on the device until the tester deliberately copies/downloads and shares it; never bundle notebook text, raw saves or discovered clue contents. A real phone, native Safari and human playtesting remain future verification, not claims from emulation. Deployment instructions must distinguish the current local branch from an existing hosted repository; creating/pushing/deploying remains explicitly unapproved. If interrupted, finish the active milestone's checks, update this log and continue in order.
+
+## Verification log
+
+Started 18 October 2026 on clean develop/casezero. Baseline: typecheck/lint and all 116 tests passed. S1 implementation next.
+
+S1 complete: Typecheck/lint (no warnings), all 121 tests in 26 files and production build passed. Six focused production Chromium browser checks passed (15.8s), including real cross-tab malformed updates, quota recovery, prior save/reset and backup regressions. Failed resets preserve in-memory state through remounts and can write a fresh snapshot on retry. Pending import, same-file retry and review focus are covered. Corrected stale-element and overly broad alert selectors in the new tests; no meaningful checks removed.

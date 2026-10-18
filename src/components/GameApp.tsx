@@ -104,8 +104,16 @@ function GameExperience({
   const { evidence } = c;
   const initialFocus = useRef(initialScreen === "home");
   const [screen, setScreen] = useState<Screen>(initialScreen);
-  const { state, library, setState, available, notice, dismissNotice, reset } =
-    useGame(caseId, session);
+  const {
+    state,
+    library,
+    setState,
+    available,
+    notice,
+    dismissNotice,
+    reset,
+    retrySave,
+  } = useGame(caseId, session);
   const [tab, setTab] = useState<Tab>("locations");
   const [location, setLocation] = useState<string | null>(null);
   const [interviewPerson, setInterviewPerson] = useState(c.suspects[0].id);
@@ -197,6 +205,24 @@ function GameExperience({
             <Icon name="close" size={16} />
           </button>
         </div>
+      )}
+      {!available && (
+        <aside
+          className="save-warning"
+          role="alert"
+          aria-label="Progress needs saving"
+        >
+          <div>
+            <strong>Your latest progress is only in this tab.</strong>
+            <p>
+              Saving is unavailable. Retry, or export a backup from the notebook
+              before closing or refreshing.
+            </p>
+          </div>
+          <button className="button outline" onClick={retrySave}>
+            Retry saving
+          </button>
+        </aside>
       )}
       {effectiveScreen !== "investigation" ? (
         <div className="intro-stage">
