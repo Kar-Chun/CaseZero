@@ -1,3 +1,4 @@
+import { proofSets } from "./proofs";
 import { deductionAnswers } from "./deduction-rules";
 import { inspectionAnswers } from "./inspection-rules";
 import { locations, evidence, suspects, dialogue, deductions } from "./content";
@@ -71,47 +72,63 @@ export function validateContent(content: CaseContent = caseContent): string[] {
   }
   const recipes = new Set<string>();
   for (const d of content.deductions) {
-    const signature = [...d.evidence].sort().join("|");
-    if (recipes.has(signature)) issues.push(`${d.id}: ambiguous recipe`);
-    recipes.add(signature);
-    check(d.id, { evidence: d.evidence });
+    for (const path of proofSets(d)) {
+      const signature = [...path].sort().join("|");
+      if (recipes.has(signature)) issues.push(`${d.id}: ambiguous recipe`);
+      recipes.add(signature);
+      check(d.id, { evidence: path });
+      if (path.length < 2 || new Set(path).size !== path.length)
+        issues.push(`${d.id}: invalid recipe`);
+    }
     check(d.id, d.requires ?? {});
-    if (d.evidence.length < 2 || new Set(d.evidence).size !== d.evidence.length)
-      issues.push(`${d.id}: invalid recipe`);
   }
   for (const i of content.inspections ?? []) {
     check(i.id, i.requires);
     if (!content.evidence.some((e) => e.id === i.evidenceId))
       issues.push(`${i.id}: unknown evidence reward`);
   }
-  const reached = {
-    evidence: new Set<string>(),
-    deductions: new Set<string>(),
-    answers: new Set<string>(),
-    inspections: new Set<string>(),
-  };
-  const ready = (req: Requirement) =>
-    (["evidence", "deductions", "answers", "inspections"] as const).every((k) =>
-      (req[k] ?? []).every((id) => reached[k].has(id)),
-    );
-  let changed = true;
-  while (changed) {
-    changed = false;
-    const add = (kind: keyof typeof reached, id: string) => {
-      if (!reached[kind].has(id)) {
-        reached[kind].add(id);
-        changed = true;
-      }
+  function closure(exclude?: string) {
+    const reached = {
+      evidence: new Set<string>(),
+      deductions: new Set<string>(),
+      answers: new Set<string>(),
+      inspections: new Set<string>(),
     };
-    for (const e of content.evidence)
-      if (ready(e.requires)) add("evidence", e.id);
-    for (const t of content.dialogue)
-      if (ready(t.requires)) add("answers", t.id);
-    for (const i of content.inspections ?? [])
-      if (ready(i.requires)) add("inspections", i.id);
-    for (const d of content.deductions)
-      if (ready({ evidence: d.evidence }) && ready(d.requires ?? {}))
-        add("deductions", d.id);
+    const ready = (req: Requirement) =>
+      (["evidence", "deductions", "answers", "inspections"] as const).every(
+        (k) => (req[k] ?? []).every((id) => reached[k].has(id)),
+      );
+    let changed = true;
+    while (changed) {
+      changed = false;
+      const add = (kind: keyof typeof reached, id: string) => {
+        if (!reached[kind].has(id)) {
+          reached[kind].add(id);
+          changed = true;
+        }
+      };
+      for (const e of content.evidence)
+        if (ready(e.requires)) add("evidence", e.id);
+      for (const t of content.dialogue)
+        if (ready(t.requires)) add("answers", t.id);
+      for (const i of content.inspections ?? [])
+        if (ready(i.requires)) add("inspections", i.id);
+      for (const d of content.deductions)
+        if (
+          d.id !== exclude &&
+          proofSets(d).some((path) => ready({ evidence: path })) &&
+          ready(d.requires ?? {})
+        )
+          add("deductions", d.id);
+    }
+    return reached;
+  }
+  const reached = closure();
+  for (const d of content.deductions) {
+    const without = closure(d.id);
+    for (const path of proofSets(d))
+      if (!path.every((id) => without.evidence.has(id)))
+        issues.push(`${d.id}: circular or unreachable proof`);
   }
   for (const key of [
     "evidence",

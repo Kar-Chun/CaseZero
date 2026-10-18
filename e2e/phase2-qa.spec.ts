@@ -147,7 +147,7 @@ test("an original v1 investigation migrates in the browser without losing notes 
         () => JSON.parse(localStorage.getItem("casezero:progress:v1")!).version,
       ),
     )
-    .toBe(2);
+    .toBe(3);
   await page.reload();
   await page.getByRole("button", { name: "Continue investigation" }).click();
   await navigate(page, "Notebook");

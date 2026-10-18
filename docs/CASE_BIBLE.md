@@ -110,3 +110,14 @@ I21 presents the original records and asks for four chronological positions, eac
 ## Endings and fairness
 
 Final proof requires D21–D24 and E54. Correct accusation S21 + M22 (operate manual bypass after completed test) + R23 (destroy contradictory trial evidence before audit). Elin admits the staged accident; surviving sample custody and original logs support an independent audit, advance frozen for review, research protected from the false report. Incorrect suspect/method/motive produces an unsupported account; nobody is punished, evidence retained, retry available. No random culprit, consumable clue, timed action or external scientific knowledge. E51 and optional confrontation interviews are never required for completion.
+
+# Phase 4 — alternative proof review (internal spoilers)
+
+Keep every culprit, method and motive unchanged. Canonical recipes remain valid.
+
+- Quiet Hour D01 can use E02+E05+E06 instead of E01+E05+E06: the sensor diagnostic establishes suppression by C3 in the maintenance window, the access log supplies the exact time, the independent meter excludes a blackout. E02 still requires discovering E01. This is a different supported comparison, not a shortcut around its discovery gate.
+- Quiet Hour D03 can use E05+E07+E08 instead of E04+E07+E08: physical access with C3 at 21:12, its continuous exclusive custody with Mara and all other suspects' continuous alibis establish the same opportunity. Mara's claimed atrium alibi cannot account for that access even without the usher record. E04 becomes an optional independent corroboration on this route. No route may drop card custody or the other suspects' verified alibis.
+- Dead Air D11 can use E25+E26 instead of E24+E25: the sealed routing trace selects U4 and excludes the live microphone/external line; the original U4 internal serial and splice contain the false warning. This establishes a prepared recording independently of the acoustic transcript. E24 becomes optional on this route. The timing analysis, custody and motive proof remain required.
+- After the Flood keeps its existing recipes and explanation requirements. A route using the final secured material to establish a prerequisite conclusion would be circular, and is deliberately not added.
+
+Version 3 records the exact supporting set for each established conclusion. Old completed states migrate only after their canonical dependencies are validated; this does not invent a different historical path. Review screens show what supported a player's account. Optional post-success lead summaries expose search points/rooms, not automatic discoveries. Reopening clears only the submitted accusation; starting over explicitly clears that case after confirmation.

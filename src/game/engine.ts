@@ -1,9 +1,11 @@
+import { maxPins, supports, sameProof } from "./proofs";
 import { deductionAnswers } from "./deduction-rules";
 import { inspectionAnswers } from "./inspection-rules";
 import { getCase, isHintKey } from "./cases";
 import type { GameState, Requirement, Accusation, CaseId } from "./types";
 export const freshState = (caseId: CaseId = "quiet-hour"): GameState => ({
-  version: 2,
+  version: 3,
+  proofs: {},
   caseId,
   started: false,
   evidence: [],
@@ -56,11 +58,7 @@ export type CombinationResult = {
   deductionId?: string;
 };
 export function threadDeduction(state: GameState, ids: string[]) {
-  return getCase(state.caseId).deductions.find(
-    (d) =>
-      d.evidence.length === ids.length &&
-      d.evidence.every((id) => ids.includes(id)),
-  );
+  return getCase(state.caseId).deductions.find((d) => supports(d, ids));
 }
 export function combine(
   state: GameState,
@@ -95,7 +93,10 @@ export function combine(
         : "This connection needs its supporting records or interviews first.",
     };
   }
-  if (state.deductions.includes(match.id))
+  if (
+    state.deductions.includes(match.id) &&
+    sameProof(state.proofs[match.id] ?? [], ids)
+  )
     return {
       state,
       message: "This conclusion is already on your board.",
@@ -114,7 +115,13 @@ export function combine(
         : "That explanation does not account for all these records. Compare their details and revise your explanation.",
     };
   return {
-    state: { ...state, deductions: [...state.deductions, match.id] },
+    state: {
+      ...state,
+      deductions: state.deductions.includes(match.id)
+        ? state.deductions
+        : [...state.deductions, match.id],
+      proofs: { ...state.proofs, [match.id]: [...ids] },
+    },
     message: match.conclusion,
     deductionId: match.id,
   };
@@ -213,10 +220,7 @@ export function revealHint(state: GameState, key: string): GameState {
   };
 }
 export function pinEvidence(state: GameState, ids: string[]): GameState {
-  const limit = Math.max(
-    0,
-    ...getCase(state.caseId).deductions.map((d) => d.evidence.length),
-  );
+  const limit = maxPins(getCase(state.caseId));
   if (
     !state.started ||
     ids.length > limit ||

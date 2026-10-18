@@ -31,7 +31,7 @@ describe("case model and legacy migration", () => {
       const restored = parseSave(JSON.stringify({ ...legacy, version: 1 }));
       expect(restored).toEqual({
         ...state,
-        version: 2,
+        version: 3,
         inspections: [],
         hints: {},
         pinned: [],

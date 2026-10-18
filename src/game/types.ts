@@ -48,12 +48,14 @@ export type Deduction = {
   evidence: string[];
   conclusion: string;
   category?: string;
+  alternatives?: string[][];
   interpretations?: { id: string; label: string }[];
   requires?: Requirement;
 };
 export type Accusation = { suspect: string; method: string; motive: string };
 export type GameState = {
-  version: 2;
+  version: 3;
+  proofs: Record<string, string[]>;
   caseId: CaseId;
   started: boolean;
   evidence: string[];

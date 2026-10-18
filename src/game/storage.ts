@@ -1,3 +1,4 @@
+import { maxPins, supports } from "./proofs";
 import { getCase, isCaseId, isHintKey } from "./cases";
 import { freshState, meets, canAccuse, validAccusation } from "./engine";
 import type { GameState, Accusation, CaseId } from "./types";
@@ -45,7 +46,7 @@ export function parseSave(raw: string): GameState | null {
     const s: unknown = JSON.parse(raw);
     if (
       !object(s) ||
-      ![1, 2].includes(s.version as number) ||
+      ![1, 2, 3].includes(s.version as number) ||
       !isCaseId(s.caseId) ||
       (s.version === 1 && s.caseId !== "quiet-hour") ||
       typeof s.started !== "boolean" ||
@@ -67,7 +68,7 @@ export function parseSave(raw: string): GameState | null {
     if (
       !ids(completed, inspections) ||
       !ids(pinned, evidence) ||
-      pinned.length > Math.max(...deductions.map((d) => d.evidence.length)) ||
+      pinned.length > maxPins(definition) ||
       !pinned.every(
         (id) => s.evidence instanceof Array && s.evidence.includes(id),
       ) ||
@@ -95,8 +96,39 @@ export function parseSave(raw: string): GameState | null {
       )
         return null;
     }
+    const recordedDeductions = s.deductions;
+    const rawProofs =
+      s.version === 3
+        ? s.proofs
+        : Object.fromEntries(
+            s.deductions.map((id) => [
+              id,
+              deductions.find((d) => d.id === id)!.evidence,
+            ]),
+          );
+    if (
+      !object(rawProofs) ||
+      Object.keys(rawProofs).length !== s.deductions.length ||
+      Object.entries(rawProofs).some(
+        ([id, path]) =>
+          !recordedDeductions.includes(id) ||
+          !ids(path, evidence) ||
+          !supports(
+            deductions.find((d) => d.id === id)!,
+            path,
+          ),
+      )
+    )
+      return null;
+    const proofs = Object.fromEntries(
+      Object.entries(rawProofs).map(([id, path]) => [
+        id,
+        [...(path as string[])],
+      ]),
+    );
     const state: GameState = {
-      version: 2,
+      version: 3,
+      proofs,
       caseId: s.caseId,
       inspections: [...completed],
       hints: { ...hints } as Record<string, number>,
@@ -144,8 +176,9 @@ export function parseSave(raw: string): GameState | null {
         .filter((d) => state.deductions.includes(d.id))
         .every(
           (d) =>
-            meets(state, { evidence: d.evidence }) &&
-            meets(state, d.requires ?? {}),
+            meets(state, {
+              evidence: s.version === 3 ? state.proofs[d.id] : d.evidence,
+            }) && meets(state, d.requires ?? {}),
         )
     )
       return null;

@@ -406,6 +406,7 @@ export const deductions: Deduction[] = [
     prompt:
       "What opened the display while the alarm stayed silent? Connect the maintenance timing, access and power records.",
     evidence: ["E01", "E05", "E06"],
+    alternatives: [["E02", "E05", "E06"]],
     conclusion:
       "C3 opened the display during the 21:12 maintenance window. Electricity never failed; the alarm was deliberately suppressed by authorized access.",
   },
@@ -424,6 +425,7 @@ export const deductions: Deduction[] = [
     prompt:
       "Who had both the credential and the opportunity? Connect attendance, continuous alibis and card custody.",
     evidence: ["E04", "E07", "E08"],
+    alternatives: [["E05", "E07", "E08"]],
     conclusion:
       "Mara’s atrium alibi fails; the other three suspects are continuously accounted for at 21:12. C3 remained in Mara’s custody. She alone had the documented opportunity and access.",
   },
